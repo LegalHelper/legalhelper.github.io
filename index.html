@@ -165,6 +165,44 @@ section { padding: 70px 0 10px; }
 .step p { margin: 0; color: var(--muted); font-size: 15.5px; }
 .note { margin-top: 14px; font-size: 14.5px; color: var(--muted); }
 
+
+/* ---------- простая установка ---------- */
+.easy { display: grid; gap: 16px; }
+.es { display: grid; grid-template-columns: 70px 1fr 300px; gap: 20px; align-items: center; background: var(--panel);
+  backdrop-filter: blur(18px); border: 1px solid var(--line); border-radius: 24px; padding: 22px 24px; }
+.en { width: 62px; height: 62px; border-radius: 20px; display: grid; place-items: center; font-size: 32px; font-weight: 900;
+  color: #fff; background: linear-gradient(135deg, var(--accent), var(--a2)); box-shadow: 0 10px 24px var(--glow); }
+.et h3 { margin: 0 0 6px; font-size: clamp(20px, 2.6vw, 25px); letter-spacing: -.01em; }
+.et p { margin: 0; color: var(--muted); font-size: 17px; }
+.pic { display: grid; place-items: center; min-height: 96px; }
+.mock-btn { background: linear-gradient(135deg, #2f95ff, var(--a2)); color: #fff; font-weight: 800; padding: 14px 22px;
+  border-radius: 16px; box-shadow: 0 10px 26px var(--glow); animation: tap 2.4s ease-in-out infinite; }
+@keyframes tap { 0%, 70%, 100% { transform: scale(1); } 80% { transform: scale(.93); } }
+.mock-dl { display: flex; gap: 12px; align-items: center; background: var(--solid); border: 1px solid var(--line);
+  border-radius: 14px; padding: 12px 16px; box-shadow: 0 12px 30px rgba(0,0,0,.12); font-size: 15px; animation: pop 2.4s ease-in-out infinite; }
+.mock-dl small { color: var(--accent); font-weight: 700; }
+.mock-dl .fi { font-size: 28px; }
+@keyframes pop { 0% { transform: translateY(10px); opacity: 0; } 20%, 85% { transform: none; opacity: 1; } 100% { opacity: 0; } }
+.mock-win { width: 250px; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); background: var(--solid);
+  box-shadow: 0 12px 30px rgba(0,0,0,.12); font-size: 13px; }
+.mock-win .wt { background: color-mix(in srgb, var(--accent) 12%, var(--solid)); padding: 7px 10px; font-weight: 700; }
+.mock-win .wb { padding: 14px 12px; display: grid; gap: 12px; }
+.bar2 { height: 8px; border-radius: 9px; background: var(--line); overflow: hidden; }
+.bar2 i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--a3), var(--accent)); animation: prog 3s ease-in-out infinite; }
+@keyframes prog { 0% { width: 0; } 80%, 100% { width: 100%; } }
+.wbtn { justify-self: end; background: var(--accent); color: #fff; font-weight: 700; padding: 6px 14px; border-radius: 8px; }
+.blue { margin-top: 16px; display: grid; grid-template-columns: 1fr 300px; gap: 20px; align-items: center; border-radius: 24px;
+  padding: 22px 24px; background: color-mix(in srgb, #0a64c8 14%, var(--panel)); border: 1px solid var(--line); font-size: 17px; }
+.mock-ss { background: #0a5bc4; color: #fff; border-radius: 10px; padding: 14px 16px; font-size: 13px; display: grid; gap: 8px; }
+.ss-h { font-size: 16px; font-weight: 700; }
+.ss-l { text-decoration: underline; opacity: .95; }
+.ss-b { justify-self: end; border: 2px solid #fff; padding: 5px 12px; border-radius: 4px; font-weight: 700;
+  animation: tap 2.4s ease-in-out infinite; }
+@media (max-width: 760px) {
+  .es { grid-template-columns: 56px 1fr; } .es .pic { grid-column: 1 / -1; }
+  .en { width: 52px; height: 52px; font-size: 26px; }
+  .blue { grid-template-columns: 1fr; }
+}
 /* ---------- финал ---------- */
 .final { text-align: center; padding: 90px 0 30px; }
 .final .h2 { margin-bottom: 18px; }
@@ -207,7 +245,7 @@ footer a { font-weight: 700; }
     <button class="theme" id="theme" title="Светлая / тёмная тема" aria-label="Светлая или тёмная тема">
       <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 1.5a6.5 6.5 0 0 1 0 13z" fill="currentColor"/></svg>
     </button>
-    <a class="mini dl" href="https://github.com/ezdk20000-code/LegalHelper/archive/refs/heads/main.zip">Скачать</a>
+    <a class="mini dl" href="https://github.com/ezdk20000-code/LegalHelper/releases/latest/download/LegalHelper-Setup.exe">Скачать</a>
   </div>
 </header>
 
@@ -221,11 +259,11 @@ footer a { font-weight: 700; }
       <p class="lead rv" style="--d:.16s">LegalHelper экономит часы каждую неделю: сам помнит сроки и заседания,
         складывает все документы дела в один файл и готовит бумаги по шаблонам. Вы занимаетесь правом — рутину берёт программа.</p>
       <div class="rv" style="--d:.24s">
-        <a class="cta dl" href="https://github.com/ezdk20000-code/LegalHelper/archive/refs/heads/main.zip">
+        <a class="cta dl" href="https://github.com/ezdk20000-code/LegalHelper/releases/latest/download/LegalHelper-Setup.exe">
           <span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M6 10l6 6 6-6M5 21h14" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          <span><b>Скачать LegalHelper</b><small>для Windows 10 и 11</small></span>
+          <span><b>Скачать LegalHelper</b><small>для Windows 10 и 11 · один файл</small></span>
         </a>
-        <div class="fresh"><span class="dot"></span> Всегда <b>последняя версия</b><span id="verWrap"> — <b id="ver">…</b></span> · обновления потом ставятся сами</div>
+        <div class="fresh"><span class="dot"></span> Всегда <b>последняя версия</b><span id="verWrap"> — <b id="ver">…</b></span> · установка — за пару минут, обновления — сами</div>
         <div class="phone-note" id="phoneNote">📱 Программа устанавливается на компьютер с Windows — откройте эту страницу на компьютере. На телефоне дела читаются через Яндекс Диск.</div>
       </div>
     </div>
@@ -282,21 +320,45 @@ footer a { font-weight: 700; }
 
   <!-- ===== установка ===== -->
   <section id="install">
-    <h2 class="h2 rv">Установка — 3 шага</h2>
-    <p class="sub rv" style="--d:.08s">Один раз, 10–20 минут. Дальше программа обновляется сама.</p>
-    <div class="steps">
-      <div class="step rv"><div class="n">1</div><h3>Скачайте</h3><p>Кнопка «Скачать» — в папке «Загрузки» появится <b>LegalHelper-main.zip</b>.</p></div>
-      <div class="step rv" style="--d:.1s"><div class="n">2</div><h3>Распакуйте</h3><p>Правой кнопкой по архиву → <b>«Извлечь все…»</b> → «Извлечь».</p></div>
-      <div class="step rv" style="--d:.2s"><div class="n">3</div><h3>Запустите</h3><p>В открывшейся папке дважды щёлкните <b>«УСТАНОВИТЬ»</b> и подождите — ярлык появится сам.</p></div>
+    <h2 class="h2 rv">Как установить</h2>
+    <p class="sub rv" style="--d:.08s">Три шага и пара минут. Ничего не нужно настраивать.</p>
+    <div class="easy">
+      <div class="es rv">
+        <div class="en">1</div>
+        <div class="et"><h3>Нажмите синюю кнопку «Скачать»</h3>
+          <p>Скачается один файл — <b>LegalHelper-Setup.exe</b>.</p></div>
+        <div class="pic"><div class="mock-btn">⬇ Скачать LegalHelper</div></div>
+      </div>
+      <div class="es rv" style="--d:.1s">
+        <div class="en">2</div>
+        <div class="et"><h3>Откройте скачанный файл</h3>
+          <p>Нажмите на него в браузере — он появится <b>вверху справа</b> или <b>внизу</b> окна. Или найдите его в папке <b>«Загрузки»</b>.</p></div>
+        <div class="pic"><div class="mock-dl"><span class="fi">📦</span><span><b>LegalHelper-Setup.exe</b><br><small>Открыть файл</small></span></div></div>
+      </div>
+      <div class="es rv" style="--d:.2s">
+        <div class="en">3</div>
+        <div class="et"><h3>Нажмите «Установить», потом «Завершить»</h3>
+          <p>Через минуту программа откроется сама, а на рабочем столе появится значок <b>LegalHelper</b>.</p></div>
+        <div class="pic"><div class="mock-win"><div class="wt">Установка LegalHelper</div><div class="wb">
+          <div class="bar2"><i></i></div><div class="wbtn">Установить</div></div></div></div>
+      </div>
     </div>
-    <p class="note rv">Если Windows покажет «Windows защитила ваш компьютер» — «Подробнее» → «Выполнить в любом случае».</p>
+    <div class="blue rv">
+      <div class="bl-t"><b>Если появится синее окно «Windows защитила ваш компьютер»</b> — это нормально.
+        Нажмите <b>«Подробнее»</b>, затем <b>«Выполнить в любом случае»</b>.</div>
+      <div class="mock-ss"><div class="ss-h">Windows защитила ваш компьютер</div>
+        <div class="ss-l">Подробнее</div><div class="ss-b">Выполнить в любом случае</div></div>
+    </div>
+    <p class="note rv">Не получается? Напишите — поможем: <a href="https://t.me/axis_juris">Telegram @axis_juris</a> или
+      <a href="mailto:axis.juris@bk.ru">axis.juris@bk.ru</a>. Запасной способ —
+      <a href="https://github.com/ezdk20000-code/LegalHelper/archive/refs/heads/main.zip">архив с программой</a> (для опытных).</p>
   </section>
 
   <!-- ===== финал ===== -->
   <div class="final">
     <h2 class="h2 rv">Верните себе время</h2>
     <div class="rv" style="--d:.1s">
-      <a class="cta dl" href="https://github.com/ezdk20000-code/LegalHelper/archive/refs/heads/main.zip">
+      <a class="cta dl" href="https://github.com/ezdk20000-code/LegalHelper/releases/latest/download/LegalHelper-Setup.exe">
         <span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M6 10l6 6 6-6M5 21h14" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         <span><b>Скачать бесплатно</b><small>последняя версия · Windows 10 и 11</small></span>
       </a>
