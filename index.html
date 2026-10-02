@@ -393,10 +393,21 @@ footer { text-align: center; color: var(--muted); font-size: 14px; padding: 24px
   for (var i = 1; i <= 4; i++) document.getElementById("c" + i).addEventListener("input", calc);
   calc();
 
-  fetch("https://raw.githubusercontent.com/ezdk20000-code/LegalHelper/main/version.json", { cache: "no-store" })
-    .then(function (r) { return r.json(); })
-    .then(function (v) { document.getElementById("ver").textContent = "версия " + v.version; })
-    .catch(function () { document.getElementById("verWrap").style.display = "none"; });
+  // номер версии и ссылка на установщик: сначала — открытое место для скачивания (этот сайт),
+  // если его там ещё нет — прежнее место
+  var NEW_DL = "https://github.com/LegalHelper/legalhelper.github.io/releases/latest/download/LegalHelper-Setup.exe";
+  function show(v) { document.getElementById("ver").textContent = "версия " + v.version; }
+  fetch("version.json", { cache: "no-store" })
+    .then(function (r) { if (!r.ok) throw 0; return r.json(); })
+    .then(function (v) {
+      show(v);
+      document.querySelectorAll('a[href$="LegalHelper-Setup.exe"]').forEach(function (a) { a.href = NEW_DL; });
+    })
+    .catch(function () {
+      fetch("https://raw.githubusercontent.com/ezdk20000-code/LegalHelper/main/version.json", { cache: "no-store" })
+        .then(function (r) { return r.json(); }).then(show)
+        .catch(function () { document.getElementById("verWrap").style.display = "none"; });
+    });
 })();
 </script>
 </body>
