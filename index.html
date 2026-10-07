@@ -90,6 +90,119 @@ header .btn { padding: 10px 18px; font-size: 14px; }
 .item.open .body { grid-template-rows: 1fr; }
 @media (max-width: 860px) { .solutions .wrap { grid-template-columns: 1fr; gap: 10px; } .solutions .brand { display: none; } .solutions .intro { margin-top: 20px; } }
 
+
+/* демо: как это делается в программе */
+.demo { margin-top: 34px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: #fff;
+  box-shadow: 0 24px 60px rgba(15,34,54,.12); }
+.demo .bar { display: flex; align-items: center; gap: 6px; padding: 9px 12px; background: #f1f4f8; border-bottom: 1px solid var(--line); }
+.demo .bar i { width: 9px; height: 9px; border-radius: 50%; background: #d3dbe5; }
+.demo .bar span { margin-left: 8px; font-size: 12px; color: var(--mute); }
+.demo .bar img { width: 16px; height: 16px; margin-left: auto; }
+.stage { position: relative; height: 330px; background: #fbfcfe; overflow: hidden; }
+.scene { position: absolute; inset: 0; padding: 22px 24px; opacity: 0; visibility: hidden; transition: opacity .35s; font-size: 13px; }
+.scene.on { opacity: 1; visibility: visible; }
+.steps { display: flex; border-top: 1px solid var(--line); }
+.steps div { flex: 1; padding: 11px 14px 13px; font-size: 12.5px; color: var(--mute); position: relative; line-height: 1.35; }
+.steps div + div { border-left: 1px solid var(--line); }
+.steps div b { display: block; font-weight: 500; font-size: 11px; color: var(--blue); margin-bottom: 2px; }
+.steps div::after { content: ""; position: absolute; left: 0; top: -1px; height: 2px; width: 0; background: var(--blue); }
+.steps div.on { color: var(--ink); }
+.steps div.on::after { width: 100%; transition: width var(--dur, 1.6s) linear; }
+.steps div.done::after { width: 100%; }
+/* общие детали сцен */
+.chip { display: inline-flex; align-items: center; gap: 7px; padding: 7px 10px; border: 1px solid var(--line); border-radius: 6px; background: #fff;
+  font-size: 12.5px; box-shadow: 0 4px 10px rgba(15,34,54,.06); }
+.chip em { font-style: normal; font-size: 10px; font-weight: 600; color: #fff; border-radius: 3px; padding: 1px 4px; }
+.e-pdf { background: #d64541; } .e-doc { background: #2f6fd6; } .e-jpg { background: #1e9d6a; }
+.field { border: 1px solid var(--line); border-radius: 6px; background: #fff; padding: 8px 10px; min-height: 34px; font-size: 13px; position: relative; }
+.field small { position: absolute; top: -8px; left: 8px; background: #fbfcfe; padding: 0 4px; font-size: 10px; color: var(--mute); }
+.typed { white-space: nowrap; overflow: hidden; display: inline-block; vertical-align: bottom; width: 0; }
+.caret::after { content: ""; display: inline-block; width: 1px; height: 14px; background: var(--ink); vertical-align: -2px; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.pop { opacity: 0; transform: translateY(8px) scale(.98); transition: opacity .4s, transform .4s cubic-bezier(.2,.8,.2,1); }
+.pop.in { opacity: 1; transform: none; }
+.cursor { position: absolute; width: 18px; height: 18px; z-index: 5; transition: left .7s cubic-bezier(.4,0,.2,1), top .7s cubic-bezier(.4,0,.2,1); pointer-events: none; }
+.cursor::before { content: ""; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 2l15 11-7 1-3 7z' fill='%230f2236' stroke='%23fff' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat; }
+.cursor.click::after { content: ""; position: absolute; left: -6px; top: -6px; width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--blue); animation: ring .5s ease-out; }
+@keyframes ring { from { transform: scale(.3); opacity: 1; } to { transform: scale(1.6); opacity: 0; } }
+/* 1. PDF дела */
+.s-pdf .files { display: flex; flex-direction: column; gap: 10px; position: absolute; left: 24px; top: 34px; }
+.s-pdf .files .chip { transition: transform .9s cubic-bezier(.5,0,.2,1), opacity .9s; }
+.s-pdf.go .files .chip { transform: translate(240px, 30px) scale(.6); opacity: 0; }
+.s-pdf.go .files .chip:nth-child(2) { transition-delay: .15s; } .s-pdf.go .files .chip:nth-child(3) { transition-delay: .3s; }
+.s-pdf .book { position: absolute; right: 34px; top: 26px; width: 170px; height: 220px; }
+.s-pdf .pg { position: absolute; inset: 0; background: #fff; border: 1px solid var(--line); border-radius: 3px; box-shadow: 0 6px 18px rgba(15,34,54,.1);
+  padding: 16px 14px; transform: translate(var(--o), calc(var(--o) * -1)); }
+.s-pdf .pg i { display: block; height: 5px; background: #e6ebf1; border-radius: 3px; margin: 8px 0; } .s-pdf .pg i:nth-child(3n) { width: 70%; }
+.s-pdf .pg b { font-weight: 600; font-size: 11px; display: block; }
+.s-pdf .pg .num { position: absolute; right: 9px; bottom: 7px; font-size: 10px; color: var(--blue); opacity: 0; transition: opacity .4s; }
+.s-pdf.num .pg .num { opacity: 1; }
+.s-pdf .badge { position: absolute; right: 34px; top: 255px; font-size: 12px; color: var(--mute); }
+.stamp2 { position: absolute; border: 2px solid #c0392b; color: #c0392b; font-weight: 600; font-size: 12px; letter-spacing: .08em; padding: 3px 8px; border-radius: 4px;
+  transform: rotate(-9deg) scale(2); opacity: 0; transition: transform .35s cubic-bezier(.3,1.6,.5,1), opacity .2s; }
+.stamp2.in { transform: rotate(-9deg) scale(1); opacity: .9; }
+.s-pdf .stamp2 { right: 50px; top: 168px; }
+/* 2. опись */
+.s-f107 { display: grid; grid-template-columns: 170px 1fr; gap: 18px; }
+.s-f107 .ck div { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px solid #edf1f5; font-size: 12.5px; }
+.s-f107 .ck span { width: 14px; height: 14px; border: 1.5px solid #b9c6d4; border-radius: 3px; display: grid; place-items: center; font-size: 10px; color: #fff; transition: background .2s, border-color .2s; }
+.s-f107 .ck div.on span { background: var(--blue); border-color: var(--blue); }
+.form { border: 1px solid #c9d3de; background: #fff; font-size: 11.5px; }
+.form .h, .form .rw { display: grid; grid-template-columns: 26px 1fr 40px 52px; }
+.form .h { background: #f3f6f9; font-size: 10px; color: var(--mute); }
+.form .h div, .form .rw div { padding: 5px 6px; border-right: 1px solid #dfe6ee; } .form .h div:last-child, .form .rw div:last-child { border-right: 0; }
+.form .rw { border-top: 1px solid #dfe6ee; min-height: 26px; }
+.form .rw div { opacity: 0; transition: opacity .3s; } .form .rw.in div { opacity: 1; }
+.form .tot { display: flex; justify-content: space-between; padding: 6px; border-top: 1.5px solid #9fb0c2; font-weight: 600; font-size: 11.5px; }
+.form .tot b { color: var(--blue); }
+/* 3. сроки */
+.s-term .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 8px; }
+.s-term .resbox { margin-top: 22px; border-radius: 8px; background: var(--blue); color: #fff; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; }
+.s-term .resbox b { font-weight: 300; font-size: 30px; line-height: 1; } .s-term .resbox span { font-size: 12px; opacity: .85; text-align: right; }
+.toast2 { position: absolute; right: 18px; bottom: 16px; background: #0f2236; color: #fff; border-radius: 8px; padding: 10px 13px; font-size: 12.5px; display: flex; gap: 8px; align-items: center; }
+.cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-top: 14px; font-size: 10.5px; text-align: center; color: var(--mute); }
+.cal span { padding: 4px 0; border-radius: 4px; } .cal .we { color: #c0392b; } .cal .hit { background: var(--blue); color: #fff; font-weight: 600; transform: scale(0); transition: transform .4s cubic-bezier(.3,1.6,.5,1); } .cal .hit.in { transform: scale(1); }
+/* 4. практика */
+.s-prac .grid4 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 12px; margin-top: 20px; }
+.s-prac .grid4 .field { transition: border-color .3s, background .3s; }
+.s-prac .grid4 .field.fill { border-color: #9cc3ef; background: #f3f8ff; }
+.s-prac .grid4 .field span { opacity: 0; transition: opacity .3s; } .s-prac .grid4 .field.fill span { opacity: 1; }
+.s-prac .arg { margin-top: 18px; border-left: 3px solid var(--blue); padding: 6px 10px; background: #fff; font-size: 12.5px; }
+.s-prac .arg b { display: block; font-weight: 600; font-size: 12px; }
+/* 5. нормы */
+.tree { margin-top: 18px; font-size: 13px; }
+.tree .nd { padding: 6px 8px; border-radius: 5px; display: flex; gap: 8px; align-items: center; }
+.tree .nd.act { font-weight: 600; } .tree .nd.norm { margin-left: 22px; color: #34495e; }
+.tree .nd.new { background: #eaf3ff; transition: background 1.2s .6s; } .tree .nd.new.calm { background: transparent; }
+.tree .nd i { font-style: normal; color: var(--blue); }
+/* 6. шаблоны */
+.s-tpl { display: grid; grid-template-columns: 150px 1fr; gap: 16px; }
+.s-tpl .list2 div { padding: 7px 9px; border-radius: 5px; font-size: 12.5px; margin-bottom: 4px; transition: background .2s, color .2s; }
+.s-tpl .list2 div.sel { background: var(--blue); color: #fff; }
+.paper2 { background: #fff; border: 1px solid var(--line); box-shadow: 0 6px 18px rgba(15,34,54,.08); padding: 14px 16px; font-size: 11px; line-height: 1.75; color: #34495e; }
+.paper2 .r { margin-left: 34%; display: grid; grid-template-columns: auto 1fr; gap: 2px 8px; align-items: center; } .paper2 .r > span:nth-child(odd) { color: var(--mute); } .paper2 .ph { white-space: nowrap; justify-self: start; } .paper2 h5 { text-align: center; margin: 10px 0 6px; font-size: 12px; color: var(--ink); }
+.ph { background: #fff1c9; border-radius: 3px; padding: 0 3px; transition: background .5s; }
+.ph.done { background: #e2f0ff; color: var(--blue); font-weight: 600; }
+/* 7. госпошлина */
+.s-duty .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; margin-top: 6px; }
+.s-duty .seg span { padding: 6px 12px; font-size: 12px; } .s-duty .seg .a { background: var(--blue); color: #fff; }
+.s-duty .out { margin-top: 18px; display: flex; align-items: baseline; gap: 10px; }
+.s-duty .out b { font-weight: 300; font-size: 46px; color: var(--blue); line-height: 1; } .s-duty .out span { font-size: 12px; color: var(--mute); }
+.s-duty .expl { margin-top: 10px; font-size: 12px; color: var(--mute); max-width: 420px; }
+/* 8. доверитель */
+.s-cli { display: grid; grid-template-columns: 170px 1fr; gap: 16px; }
+.s-cli .side div { padding: 6px 8px; font-size: 12.5px; border-radius: 5px; }
+.s-cli .side .fold { font-weight: 600; background: #eaf3ff; }
+.s-cli .side .sub { margin-left: 14px; opacity: 0; transform: translateX(-6px); transition: all .35s; } .s-cli .side .sub.in { opacity: 1; transform: none; }
+.tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.tiles div { background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 9px 10px; }
+.tiles b { display: block; font-weight: 300; font-size: 21px; white-space: nowrap; color: var(--blue); line-height: 1.1; } .tiles span { font-size: 10.5px; color: var(--mute); }
+.evs { margin-top: 12px; background: #fff; border: 1px solid var(--line); border-radius: 6px; }
+.evs div { padding: 7px 10px; font-size: 12px; border-top: 1px solid #edf1f5; } .evs div:first-child { border-top: 0; } .evs .hot { color: #c0392b; }
+@media (max-width: 860px) { .stage { height: 340px; } .scene { padding: 18px 16px; } .s-f107, .s-tpl, .s-cli { grid-template-columns: 1fr; } .s-f107 .ck, .s-tpl .list2, .s-cli .side { display: none; }
+  .s-pdf .book { right: 16px; width: 140px; height: 180px; } .s-pdf.go .files .chip { transform: translate(140px, 30px) scale(.6); } .s-pdf .stamp2 { right: 24px; top: 140px; } .s-pdf .badge { top: 220px; right: 16px; } }
+@media (max-width: 520px) { .steps div { font-size: 11.5px; padding: 9px 9px 11px; } }
+
 /* преимущества — синий блок */
 .benefits { padding: 86px 0 96px; }
 .benefits .wrap { position: relative; z-index: 1; }
@@ -118,14 +231,17 @@ header .btn { padding: 10px 18px; font-size: 14px; }
 .arrows button:hover { background: var(--blue); }
 .track { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 6px; }
 .track::-webkit-scrollbar { display: none; }
-.card { flex: none; width: 300px; scroll-snap-align: start; background: #fff; border: 1px solid var(--line); text-decoration: none; transition: box-shadow .3s, transform .3s; }
+.card { flex: none; width: min(520px, 82vw); cursor: zoom-in; scroll-snap-align: start; background: #fff; border: 1px solid var(--line); text-decoration: none; transition: box-shadow .3s, transform .3s; }
 .card:hover { box-shadow: 0 16px 40px rgba(15,34,54,.12); transform: translateY(-4px); }
-.card .pic { aspect-ratio: 4 / 3.2; overflow: hidden; background: #eef2f6; }
-.card .pic img { width: 100%; height: 100%; object-fit: cover; object-position: left top; }
+.card .pic { aspect-ratio: 16 / 10.5; overflow: hidden; background: #eef2f6; display: grid; place-items: center; }
+.card .pic img { width: 100%; height: 100%; object-fit: contain; }
 .card .cap { padding: 14px 16px 16px; }
 .card .cap b { display: block; font-weight: 500; font-size: 15px; }
 .card .cap span { font-size: 13px; color: var(--mute); }
 
+.lb { position: fixed; inset: 0; z-index: 100; background: rgba(9,20,33,.86); display: none; align-items: center; justify-content: center; padding: 30px; cursor: zoom-out; }
+.lb.on { display: flex; } .lb img { max-width: 100%; max-height: 100%; box-shadow: 0 30px 80px rgba(0,0,0,.5); background: #fff; }
+.lb span { position: absolute; top: 14px; right: 22px; color: #fff; font-size: 28px; }
 /* экономия */
 .save { padding: 96px 0; }
 .save .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
@@ -200,19 +316,76 @@ footer a { text-decoration: none; } footer a:hover { color: var(--blue); }
 <section class="solutions" id="solutions"><div class="wrap">
   <div>
     <h2 class="rv">Всё для ведения дел<br>в одной программе</h2>
-    <div class="brand rv"><img src="img/logo-blue.svg" alt=""><b>LEGALHELPER</b><small>ПРОГРАММА ДЛЯ ЮРИСТОВ</small></div>
+    <p class="small rv" style="margin:12px 0 0">Ниже показано, как это выглядит в работе. Выберите пункт справа — или просто смотрите.</p>
+    <div class="demo rv" id="demo">
+      <div class="bar"><i></i><i></i><i></i><span id="demoTitle">ООО «Ромашка» — взыскание неустойки</span><img src="img/logo-blue-small.svg" alt=""></div>
+      <div class="stage">
+        <div class="scene s-pdf" data-k="pdf">
+          <div class="files"><span class="chip"><em class="e-doc">DOC</em>Исковое заявление.docx</span><span class="chip"><em class="e-pdf">PDF</em>Договор поставки.pdf</span><span class="chip"><em class="e-jpg">JPG</em>Квитанция (фото).jpg</span></div>
+          <div class="book"><div class="pg" style="--o:6px"></div><div class="pg" style="--o:3px"></div><div class="pg" style="--o:0px"><b>PDF дела</b><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><span class="num">лист 1</span></div></div>
+          <div class="stamp2">КОПИЯ ВЕРНА</div>
+          <div class="badge pop">Ромашка — PDF дела · 12 листов</div>
+          <div class="cursor"></div>
+        </div>
+        <div class="scene s-f107" data-k="f107">
+          <div class="ck"><div><span>✓</span>Исковое заявление</div><div><span>✓</span>Копия договора</div><div><span>✓</span>Копия претензии</div><div><span>✓</span>Квитанция об оплате</div></div>
+          <div class="form"><div class="h"><div>№</div><div>Наименование предметов</div><div>Кол-во</div><div>Ценн.</div></div>
+            <div class="rw"><div>1</div><div>Исковое заявление о взыскании задолженности по договору поставки № 12</div><div>1</div><div>—</div></div>
+            <div class="rw"><div>2</div><div>Копия договора поставки № 12 от 10.01.2026</div><div>1</div><div>—</div></div>
+            <div class="rw"><div>3</div><div>Копия претензии с доказательством направления</div><div>1</div><div>—</div></div>
+            <div class="rw"><div>4</div><div>Копия квитанции об уплате госпошлины</div><div>1</div><div>—</div></div>
+            <div class="tot"><span>Общий итог предметов</span><b>4</b></div></div>
+        </div>
+        <div class="scene s-term" data-k="term">
+          <div class="row2"><div class="field"><small>Решение в полном объёме</small><span class="typed" data-t="14.09.2026">14.09.2026</span></div>
+            <div class="field"><small>Срок</small><span class="typed" data-t="Апелляция (АПК) — 1 месяц">Апелляция (АПК) — 1 месяц</span></div></div>
+          <div class="cal pop"><span>пн</span><span>вт</span><span>ср</span><span>чт</span><span>пт</span><span class="we">сб</span><span class="we">вс</span>
+            <span>12</span><span>13</span><span class="hit">14</span><span>15</span><span>16</span><span class="we">17</span><span class="we">18</span></div>
+          <div class="resbox pop"><b>14.10.2026</b><span>последний день срока<br>среда · выходные учтены</span></div>
+          <div class="toast2 pop">🔔 Напомню за 3 дня — 11.10</div>
+        </div>
+        <div class="scene s-prac" data-k="prac">
+          <div class="field"><small>Вставьте реквизиты</small><span class="typed" data-t="Определение ВС РФ от 14.03.2025 № 305-ЭС24-21877">Определение ВС РФ от 14.03.2025 № 305-ЭС24-21877</span></div>
+          <div class="grid4"><div class="field"><small>Вид акта</small><span>Определение</span></div><div class="field"><small>Суд</small><span>Верховного Суда РФ</span></div>
+            <div class="field"><small>Дата</small><span>14.03.2025</span></div><div class="field"><small>Номер</small><span>305-ЭС24-21877</span></div></div>
+          <div class="arg pop"><b>Довод: неустойка соразмерна — снижать нельзя</b>+ Опр. ВС РФ от 14.03.2025 № 305-ЭС24-21877</div>
+        </div>
+        <div class="scene s-laws" data-k="laws">
+          <div class="field"><small>Добавить нормы</small><span class="typed" data-t="ст. 395 ГК РФ, ст. 110 АПК РФ">ст. 395 ГК РФ, ст. 110 АПК РФ</span></div>
+          <div class="tree"><div class="nd act pop"><i>▤</i>Гражданский кодекс РФ</div><div class="nd norm pop new"><i>§</i>ст. 395 — проценты за пользование чужими средствами</div>
+            <div class="nd act pop"><i>▤</i>Арбитражный процессуальный кодекс РФ</div><div class="nd norm pop new"><i>§</i>ст. 110 — распределение судебных расходов</div></div>
+        </div>
+        <div class="scene s-tpl" data-k="tpl">
+          <div class="list2"><div>Претензия</div><div class="t2">Ходатайство об отложении</div><div>Отзыв на иск</div><div>Заявление о расходах</div></div>
+          <div class="paper2 pop"><div class="r"><span>В</span><span class="ph" data-v="АС г. Москвы">[Суд]</span><span>Дело №</span><span class="ph" data-v="А40-18734/2026">[Номер дела]</span><span>Истец</span><span class="ph" data-v="ООО «Ромашка»">[Истец]</span><span>Ответчик</span><span class="ph" data-v="АО «Лютик»">[Ответчик]</span></div>
+            <h5>ХОДАТАЙСТВО об отложении судебного заседания</h5>Прошу отложить заседание, назначенное на <span class="ph" data-v="07.10.2026 10:30">[Дата]</span>…</div>
+        </div>
+        <div class="scene s-duty" data-k="duty">
+          <div class="seg"><span class="a">Арбитражный суд</span><span>Суд общей юрисдикции</span></div>
+          <div class="field" style="margin-top:20px"><small>Цена иска, ₽</small><span class="typed" data-t="1 250 000">1 250 000</span></div>
+          <div class="out pop"><b id="dutyN">0</b><b>₽</b><span>госпошлина</span></div>
+          <div class="expl pop">Ст. 333.21 НК РФ: 55 000 ₽ + 3% от суммы свыше 1 000 000 ₽. Расчёт можно приложить к иску.</div>
+        </div>
+        <div class="scene s-cli" data-k="cli">
+          <div class="side"><div class="fold">📁 ООО «Ромашка»</div><div class="sub">Взыскание неустойки</div><div class="sub">Апелляция по поставке</div><div class="sub">Исполнительное пр-во</div><div>Петров — раздел имущества</div></div>
+          <div><div class="tiles pop"><div><b>3</b><span>дела в работе</span></div><div><b>0</b><span>просрочено</span></div><div><b>25 000 ₽</b><span>долг доверителя</span></div></div>
+            <div class="evs pop"><div class="hot">Завтра 10:30 — предварительное заседание</div><div>12.10 — отзыв на апелляционную жалобу</div><div>18.10 — запрос в ФССП о ходе ИП</div></div></div>
+        </div>
+      </div>
+      <div class="steps" id="steps"><div></div><div></div><div></div></div>
+    </div>
   </div>
   <div>
-    <p class="intro rv">LegalHelper берёт на себя техническую работу по делу: оформление, подсчёт сроков, расчёты и учёт. Нажмите на пункт, чтобы узнать подробнее.</p>
+    <p class="intro rv">LegalHelper берёт на себя техническую работу по делу: оформление, подсчёт сроков, расчёты и учёт. Нажмите на пункт — слева покажем, как это делается.</p>
     <div class="list rv" id="list">
-      <div class="item"><button>PDF дела и редактор документов <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Иск, договор, сканы и фотографии собираются в один PDF по порядку. Нумерация листов и «Копия верна» одной кнопкой. Текст PDF и документы Word правятся прямо в программе.</p></div></div></div>
-      <div class="item"><button>Опись вложения ф. 107 <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Опись заполняется на официальном бланке Почты России: длинные наименования переносятся, количество листов считается автоматически.</p></div></div></div>
-      <div class="item"><button>Процессуальные сроки и заседания <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Срок считается с учётом выходных и праздничных дней. Заседания и задачи с напоминаниями, на Главной видно всё на сегодня.</p></div></div></div>
-      <div class="item"><button>Судебная практика по доводам <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Вставьте реквизиты акта, и суд, дата и номер заполнятся сами. Акты распределяются по доводам и копируются в иск списком.</p></div></div></div>
-      <div class="item"><button>Нормы права <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Напишите «ст. 395 ГК РФ, ст. 110 АПК РФ», и кодексы со статьями появятся в деле. Программа находит нормы и в документах дела.</p></div></div></div>
-      <div class="item"><button>Шаблоны документов <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Иски, ходатайства, претензии. Суд, номер дела, стороны и суммы подставляются из карточки дела.</p></div></div></div>
-      <div class="item"><button>Госпошлина, проценты, неустойка <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Калькуляторы госпошлины и процентов по ст. 395 ГК РФ с таблицей расчёта для приложения к иску.</p></div></div></div>
-      <div class="item"><button>Доверители и учёт времени <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Дела одного доверителя собираются в папку со сводкой по срокам и оплатам. Учёт часов и платежей, акт выполненных работ.</p></div></div></div>
+      <div class="item" data-k="pdf"><button>PDF дела и редактор документов <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Иск, договор, сканы и фотографии собираются в один PDF по порядку. Нумерация листов и «Копия верна» одной кнопкой. Текст PDF и документы Word правятся прямо в программе.</p></div></div></div>
+      <div class="item" data-k="f107"><button>Опись вложения ф. 107 <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Опись заполняется на официальном бланке Почты России: длинные наименования переносятся, количество листов считается автоматически.</p></div></div></div>
+      <div class="item" data-k="term"><button>Процессуальные сроки и заседания <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Срок считается с учётом выходных и праздничных дней. Заседания и задачи с напоминаниями, на Главной видно всё на сегодня.</p></div></div></div>
+      <div class="item" data-k="prac"><button>Судебная практика по доводам <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Вставьте реквизиты акта, и суд, дата и номер заполнятся сами. Акты распределяются по доводам и копируются в иск списком.</p></div></div></div>
+      <div class="item" data-k="laws"><button>Нормы права <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Напишите «ст. 395 ГК РФ, ст. 110 АПК РФ», и кодексы со статьями появятся в деле. Программа находит нормы и в документах дела.</p></div></div></div>
+      <div class="item" data-k="tpl"><button>Шаблоны документов <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Иски, ходатайства, претензии. Суд, номер дела, стороны и суммы подставляются из карточки дела.</p></div></div></div>
+      <div class="item" data-k="duty"><button>Госпошлина, проценты, неустойка <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Калькуляторы госпошлины и процентов по ст. 395 ГК РФ с таблицей расчёта для приложения к иску.</p></div></div></div>
+      <div class="item" data-k="cli"><button>Доверители и учёт времени <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Дела одного доверителя собираются в папку со сводкой по срокам и оплатам. Учёт часов и платежей, акт выполненных работ.</p></div></div></div>
     </div>
   </div>
 </div></section>
@@ -253,7 +426,7 @@ footer a { text-decoration: none; } footer a:hover { color: var(--blue); }
 </div></section>
 
 <section class="shots" id="shots"><div class="wrap">
-  <div class="head"><h2 class="rv">Как выглядит программа</h2><div class="arrows"><button id="prev" aria-label="Назад">‹</button><button id="next" aria-label="Вперёд">›</button></div></div>
+  <div class="head"><div><h2 class="rv">Как выглядит программа</h2><p class="small rv" style="margin:8px 0 0">Нажмите на снимок, чтобы открыть его крупно.</p></div><div class="arrows"><button id="prev" aria-label="Назад">‹</button><button id="next" aria-label="Вперёд">›</button></div></div>
   <div class="track" id="track">
     <div class="card"><div class="pic"><img src="img/home.webp" alt="" loading="lazy"></div><div class="cap"><b>Главная</b><span>Сроки и заседания на сегодня</span></div></div>
     <div class="card"><div class="pic"><img src="img/practice.webp" alt="" loading="lazy"></div><div class="cap"><b>Судебная практика</b><span>Акты по доводам</span></div></div>
@@ -301,6 +474,8 @@ footer a { text-decoration: none; } footer a:hover { color: var(--blue); }
   </div>
 </section>
 
+<div class="lb" id="lb"><span>✕</span><img alt=""></div>
+
 <footer><div class="wrap">
   <a class="logo" href="#"><img src="img/logo-blue.svg" alt=""><span><b>LEGALHELPER</b><small>ПРОГРАММА ДЛЯ ЮРИСТОВ</small></span></a>
   <span><a href="mailto:axis.juris@bk.ru">axis.juris@bk.ru</a> · <a href="https://t.me/axis_juris">Telegram @axis_juris</a></span>
@@ -339,20 +514,114 @@ footer a { text-decoration: none; } footer a:hover { color: var(--blue); }
       polys.forEach(function (p) { p.style.transform = "translateY(" + (y * (+p.dataset.k || 0) * 0.25) + "px)"; }); });
   }, { passive: true });
 
-  // список возможностей: раскрывается по щелчку
-  document.querySelectorAll("#list .item button").forEach(function (b) {
-    b.addEventListener("click", function () {
-      var it = b.parentNode, open = it.classList.contains("open");
-      document.querySelectorAll("#list .item").forEach(function (x) { x.classList.remove("open"); });
-      if (!open) it.classList.add("open");
+  // демо: как это делается в программе. Каждая сцена — три шага; список справа и демо слева связаны.
+  var demo = document.getElementById("demo"), stage = demo.querySelector(".stage"), stepsBox = document.getElementById("steps");
+  var stepEls = stepsBox.children, timers = [], auto = true, cur = null, seen = false;
+  function later(ms, f) { timers.push(setTimeout(f, ms)); }
+  function stopAll() { timers.forEach(clearTimeout); timers = []; }
+  function $(sc, q) { return sc.querySelectorAll(q); }
+  function cursorTo(sc, el, click) {
+    var c = sc.querySelector(".cursor"); if (!c) { c = document.createElement("div"); c.className = "cursor"; sc.appendChild(c); }
+    var r = el.getBoundingClientRect(), b = stage.getBoundingClientRect();
+    c.style.left = (r.left - b.left + Math.min(40, r.width / 2)) + "px"; c.style.top = (r.top - b.top + r.height / 2) + "px";
+    if (click) later(750, function () { c.classList.remove("click"); void c.offsetWidth; c.classList.add("click"); });
+  }
+  function type(el, ms) {
+    var t = el.dataset.t, n = 0, step = Math.max(28, (ms || 900) / t.length);
+    el.style.width = "auto"; el.textContent = ""; el.parentNode.classList.add("caret");
+    (function f() { el.textContent = t.slice(0, ++n); if (n < t.length) later(step, f); else later(400, function () { el.parentNode.classList.remove("caret"); }); })();
+  }
+  function seq(list, cls, gap, start) { list.forEach(function (el, i) { later((start || 0) + i * gap, function () { el.classList.add(cls); }); }); }
+  function countTo(el, n, ms) {
+    var t0 = performance.now();
+    (function f(t) { var k = Math.min(1, (t - t0) / ms), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = Math.round(n * e).toLocaleString("ru-RU"); if (k < 1) timers.push(requestAnimationFrame(f)); })(t0);
+  }
+  var SC = {
+    pdf: { title: "Ромашка — взыскание неустойки · Документы", steps: [
+      ["Перетащите файлы в окно", function (sc) { cursorTo(sc, $(sc, ".chip")[0], true); }],
+      ["Программа сложит их в «PDF дела»", function (sc) { sc.classList.add("go"); later(900, function () { sc.querySelector(".badge").classList.add("in"); }); }],
+      ["Нумерация и «Копия верна» — одной кнопкой", function (sc) { sc.classList.add("num"); later(500, function () { sc.querySelector(".stamp2").classList.add("in"); }); }]] },
+    f107: { title: "Ромашка — взыскание неустойки · Опись ф. 107", steps: [
+      ["Отметьте, что кладёте в конверт", function (sc) { seq([].slice.call($(sc, ".ck div")), "on", 300); }],
+      ["Опись заполнится на бланке Почты", function (sc) { seq([].slice.call($(sc, ".form .rw")), "in", 320); }],
+      ["Листы и итог посчитаны — печатайте", function (sc) { sc.querySelector(".tot").style.background = "#eaf3ff"; }]] },
+    term: { title: "Ромашка — взыскание неустойки · Сроки", steps: [
+      ["Укажите дату решения", function (sc) { type($(sc, ".typed")[0], 700); }],
+      ["Выберите вид срока", function (sc) { type($(sc, ".typed")[1], 900); }],
+      ["Последний день срока и напоминание", function (sc) { var c = sc.querySelector(".cal"); c.classList.add("in");
+        later(300, function () { sc.querySelector(".hit").classList.add("in"); }); later(700, function () { sc.querySelector(".resbox").classList.add("in"); });
+        later(1300, function () { sc.querySelector(".toast2").classList.add("in"); }); }]] },
+    prac: { title: "Ромашка — взыскание неустойки · Судебная практика", steps: [
+      ["Вставьте реквизиты акта", function (sc) { type($(sc, ".typed")[0], 1100); }],
+      ["Вид, суд, дата и номер заполнятся сами", function (sc) { seq([].slice.call($(sc, ".grid4 .field")), "fill", 260); }],
+      ["Акт ложится под нужный довод", function (sc) { sc.querySelector(".arg").classList.add("in"); }]] },
+    laws: { title: "Ромашка — взыскание неустойки · Нормы права", steps: [
+      ["Напишите статьи, как в иске", function (sc) { type($(sc, ".typed")[0], 1000); }],
+      ["Нажмите Enter", function (sc) { seq([].slice.call($(sc, ".nd")), "in", 260); }],
+      ["Кодексы и статьи — уже в деле", function (sc) { $(sc, ".nd.new").forEach(function (n) { n.classList.add("calm"); }); }]] },
+    tpl: { title: "Ромашка — взыскание неустойки · Создать документ", steps: [
+      ["Выберите шаблон", function (sc) { var t = sc.querySelector(".t2"); cursorTo(sc, t, true); later(800, function () { t.classList.add("sel"); }); }],
+      ["Реквизиты дела подставятся сами", function (sc) { sc.querySelector(".paper2").classList.add("in");
+        $(sc, ".ph").forEach(function (p, i) { later(400 + i * 260, function () { p.textContent = p.dataset.v; p.classList.add("done"); }); }); }],
+      ["Правьте в программе и печатайте", function () {}]] },
+    duty: { title: "Калькулятор госпошлины", steps: [
+      ["Выберите суд", function (sc) { cursorTo(sc, sc.querySelector(".seg .a"), true); }],
+      ["Введите цену иска", function (sc) { type($(sc, ".typed")[0], 700); }],
+      ["Пошлина и расчёт по НК РФ", function (sc) { sc.querySelector(".out").classList.add("in"); countTo(document.getElementById("dutyN"), 62500, 900);
+        later(500, function () { sc.querySelector(".expl").classList.add("in"); }); }]] },
+    cli: { title: "Дела · папка доверителя", steps: [
+      ["Щёлкните папку доверителя", function (sc) { cursorTo(sc, sc.querySelector(".fold"), true); }],
+      ["Откроются все его дела", function (sc) { seq([].slice.call($(sc, ".sub")), "in", 200); }],
+      ["Сводка: сроки, долги, события", function (sc) { seq([].slice.call($(sc, ".tiles, .evs")), "in", 300); }]] }
+  };
+  function reset(sc) {
+    sc.classList.remove("go", "num");
+    $(sc, ".in, .on, .fill, .done, .sel, .calm, .click").forEach(function (e) { e.classList.remove("in", "on", "fill", "done", "sel", "calm", "click"); });
+    $(sc, ".typed").forEach(function (e) { e.textContent = ""; });
+    $(sc, ".ph").forEach(function (p) { p.textContent = p.dataset.p || (p.dataset.p = p.textContent); });
+    var t = sc.querySelector(".tot"); if (t) t.style.background = "";
+    var c = sc.querySelector(".cursor"); if (c) { c.style.left = "70%"; c.style.top = "86%"; }
+  }
+  var STEP = 2200;
+  function play(k) {
+    stopAll(); cur = k;
+    var sc = stage.querySelector('.scene[data-k="' + k + '"]'), def = SC[k];
+    stage.querySelectorAll(".scene").forEach(function (x) { x.classList.toggle("on", x === sc); });
+    document.getElementById("demoTitle").textContent = def.title;
+    document.querySelectorAll("#list .item").forEach(function (x) { x.classList.toggle("open", x.dataset.k === k); });
+    reset(sc);
+    def.steps.forEach(function (st, i) {
+      var el = stepEls[i]; el.className = ""; el.innerHTML = "<b>Шаг " + (i + 1) + "</b>" + st[0];
+      later(300 + i * STEP, function () { if (i) stepEls[i - 1].className = "done"; el.style.setProperty("--dur", STEP / 1000 + "s"); el.className = "on"; st[1](sc); });
     });
+    later(300 + 3 * STEP, function () { stepEls[2].className = "done"; if (auto) later(900, function () { play(next(k)); }); });
+  }
+  function next(k) { var ks = Object.keys(SC); return ks[(ks.indexOf(k) + 1) % ks.length]; }
+  document.querySelectorAll("#list .item button").forEach(function (b) {
+    b.addEventListener("click", function () { auto = false; play(b.parentNode.dataset.k); });
   });
+  if (still) { play("pdf"); stopAll(); stage.querySelectorAll(".scene.on .pop, .scene.on .rw").forEach(function (e) { e.classList.add("in"); }); }
+  else if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting && !seen) { seen = true; play("pdf"); }
+        else if (!e.isIntersecting && seen && auto) { stopAll(); seen = false; }
+      });
+    }, { threshold: 0.35 }).observe(demo);
+  } else play("pdf");
 
   // карусель снимков
   var track = document.getElementById("track");
   function go(d) { track.scrollBy({ left: d * (track.querySelector(".card").offsetWidth + 18) * 2, behavior: "smooth" }); }
   document.getElementById("prev").onclick = function () { go(-1); };
   document.getElementById("next").onclick = function () { go(1); };
+
+  var lb = document.getElementById("lb");
+  document.querySelectorAll(".card").forEach(function (c) { c.addEventListener("click", function () {
+    lb.querySelector("img").src = c.querySelector("img").src; lb.classList.add("on"); }); });
+  lb.addEventListener("click", function () { lb.classList.remove("on"); });
+  addEventListener("keydown", function (e) { if (e.key === "Escape") lb.classList.remove("on"); });
 
   // экономия: минуты вручную → в программе
   var save = [[35, 4], [25, 3], [20, 2], [15, 2]], shown = 0;
