@@ -3,344 +3,356 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LegalHelper — программа для юриста</title>
+<title>LegalHelper — программа для юристов</title>
 <meta name="description" content="LegalHelper — бесплатная программа для юристов и адвокатов на Windows: документы дела в одном PDF, опись ф. 107, процессуальные сроки, судебная практика по доводам. Данные хранятся на вашем компьютере.">
-<meta name="theme-color" content="#0b0b0b">
-<link rel="icon" href="img/logo.svg" type="image/svg+xml">
+<meta name="theme-color" content="#1565c0">
+<link rel="icon" href="img/logo-blue.svg" type="image/svg+xml">
 <style>
 @font-face { font-family: 'Inter Tight'; font-style: normal; font-weight: 300 600; font-display: swap; src: url(fonts/InterTight-cyrillic-ext.woff2) format('woff2'); unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F; }
 @font-face { font-family: 'Inter Tight'; font-style: normal; font-weight: 300 600; font-display: swap; src: url(fonts/InterTight-cyrillic.woff2) format('woff2'); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
 @font-face { font-family: 'Inter Tight'; font-style: normal; font-weight: 300 600; font-display: swap; src: url(fonts/InterTight-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-@font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 400 500; font-display: swap; src: url(fonts/JetBrainsMono-cyrillic-ext.woff2) format('woff2'); unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F; }
-@font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 400 500; font-display: swap; src: url(fonts/JetBrainsMono-cyrillic.woff2) format('woff2'); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
-@font-face { font-family: 'JetBrains Mono'; font-style: normal; font-weight: 400 500; font-display: swap; src: url(fonts/JetBrainsMono-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 
-:root { --bg: #0b0b0b; --bg2: #141414; --fg: #f2f2ef; --mute: #8c8c88; --line: rgba(255,255,255,.12);
-  --acc: #b6f36a; --acc-ink: #0b0b0b; --light: #f4f4f1; --light-fg: #0b0b0b; --light-mute: #6b6b67; }
+:root { --ink: #0f2236; --mute: #6b7a8c; --line: #dfe6ee; --bg: #fff; --soft: #f4f6f9;
+  --blue: #1565c0; --blue2: #0d3e70; --sky: #3aa0ef; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--bg); color: var(--fg); overflow-x: hidden;
+body { margin: 0; background: var(--bg); color: var(--ink); overflow-x: hidden;
   font: 400 16px/1.6 "Inter Tight", -apple-system, "Segoe UI", Roboto, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
 a { color: inherit; }
 img { display: block; max-width: 100%; height: auto; }
-.wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
-@media (max-width: 600px) { .wrap { padding: 0 16px; } }
-.lbl { font: 500 11px/1 "JetBrains Mono", ui-monospace, monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--mute);
-  display: flex; align-items: center; gap: 10px; margin: 0 0 18px; }
-.lbl::before { content: ""; width: 6px; height: 6px; background: var(--acc); }
-.h { font-weight: 400; text-transform: uppercase; letter-spacing: -.02em; line-height: .98; margin: 0; }
-.h1 { font-size: clamp(34px, 4.8vw, 66px); }
-.h2 { font-size: clamp(32px, 4.6vw, 62px); }
-.h3 { font-size: clamp(22px, 2.2vw, 30px); line-height: 1.05; }
-.txt { color: var(--mute); font-size: 15px; max-width: 520px; }
-.txt b { color: var(--fg); font-weight: 500; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+@media (max-width: 600px) { .wrap { padding: 0 18px; } }
+h2 { font-weight: 400; font-size: clamp(28px, 3.2vw, 40px); line-height: 1.15; letter-spacing: -.01em; margin: 0; }
+.small { font-size: 13px; color: var(--mute); }
+.blue { background: linear-gradient(135deg, #2a8ae0 0%, var(--blue) 45%, var(--blue2) 100%); color: #fff; position: relative; overflow: hidden; }
+.blue .small { color: rgba(255,255,255,.72); }
 
 /* кнопки */
-.btn { display: inline-flex; align-items: center; gap: 12px; background: var(--acc); color: var(--acc-ink); text-decoration: none;
-  font: 500 12px/1 "JetBrains Mono", monospace; letter-spacing: .14em; text-transform: uppercase; padding: 16px 22px;
-  transition: background .2s, transform .2s; }
-.btn:hover { background: #fff; }
-.btn .arr { transition: transform .25s; }
-.btn:hover .arr { transform: translateX(4px); }
-.btn.line { background: transparent; color: var(--fg); box-shadow: inset 0 0 0 1px var(--line); }
-.btn.line:hover { box-shadow: inset 0 0 0 1px var(--fg); background: transparent; }
+.btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 24px; font-weight: 500; font-size: 15px; text-decoration: none;
+  background: var(--blue); color: #fff; border: 1px solid var(--blue); transition: background .2s, color .2s, border-color .2s; }
+.btn:hover { background: var(--blue2); border-color: var(--blue2); }
+.btn.white { background: #fff; color: var(--blue); border-color: #fff; }
+.btn.white:hover { background: transparent; color: #fff; }
+.btn.ghost { background: transparent; color: #fff; border-color: rgba(255,255,255,.55); }
+.btn.ghost:hover { border-color: #fff; background: rgba(255,255,255,.08); }
 
 /* шапка */
-header { position: fixed; inset: 0 0 auto; z-index: 50; transition: background .3s, border-color .3s; border-bottom: 1px solid transparent; }
-header.solid { background: rgba(11,11,11,.86); backdrop-filter: blur(12px); border-color: var(--line); }
-header .wrap { display: flex; align-items: center; height: 64px; gap: 28px; }
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 500; font-size: 17px; letter-spacing: -.01em; }
-.logo img { width: 28px; height: 28px; }
-nav { display: flex; gap: 26px; margin: 0 auto; }
-nav a { font: 500 11px "JetBrains Mono", monospace; letter-spacing: .14em; text-transform: uppercase; text-decoration: none; color: var(--mute); transition: color .2s; }
-nav a:hover { color: var(--fg); }
-header .btn { padding: 11px 18px; }
-@media (max-width: 900px) { nav { display: none; } header .btn { margin-left: auto; } }
+header { position: sticky; top: 0; z-index: 40; background: rgba(255,255,255,.96); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+header .wrap { display: flex; align-items: center; gap: 30px; height: 66px; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.logo img { width: 34px; height: 34px; }
+.logo b { display: block; font-weight: 600; font-size: 15px; letter-spacing: .06em; line-height: 1; }
+.logo small { display: block; font-size: 8.5px; letter-spacing: .2em; color: var(--mute); margin-top: 3px; }
+nav { display: flex; gap: 26px; margin-left: auto; }
+nav a { font-size: 14px; text-decoration: none; color: var(--ink); position: relative; padding: 4px 0; }
+nav a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: 0; height: 1px; background: var(--blue); transition: right .25s; }
+nav a:hover::after { right: 0; }
+header .btn { padding: 10px 18px; font-size: 14px; }
+@media (max-width: 860px) { nav { display: none; } header .btn { margin-left: auto; } }
 
 /* первый экран */
-.hero { position: relative; min-height: min(88vh, 760px); display: flex; align-items: flex-end; overflow: hidden; padding: 110px 0 56px; }
-.hero .bg { position: absolute; inset: -6% 0 0; background: url(img/home_dark.webp) center top / cover no-repeat;
-  filter: grayscale(1) contrast(1.1) brightness(.32) blur(3px); transform: scale(1.06); will-change: transform; }
-.hero::after { content: ""; position: absolute; inset: 0; background:
-  linear-gradient(90deg, rgba(11,11,11,.85) 0%, rgba(11,11,11,.35) 60%, rgba(11,11,11,.55) 100%),
-  linear-gradient(180deg, rgba(11,11,11,.6) 0%, rgba(11,11,11,0) 30%, rgba(11,11,11,.8) 80%, var(--bg) 100%); }
-.hero .wrap { position: relative; z-index: 1; width: 100%; display: grid; grid-template-columns: 1.55fr .45fr; gap: 40px; align-items: end; }
-.hero .side { text-align: left; }
-.hero .side .h { font-size: clamp(22px, 2.4vw, 32px); }
-.hero .cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; }
-.hero .meta { margin-top: 16px; font: 400 11px "JetBrains Mono", monospace; letter-spacing: .1em; color: var(--mute); text-transform: uppercase; }
-.phone-note { display: none; margin-top: 18px; font-size: 14px; color: var(--mute); border-left: 2px solid var(--acc); padding-left: 12px; }
-@media (max-width: 900px) { .hero .wrap { grid-template-columns: 1fr; } }
+.hero { min-height: 560px; display: flex; }
+.shapes { position: absolute; inset: 0; width: 100%; height: 100%; }
+.shapes polygon { transition: transform 1.6s cubic-bezier(.2,.8,.2,1); }
+.hero .wrap { position: relative; z-index: 1; width: 100%; display: grid; grid-template-columns: 1fr 1fr; align-items: end; padding-top: 70px; padding-bottom: 46px; }
+.hero .left { align-self: end; }
+.hero .left p { margin: 0 0 22px; font-size: 15px; color: rgba(255,255,255,.85); max-width: 330px; }
+.hero .cta { display: flex; gap: 10px; flex-wrap: wrap; }
+.hero .meta { margin-top: 14px; font-size: 12px; color: rgba(255,255,255,.65); }
+.mark { align-self: center; justify-self: end; text-align: left; padding-bottom: 40px; }
+.mark .word { font-weight: 300; font-size: clamp(46px, 6.4vw, 92px); letter-spacing: .06em; line-height: 1; }
+.mark .sub { font-weight: 600; font-size: clamp(14px, 1.7vw, 24px); letter-spacing: .12em; margin-top: 10px; }
+.phone-note { display: none; margin-top: 14px; font-size: 13px; color: rgba(255,255,255,.8); }
+@media (max-width: 860px) {
+  .hero { min-height: 0; } .hero .wrap { grid-template-columns: 1fr; padding-top: 56px; gap: 40px; }
+  .mark { justify-self: start; order: -1; padding-bottom: 0; }
+}
 
-/* бегущая строка */
-.ticker { border-block: 1px solid var(--line); overflow: hidden; white-space: nowrap; padding: 16px 0; }
-.ticker div { display: inline-block; animation: tick 40s linear infinite; font: 500 12px "JetBrains Mono", monospace; letter-spacing: .16em; text-transform: uppercase; color: var(--mute); }
-.ticker span { margin: 0 22px; } .ticker i { font-style: normal; color: var(--acc); }
-@keyframes tick { to { transform: translateX(-50%); } }
+/* возможности — список */
+.solutions { padding: 96px 0; }
+.solutions .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+.solutions .brand { margin-top: 70px; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.solutions .brand img { width: 120px; height: 120px; }
+.solutions .brand b { font-weight: 300; font-size: 34px; letter-spacing: .08em; line-height: 1; }
+.solutions .brand small { font-weight: 600; font-size: 11px; letter-spacing: .2em; }
+.solutions .intro { font-size: 14px; color: var(--mute); margin: 64px 0 30px; max-width: 420px; }
+.list { border-top: 1px solid var(--line); }
+.item { border-bottom: 1px solid var(--line); }
+.item button { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 16px; background: none; border: 0;
+  padding: 15px 0; cursor: pointer; font: inherit; font-size: 16px; color: var(--ink); text-align: left; }
+.item button span { font-size: 12px; color: var(--mute); white-space: nowrap; transition: color .2s; }
+.item button:hover span { color: var(--blue); }
+.item button i { display: inline-block; font-style: normal; transition: transform .25s; margin-left: 4px; }
+.item.open button i { transform: rotate(90deg); }
+.item .body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .35s ease; }
+.item .body > div { overflow: hidden; }
+.item .body p { margin: 0 0 16px; font-size: 14px; color: var(--mute); max-width: 520px; }
+.item.open .body { grid-template-rows: 1fr; }
+@media (max-width: 860px) { .solutions .wrap { grid-template-columns: 1fr; gap: 10px; } .solutions .brand { display: none; } .solutions .intro { margin-top: 20px; } }
 
-/* о программе + условия */
-.about { padding: 96px 0 80px; border-top: 1px solid var(--line); }
-.about .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
-.about .h2 { font-size: clamp(30px, 3.4vw, 46px); }
-.about .txt { font-size: 16px; max-width: none; margin: 34px 0 0; }
-.tgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: 32px; border-top: 1px solid var(--line); }
-.tgrid div { padding: 18px 18px 18px 0; border-bottom: 1px solid var(--line); }
-.tgrid div:nth-child(odd) { border-right: 1px solid var(--line); }
-.tgrid div:nth-child(even) { padding-left: 18px; }
-.tgrid .n { font: 500 10px "JetBrains Mono", monospace; color: var(--acc); letter-spacing: .12em; }
-.tgrid b { display: block; font-weight: 500; text-transform: uppercase; font-size: 15px; margin: 6px 0 2px; }
-.tgrid p { margin: 0; color: var(--mute); font-size: 14px; }
-@media (max-width: 860px) { .about .wrap { grid-template-columns: 1fr; gap: 10px; } .about { padding: 70px 0 56px; } }
+/* преимущества — синий блок */
+.benefits { padding: 86px 0 96px; }
+.benefits .wrap { position: relative; z-index: 1; }
+.cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 50px 40px; margin-top: 54px; }
+.col .n { font-weight: 300; font-size: 34px; line-height: 1; }
+.col b { display: block; font-weight: 500; font-size: 15px; margin: 18px 0 8px; }
+.col p { margin: 0; font-size: 13.5px; line-height: 1.55; color: rgba(255,255,255,.75); }
+@media (max-width: 860px) { .cols { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .cols { grid-template-columns: 1fr; gap: 34px; } }
 
-/* лента снимков */
-.strip-sec { padding: 72px 0 80px; border-top: 1px solid var(--line); }
-.strip-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 28px; }
-.strip-ctrl { display: flex; gap: 8px; }
-.strip-ctrl button { width: 44px; height: 44px; background: none; border: 1px solid var(--line); color: var(--fg); cursor: pointer; font-size: 18px; transition: border-color .2s, color .2s; }
-.strip-ctrl button:hover { border-color: var(--acc); color: var(--acc); }
-.strip { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding: 0 max(24px, calc((100vw - 1192px) / 2)); cursor: grab; }
-.strip::-webkit-scrollbar { display: none; }
-.strip.drag { cursor: grabbing; scroll-snap-type: none; }
-.shot { flex: none; width: clamp(230px, 22vw, 290px); aspect-ratio: 4 / 5; position: relative; overflow: hidden; scroll-snap-align: start; background: #1b1b1b; }
-.shot img { width: 100%; height: 100%; object-fit: cover; object-position: left top; filter: grayscale(1) contrast(1.05) brightness(.82);
-  transition: filter .6s, transform .8s cubic-bezier(.2,.8,.2,1); pointer-events: none; }
-.shot:hover img { filter: grayscale(0) brightness(1); transform: scale(1.04); }
-.shot::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,.75)); pointer-events: none; }
-.tag { position: absolute; left: 10px; bottom: 10px; z-index: 1; background: rgba(11,11,11,.85); padding: 8px 10px; }
-.tag b { display: block; font-weight: 500; font-size: 14px; }
-.tag span { display: block; font: 400 10px "JetBrains Mono", monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--mute); margin-top: 3px; }
-.shot .no { position: absolute; top: 10px; right: 10px; z-index: 1; font: 500 10px "JetBrains Mono", monospace; letter-spacing: .12em; opacity: .7; }
-@media (max-width: 600px) { .strip { padding: 0 16px; } }
+/* о программе и цифры */
+.about { padding: 96px 0 40px; background: var(--soft); }
+.about .top { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
+.about .top p { margin: 0; font-size: 14px; color: var(--mute); }
+.about .top p + p { margin-top: 14px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; margin-top: 64px; }
+.stat small { display: block; font-size: 12px; color: var(--mute); padding-bottom: 12px; border-bottom: 1px solid #c9d3de; min-height: 46px; }
+.stat b { display: block; font-weight: 300; font-size: clamp(46px, 5.2vw, 70px); line-height: 1.1; letter-spacing: -.02em; margin-top: 8px; }
+@media (max-width: 860px) { .about .top { grid-template-columns: 1fr; gap: 20px; } .stats { grid-template-columns: 1fr 1fr; } }
 
-/* светлая часть: возможности */
-.light { background: var(--light); color: var(--light-fg); padding: 80px 0 88px; }
-.light .lbl { color: var(--light-mute); }
-.light .lbl::before { background: var(--light-fg); }
-.grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 32px; }
-.feat { position: relative; background: #0b0b0b; aspect-ratio: 1 / 1; overflow: hidden; }
-.feat img { width: 100%; height: 100%; object-fit: cover; object-position: left top; filter: grayscale(1) contrast(1.05) brightness(.9);
-  transition: filter .6s, transform .8s cubic-bezier(.2,.8,.2,1); }
-.feat:hover img { filter: grayscale(0); transform: scale(1.04); }
-.feat .gtag { position: absolute; left: 10px; bottom: 10px; background: var(--acc); color: var(--acc-ink); padding: 8px 10px; max-width: calc(100% - 20px); }
-.feat .gtag b { display: block; font-weight: 500; font-size: 14px; line-height: 1.15; }
-.feat .gtag span { display: block; font: 400 10px "JetBrains Mono", monospace; letter-spacing: .1em; text-transform: uppercase; margin-top: 3px; }
-.feat .desc { position: absolute; inset: 0; background: rgba(11,11,11,.92); color: var(--fg); padding: 20px 18px 80px; font-size: 14px; line-height: 1.5;
-  opacity: 0; transition: opacity .35s; display: flex; align-items: flex-end; }
-.feat:hover .desc, .feat:focus-within .desc { opacity: 1; }
-@media (max-width: 1000px) { .grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 520px) { .feat .desc { opacity: 1; background: linear-gradient(180deg, transparent 25%, rgba(11,11,11,.93) 62%); } }
+/* снимки — карусель */
+.shots { padding: 70px 0 96px; background: var(--soft); }
+.head { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 30px; }
+.arrows { display: flex; gap: 8px; }
+.arrows button { width: 40px; height: 40px; border-radius: 50%; border: 0; background: var(--ink); color: #fff; cursor: pointer; font-size: 16px; transition: background .2s; }
+.arrows button:hover { background: var(--blue); }
+.track { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 6px; }
+.track::-webkit-scrollbar { display: none; }
+.card { flex: none; width: 300px; scroll-snap-align: start; background: #fff; border: 1px solid var(--line); text-decoration: none; transition: box-shadow .3s, transform .3s; }
+.card:hover { box-shadow: 0 16px 40px rgba(15,34,54,.12); transform: translateY(-4px); }
+.card .pic { aspect-ratio: 4 / 3.2; overflow: hidden; background: #eef2f6; }
+.card .pic img { width: 100%; height: 100%; object-fit: cover; object-position: left top; }
+.card .cap { padding: 14px 16px 16px; }
+.card .cap b { display: block; font-weight: 500; font-size: 15px; }
+.card .cap span { font-size: 13px; color: var(--mute); }
 
 /* экономия */
-.save { padding: 84px 0; }
-.save .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
-.rows { margin-top: 26px; border-top: 1px solid var(--line); }
-.r { display: grid; grid-template-columns: 1fr 84px; gap: 16px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.save { padding: 96px 0; }
+.save .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+.rows { margin-top: 30px; }
+.r { display: grid; grid-template-columns: 1fr 90px; gap: 16px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
 .r label { font-size: 15px; }
-.r small { display: block; font: 400 10px "JetBrains Mono", monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--mute); margin-top: 3px; }
-.r input { width: 100%; background: transparent; border: 1px solid var(--line); color: var(--fg); font: 500 17px "JetBrains Mono", monospace;
-  text-align: center; padding: 8px 6px; transition: border-color .2s; }
-.r input:focus { outline: none; border-color: var(--acc); }
-.big { font-weight: 300; font-size: clamp(96px, 13vw, 190px); line-height: .85; letter-spacing: -.05em; color: var(--acc); }
-.big small { font-size: .28em; letter-spacing: -.02em; color: var(--fg); margin-left: 10px; }
-.save .res p { color: var(--mute); margin: 14px 0 0; font-size: 14px; max-width: 420px; }
-@media (max-width: 860px) { .save .wrap { grid-template-columns: 1fr; gap: 30px; } .save { padding: 64px 0; } }
+.r small { display: block; font-size: 12px; color: var(--mute); }
+.r input { width: 100%; border: 1px solid var(--line); padding: 10px; font: 500 17px "Inter Tight", sans-serif; text-align: center; color: var(--ink); background: #fff; }
+.r input:focus { outline: none; border-color: var(--blue); }
+.res { border-left: 1px solid var(--line); padding-left: 50px; }
+.res .big { font-weight: 300; font-size: clamp(90px, 12vw, 160px); line-height: .9; color: var(--blue); letter-spacing: -.03em; }
+.res .big small { font-size: .22em; color: var(--ink); letter-spacing: 0; margin-left: 8px; }
+.res p { color: var(--mute); font-size: 14px; max-width: 380px; margin: 18px 0 0; }
+@media (max-width: 860px) { .save .wrap { grid-template-columns: 1fr; gap: 30px; } .res { border-left: 0; padding-left: 0; } }
 
-/* установка + скачать */
-.install { background: var(--bg2); padding: 80px 0; }
-.install .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
-.steps { list-style: none; padding: 0; margin: 26px 0 0; border-top: 1px solid var(--line); }
-.steps li { display: grid; grid-template-columns: 44px 1fr; padding: 13px 0; border-bottom: 1px solid var(--line); font-size: 15px; }
-.steps li span { font: 500 11px "JetBrains Mono", monospace; color: var(--acc); padding-top: 4px; }
-.note { margin: 18px 0 0; color: var(--mute); font-size: 13px; }
-.note b { color: var(--fg); font-weight: 500; }
-.go { display: flex; flex-direction: column; gap: 22px; text-decoration: none; border: 1px solid var(--line); padding: 36px; transition: border-color .3s, background .3s; }
-.go:hover { border-color: var(--acc); background: rgba(182,243,106,.04); }
-.go img { width: 72px; height: 72px; }
-.go > span { display: flex; align-items: center; justify-content: space-between; gap: 16px; text-transform: uppercase; font-weight: 400;
-  font-size: clamp(30px, 3.6vw, 52px); line-height: .95; letter-spacing: -.03em; transition: color .3s; }
-.go:hover > span { color: var(--acc); }
-.go svg { width: .7em; height: .7em; flex: none; transition: transform .4s cubic-bezier(.2,.8,.2,1); }
-.go:hover svg { transform: translate(6px, -6px); }
-.go small { font: 400 11px "JetBrains Mono", monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--mute); }
-@media (max-width: 860px) { .install .wrap { grid-template-columns: 1fr; gap: 30px; } .install { padding: 64px 0; } .go { padding: 26px; } }
-footer { padding: 26px 0 34px; border-top: 1px solid var(--line); }
-footer .wrap { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; align-items: center; font: 400 11px "JetBrains Mono", monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--mute); }
-footer .wrap > span:first-child { display: flex; align-items: center; gap: 10px; }
-footer img { width: 22px; height: 22px; }
-footer a { text-decoration: none; } footer a:hover { color: var(--acc); }
+/* установка — синяя полоса */
+.install { padding: 70px 0 74px; }
+.install .wrap { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1.4fr; gap: 50px; align-items: center; }
+.install p.lead { margin: 12px 0 0; font-size: 14px; color: rgba(255,255,255,.8); max-width: 380px; }
+.isteps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.isteps div { border: 1px solid rgba(255,255,255,.35); padding: 14px 16px; font-size: 13.5px; line-height: 1.45; }
+.isteps div b { display: block; font-weight: 300; font-size: 26px; margin-bottom: 6px; }
+.install .go { grid-column: 2; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.install .note { font-size: 12px; color: rgba(255,255,255,.7); max-width: 420px; }
+.install .note a { color: #fff; }
+@media (max-width: 860px) { .install .wrap { grid-template-columns: 1fr; gap: 26px; } .install .go { grid-column: auto; } .isteps { grid-template-columns: 1fr; } }
+
+footer { padding: 34px 0 40px; border-top: 1px solid var(--line); }
+footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; font-size: 13px; color: var(--mute); }
+footer .logo img { width: 26px; height: 26px; }
+footer a { text-decoration: none; } footer a:hover { color: var(--blue); }
 
 /* появление */
-.rv { opacity: 0; transform: translateY(30px); transition: opacity .9s cubic-bezier(.2,.8,.2,1), transform .9s cubic-bezier(.2,.8,.2,1); }
+.rv { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.8,.2,1); }
 .rv.in { opacity: 1; transform: none; }
-.lines .ln { display: block; overflow: hidden; }
-.lines .ln > span { display: block; transform: translateY(105%); transition: transform 1s cubic-bezier(.2,.8,.2,1); }
-.lines.in .ln > span { transform: none; }
-.lines .ln:nth-child(2) > span { transition-delay: .08s; } .lines .ln:nth-child(3) > span { transition-delay: .16s; } .lines .ln:nth-child(4) > span { transition-delay: .24s; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-  .rv, .lines .ln > span { opacity: 1 !important; transform: none !important; }
-  .seal .ring { stroke-dashoffset: 0; }
+  .rv { opacity: 1 !important; transform: none !important; }
 }
 </style>
 </head>
 <body>
 
-<header id="hdr"><div class="wrap">
-  <a class="logo" href="#"><img src="img/logo.svg" width="28" height="28" alt="">LegalHelper</a>
-  <nav><a href="#about">О программе</a><a href="#work">В работе</a><a href="#features">Возможности</a><a href="#install">Установка</a></nav>
+<header><div class="wrap">
+  <a class="logo" href="#"><img src="img/logo-blue.svg" alt=""><span><b>LEGALHELPER</b><small>ПРОГРАММА ДЛЯ ЮРИСТОВ</small></span></a>
+  <nav><a href="#solutions">Возможности</a><a href="#about">О программе</a><a href="#shots">Как выглядит</a><a href="#install">Установка</a></nav>
   <a class="btn" href="https://github.com/ezdk20000-code/LegalHelper/releases/latest/download/LegalHelper-Setup.exe">Скачать</a>
 </div></header>
 
-<section class="hero">
-  <div class="bg" id="heroBg"></div>
+<section class="hero blue">
+  <svg class="shapes" viewBox="0 0 1440 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <polygon points="80,0 520,0 300,600 0,600 0,180" fill="#fff" opacity=".07" data-k="-0.6"/>
+    <polygon points="340,0 640,0 1440,250 1440,330 560,140" fill="#fff" opacity=".09" data-k="0.4"/>
+    <polygon points="620,600 1440,380 1440,600" fill="#071f3a" opacity=".28" data-k="0.25"/>
+    <polygon points="0,420 420,600 0,600" fill="#071f3a" opacity=".22" data-k="-0.3"/>
+    <polygon points="900,0 1200,0 1440,90 1440,160" fill="#fff" opacity=".06" data-k="0.7"/>
+  </svg>
   <div class="wrap">
-    <div>
-      <p class="lbl">LegalHelper · для Windows</p>
-      <h1 class="h h1 lines"><span class="ln"><span>Программа для юристов</span></span><span class="ln"><span>и адвокатов, которые</span></span><span class="ln"><span>ведут дела сами.</span></span></h1>
+    <div class="left rv">
+      <p>Документы, сроки и судебная практика в одном окне. Освободите время для работы с правом.</p>
       <div class="cta">
-        <a class="btn" href="https://github.com/ezdk20000-code/LegalHelper/releases/latest/download/LegalHelper-Setup.exe">Скачать бесплатно <span class="arr">→</span></a>
-        <a class="btn line" href="#work">Как это выглядит</a>
+        <a class="btn white" href="https://github.com/ezdk20000-code/LegalHelper/releases/latest/download/LegalHelper-Setup.exe">Скачать бесплатно</a>
+        <a class="btn ghost" href="#solutions">Возможности</a>
       </div>
-      <div class="meta"><span id="verWrap"><span id="ver">Последняя версия</span> · </span>Windows 10 и 11 · ~175 МБ</div>
+      <div class="meta"><span id="verWrap"><span id="ver">Последняя версия</span> · </span>Windows 10 и 11 · около 175 МБ</div>
       <p class="phone-note" id="phoneNote">Программа устанавливается на компьютер с Windows. Откройте эту страницу на компьютере.</p>
     </div>
-    <div class="side"><p class="h lines"><span class="ln"><span>Документы. Сроки.</span></span><span class="ln"><span>Практика.</span></span><span class="ln"><span>В одном окне.</span></span></p></div>
+    <div class="mark rv"><div class="word">LEGALHELPER</div><div class="sub">ПРОГРАММА ДЛЯ ЮРИСТОВ</div></div>
   </div>
 </section>
 
-<div class="ticker" aria-hidden="true"><div>
-  <span>Опись ф. 107</span><i>/</i><span>PDF дела</span><i>/</i><span>Процессуальные сроки</span><i>/</i><span>Судебная практика</span><i>/</i><span>Нормы права</span><i>/</i><span>Госпошлина</span><i>/</i><span>Ст. 395 ГК РФ</span><i>/</i><span>Копия верна</span><i>/</i><span>Обезличивание 152-ФЗ</span><i>/</i>
-  <span>Опись ф. 107</span><i>/</i><span>PDF дела</span><i>/</i><span>Процессуальные сроки</span><i>/</i><span>Судебная практика</span><i>/</i><span>Нормы права</span><i>/</i><span>Госпошлина</span><i>/</i><span>Ст. 395 ГК РФ</span><i>/</i><span>Копия верна</span><i>/</i><span>Обезличивание 152-ФЗ</span><i>/</i>
-</div></div>
-
-<section class="about" id="about"><div class="wrap">
+<section class="solutions" id="solutions"><div class="wrap">
   <div>
-    <p class="lbl rv">О программе</p>
-    <h2 class="h h2 lines"><span class="ln"><span>Юрист занимается правом.</span></span><span class="ln"><span>Бумаги — задача программы.</span></span></h2>
+    <h2 class="rv">Всё для ведения дел<br>в одной программе</h2>
+    <div class="brand rv"><img src="img/logo-blue.svg" alt=""><b>LEGALHELPER</b><small>ПРОГРАММА ДЛЯ ЮРИСТОВ</small></div>
   </div>
   <div>
-    <p class="txt rv">Опись ф. 107, нумерация и заверение копий, процессуальные сроки, госпошлина и проценты по ст. 395 ГК РФ. Эта работа не требует юридической квалификации, но каждую неделю отнимает часы. LegalHelper выполняет её за минуты и не ошибается в датах.</p>
-    <div class="tgrid rv" id="terms">
-      <div><span class="n">01</span><b>Бесплатно</b><p>Без подписки и платных версий.</p></div>
-      <div><span class="n">02</span><b>Данные у вас</b><p>Дела хранятся на вашем компьютере.</p></div>
-      <div><span class="n">03</span><b>Без интернета</b><p>Сеть нужна только для обновлений.</p></div>
-      <div><span class="n">04</span><b>Резервные копии</b><p>Копия базы дел — каждый день.</p></div>
+    <p class="intro rv">LegalHelper берёт на себя техническую работу по делу: оформление, подсчёт сроков, расчёты и учёт. Нажмите на пункт, чтобы узнать подробнее.</p>
+    <div class="list rv" id="list">
+      <div class="item"><button>PDF дела и редактор документов <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Иск, договор, сканы и фотографии собираются в один PDF по порядку. Нумерация листов и «Копия верна» одной кнопкой. Текст PDF и документы Word правятся прямо в программе.</p></div></div></div>
+      <div class="item"><button>Опись вложения ф. 107 <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Опись заполняется на официальном бланке Почты России: длинные наименования переносятся, количество листов считается автоматически.</p></div></div></div>
+      <div class="item"><button>Процессуальные сроки и заседания <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Срок считается с учётом выходных и праздничных дней. Заседания и задачи с напоминаниями, на Главной видно всё на сегодня.</p></div></div></div>
+      <div class="item"><button>Судебная практика по доводам <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Вставьте реквизиты акта, и суд, дата и номер заполнятся сами. Акты распределяются по доводам и копируются в иск списком.</p></div></div></div>
+      <div class="item"><button>Нормы права <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Напишите «ст. 395 ГК РФ, ст. 110 АПК РФ», и кодексы со статьями появятся в деле. Программа находит нормы и в документах дела.</p></div></div></div>
+      <div class="item"><button>Шаблоны документов <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Иски, ходатайства, претензии. Суд, номер дела, стороны и суммы подставляются из карточки дела.</p></div></div></div>
+      <div class="item"><button>Госпошлина, проценты, неустойка <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Калькуляторы госпошлины и процентов по ст. 395 ГК РФ с таблицей расчёта для приложения к иску.</p></div></div></div>
+      <div class="item"><button>Доверители и учёт времени <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Дела одного доверителя собираются в папку со сводкой по срокам и оплатам. Учёт часов и платежей, акт выполненных работ.</p></div></div></div>
     </div>
   </div>
 </div></section>
 
-<section class="strip-sec" id="work">
-  <div class="wrap strip-head">
-    <div><p class="lbl rv">В работе</p><h2 class="h h2 lines"><span class="ln"><span>Как это выглядит.</span></span></h2></div>
-    <div class="strip-ctrl rv"><button id="prev" aria-label="Назад">←</button><button id="next" aria-label="Вперёд">→</button></div>
-  </div>
-  <div class="strip" id="strip">
-    <div class="shot"><span class="no">01</span><img src="img/home.webp" alt="Главная: сроки и заседания на сегодня" loading="lazy"><div class="tag"><b>Главная</b><span>Что горит сегодня</span></div></div>
-    <div class="shot"><span class="no">02</span><img src="img/f107_result.webp" alt="Опись вложения ф. 107" loading="lazy"><div class="tag"><b>Опись ф. 107</b><span>Бланк Почты России</span></div></div>
-    <div class="shot"><span class="no">03</span><img src="img/stamp_result.webp" alt="Номер листа и «Копия верна»" loading="lazy"><div class="tag"><b>Заверение</b><span>Номера листов, копия верна</span></div></div>
-    <div class="shot"><span class="no">04</span><img src="img/practice.webp" alt="Судебная практика по доводам" loading="lazy"><div class="tag"><b>Судебная практика</b><span>По доводам</span></div></div>
-    <div class="shot"><span class="no">05</span><img src="img/folder.webp" alt="Сводка по доверителю" loading="lazy"><div class="tag"><b>Доверитель</b><span>Все дела клиента</span></div></div>
-    <div class="shot"><span class="no">06</span><img src="img/deadline.webp" alt="Калькулятор процессуального срока" loading="lazy"><div class="tag"><b>Срок</b><span>Выходные и праздники учтены</span></div></div>
-    <div class="shot"><span class="no">07</span><img src="img/templates.webp" alt="Шаблоны документов" loading="lazy"><div class="tag"><b>Шаблоны</b><span>Данные из карточки дела</span></div></div>
-    <div class="shot"><span class="no">08</span><img src="img/duty.webp" alt="Калькулятор госпошлины" loading="lazy"><div class="tag"><b>Госпошлина</b><span>Расчёт для суда</span></div></div>
-    <div class="shot"><span class="no">09</span><img src="img/phone_memo.webp" alt="Памятка к заседанию на телефоне" loading="lazy"><div class="tag"><b>Памятка</b><span>К заседанию, на телефоне</span></div></div>
+<section class="benefits blue">
+  <svg class="shapes" viewBox="0 0 1440 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <polygon points="0,700 260,240 420,700" fill="#fff" opacity=".06"/>
+    <polygon points="1000,0 1440,0 1440,420" fill="#071f3a" opacity=".22"/>
+    <polygon points="0,0 380,0 0,210" fill="#fff" opacity=".05"/>
+  </svg>
+  <div class="wrap">
+    <h2 class="rv">Техническая работа — программе,<br>юридическая — вам</h2>
+    <div class="cols">
+      <div class="col rv"><div class="n">01</div><b>Меньше рутины</b><p>Описи, нумерация, заверение и расчёты выполняются за минуты вместо часов.</p></div>
+      <div class="col rv"><div class="n">02</div><b>Сроки под контролем</b><p>Процессуальные сроки считаются автоматически, о заседаниях программа напоминает заранее.</p></div>
+      <div class="col rv"><div class="n">03</div><b>Порядок в документах</b><p>Каждое дело — одна папка и один PDF. Файлы называются понятно: дата и вид документа.</p></div>
+      <div class="col rv"><div class="n">04</div><b>Сильная позиция</b><p>Нормы права и судебная практика собраны по доводам и переносятся в иск одним списком.</p></div>
+      <div class="col rv"><div class="n">05</div><b>Конфиденциальность</b><p>Данные хранятся на вашем компьютере и не передаются третьим лицам. Обезличивание по 152-ФЗ.</p></div>
+      <div class="col rv"><div class="n">06</div><b>Сохранность</b><p>Резервная копия базы дел каждый день, корзина на 30 дней, отмена любого удаления.</p></div>
+    </div>
   </div>
 </section>
 
-<section class="light" id="features"><div class="wrap">
-  <p class="lbl rv">Возможности</p>
-  <h2 class="h h2 lines"><span class="ln"><span>Что внутри.</span></span></h2>
-  <div class="grid">
-    <div class="feat rv" tabindex="0"><img src="img/folder.webp" alt="" loading="lazy"><div class="desc">Дела одного доверителя собираются в папку. Сводка показывает сроки, задолженность и заметки по всем его делам сразу.</div><div class="gtag"><b>Папки доверителей</b><span>Сводка по клиенту</span></div></div>
-    <div class="feat rv" tabindex="0"><img src="img/practice.webp" alt="" loading="lazy"><div class="desc">Вставьте реквизиты акта, и суд, дата и номер заполнятся сами. Акты распределяются по доводам и копируются в иск списком.</div><div class="gtag"><b>Судебная практика</b><span>Акты по доводам</span></div></div>
-    <div class="feat rv" tabindex="0"><img src="img/events.webp" alt="" loading="lazy"><div class="desc">Заседания, процессуальные сроки и задачи с напоминаниями. Срок считается с учётом выходных и праздничных дней.</div><div class="gtag"><b>Сроки и заседания</b><span>С напоминаниями</span></div></div>
-    <div class="feat rv" tabindex="0"><img src="img/f107_dialog.webp" alt="" loading="lazy"><div class="desc">Опись вложения заполняется на официальном бланке. Длинные наименования переносятся, количество листов считается автоматически.</div><div class="gtag"><b>Опись ф. 107</b><span>Почта России</span></div></div>
-    <div class="feat rv" tabindex="0"><img src="img/docs.webp" alt="" loading="lazy"><div class="desc">Иск, договор, сканы и фотографии собираются в один PDF по порядку. Нумерация и «Копия верна» одной кнопкой.</div><div class="gtag"><b>PDF дела</b><span>Все документы одним файлом</span></div></div>
-    <div class="feat rv" tabindex="0"><img src="img/templates.webp" alt="" loading="lazy"><div class="desc">Иски, ходатайства, претензии. Суд, номер дела, стороны и суммы подставляются из карточки дела.</div><div class="gtag"><b>Шаблоны</b><span>Реквизиты из дела</span></div></div>
-    <div class="feat rv" tabindex="0"><img src="img/editor.webp" alt="" loading="lazy"><div class="desc">Правка текста PDF, подпись и печать, пометки. Документы Word открываются и правятся прямо в программе.</div><div class="gtag"><b>Редактор PDF и Word</b><span>Без сторонних программ</span></div></div>
-    <div class="feat rv" tabindex="0"><img src="img/duty.webp" alt="" loading="lazy"><div class="desc">Госпошлина, проценты по ст. 395 ГК РФ, неустойка. Таблица расчёта готова для приложения к иску.</div><div class="gtag"><b>Калькуляторы</b><span>Пошлина, 395, неустойка</span></div></div>
+<section class="about" id="about"><div class="wrap">
+  <div class="top">
+    <h2 class="rv">LegalHelper</h2>
+    <div class="rv">
+      <p>Программа создана для юристов и адвокатов, которые ведут дела самостоятельно или в небольшой команде. В ней собраны инструменты, которые обычно приходится искать в разных программах: PDF-редактор, калькуляторы, календарь сроков, база практики.</p>
+      <p>Программа бесплатна, работает без интернета и обновляется автоматически.</p>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat rv"><small>Стоимость программы</small><b data-n="0">0 ₽</b></div>
+    <div class="stat rv"><small>Инструментов для PDF и дел</small><b data-n="50" data-s="+">50+</b></div>
+    <div class="stat rv"><small>Дней хранения удалённого в корзине</small><b data-n="30">30</b></div>
+    <div class="stat rv"><small>Данных хранится на вашем компьютере</small><b data-n="100" data-s="%">100%</b></div>
+  </div>
+</div></section>
+
+<section class="shots" id="shots"><div class="wrap">
+  <div class="head"><h2 class="rv">Как выглядит программа</h2><div class="arrows"><button id="prev" aria-label="Назад">‹</button><button id="next" aria-label="Вперёд">›</button></div></div>
+  <div class="track" id="track">
+    <div class="card"><div class="pic"><img src="img/home.webp" alt="" loading="lazy"></div><div class="cap"><b>Главная</b><span>Сроки и заседания на сегодня</span></div></div>
+    <div class="card"><div class="pic"><img src="img/practice.webp" alt="" loading="lazy"></div><div class="cap"><b>Судебная практика</b><span>Акты по доводам</span></div></div>
+    <div class="card"><div class="pic"><img src="img/folder.webp" alt="" loading="lazy"></div><div class="cap"><b>Доверитель</b><span>Сводка по всем делам клиента</span></div></div>
+    <div class="card"><div class="pic"><img src="img/f107_result.webp" alt="" loading="lazy"></div><div class="cap"><b>Опись ф. 107</b><span>Бланк Почты России</span></div></div>
+    <div class="card"><div class="pic"><img src="img/stamp_result.webp" alt="" loading="lazy"></div><div class="cap"><b>Заверение</b><span>Номер листа и «Копия верна»</span></div></div>
+    <div class="card"><div class="pic"><img src="img/deadline.webp" alt="" loading="lazy"></div><div class="cap"><b>Процессуальный срок</b><span>С учётом праздников</span></div></div>
+    <div class="card"><div class="pic"><img src="img/templates.webp" alt="" loading="lazy"></div><div class="cap"><b>Шаблоны</b><span>Реквизиты из карточки дела</span></div></div>
+    <div class="card"><div class="pic"><img src="img/duty.webp" alt="" loading="lazy"></div><div class="cap"><b>Госпошлина</b><span>Расчёт для суда</span></div></div>
   </div>
 </div></section>
 
 <section class="save"><div class="wrap">
   <div>
-    <p class="lbl rv">Экономия времени</p>
-    <h2 class="h h2 lines"><span class="ln"><span>Сколько часов</span></span><span class="ln"><span>вы вернёте.</span></span></h2>
+    <h2 class="rv">Сколько времени<br>вы сэкономите</h2>
     <div class="rows rv">
-      <div class="r"><label for="c1">Отправок почтой в месяц<small>Опись, нумерация, заверение · 35 → 4 мин</small></label><input id="c1" type="number" min="0" value="8"></div>
-      <div class="r"><label for="c2">Документов по шаблону<small>Ходатайства, заявления · 25 → 3 мин</small></label><input id="c2" type="number" min="0" value="10"></div>
-      <div class="r"><label for="c3">Расчётов процентов и пошлины<small>Ст. 395 ГК, неустойка · 20 → 2 мин</small></label><input id="c3" type="number" min="0" value="6"></div>
-      <div class="r"><label for="c4">Рабочих дней в месяце<small>Утренний разбор сроков · 15 → 2 мин</small></label><input id="c4" type="number" min="0" value="21"></div>
+      <div class="r"><label for="c1">Отправок почтой в месяц<small>опись, нумерация, заверение: 35 → 4 мин</small></label><input id="c1" type="number" min="0" value="8"></div>
+      <div class="r"><label for="c2">Документов по шаблону<small>ходатайства, заявления: 25 → 3 мин</small></label><input id="c2" type="number" min="0" value="10"></div>
+      <div class="r"><label for="c3">Расчётов процентов и пошлины<small>ст. 395 ГК, неустойка: 20 → 2 мин</small></label><input id="c3" type="number" min="0" value="6"></div>
+      <div class="r"><label for="c4">Рабочих дней в месяце<small>утренний разбор сроков: 15 → 2 мин</small></label><input id="c4" type="number" min="0" value="21"></div>
     </div>
   </div>
   <div class="res rv">
-    <div class="big"><span id="hrs">0</span><small>ч / мес</small></div>
-    <p id="days">Расчёт примерный: минуты на ту же работу вручную и в программе.</p>
+    <div class="big"><span id="hrs">0</span><small>часов в месяц</small></div>
+    <p id="days">Расчёт примерный: время на ту же работу вручную и в программе.</p>
   </div>
 </div></section>
 
-<section class="install" id="install"><div class="wrap">
-  <div>
-    <p class="lbl rv">Установка</p>
-    <h2 class="h h2 lines"><span class="ln"><span>Три шага.</span></span></h2>
-    <ol class="steps rv">
-      <li><span>01</span>Скачайте установщик LegalHelper-Setup.exe.</li>
-      <li><span>02</span>Запустите его из загрузок браузера.</li>
-      <li><span>03</span>«Установить» → «Завершить». Обновления дальше ставятся сами.</li>
-    </ol>
-    <p class="note rv">Если Windows покажет «Windows защитила ваш компьютер», нажмите <b>«Подробнее»</b> → <b>«Выполнить в любом случае»</b>. Вопросы: <a href="https://t.me/axis_juris">Telegram @axis_juris</a>, <a href="mailto:axis.juris@bk.ru">axis.juris@bk.ru</a>.</p>
+<section class="install blue" id="install">
+  <svg class="shapes" viewBox="0 0 1440 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <polygon points="1100,0 1440,0 1440,400 1250,400" fill="#fff" opacity=".06"/>
+    <polygon points="0,400 300,0 520,0 240,400" fill="#071f3a" opacity=".18"/>
+  </svg>
+  <div class="wrap">
+    <div class="rv"><h2>Бесплатная установка</h2><p class="lead">Три шага и пара минут. Дальше обновления устанавливаются автоматически.</p></div>
+    <div class="isteps rv">
+      <div><b>01</b>Скачайте установщик LegalHelper-Setup.exe</div>
+      <div><b>02</b>Запустите его из загрузок браузера</div>
+      <div><b>03</b>Нажмите «Установить», затем «Завершить»</div>
+    </div>
+    <div class="go rv">
+      <a class="btn white" href="https://github.com/ezdk20000-code/LegalHelper/releases/latest/download/LegalHelper-Setup.exe">Скачать LegalHelper</a>
+      <span class="note">Если появится окно «Windows защитила ваш компьютер», нажмите «Подробнее», затем «Выполнить в любом случае». Вопросы: <a href="https://t.me/axis_juris">Telegram</a>, <a href="mailto:axis.juris@bk.ru">axis.juris@bk.ru</a>.</span>
+    </div>
   </div>
-  <a class="go rv" href="https://github.com/ezdk20000-code/LegalHelper/releases/latest/download/LegalHelper-Setup.exe">
-    <img src="img/logo.svg" width="72" height="72" alt="">
-    <span>Скачать LegalHelper<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 18L18 6M8 6h10v10"/></svg></span>
-    <small><span id="ver2">Windows 10 и 11</span> · ~175 МБ · бесплатно</small>
-  </a>
-</div></section>
+</section>
 
-<footer><div class="wrap"><span><img src="img/logo.svg" alt="">LegalHelper · программа для юристов</span><span><a href="mailto:axis.juris@bk.ru">axis.juris@bk.ru</a> · <a href="https://t.me/axis_juris">Telegram</a></span></div></footer>
+<footer><div class="wrap">
+  <a class="logo" href="#"><img src="img/logo-blue.svg" alt=""><span><b>LEGALHELPER</b><small>ПРОГРАММА ДЛЯ ЮРИСТОВ</small></span></a>
+  <span><a href="mailto:axis.juris@bk.ru">axis.juris@bk.ru</a> · <a href="https://t.me/axis_juris">Telegram @axis_juris</a></span>
+</div></footer>
 
 <script>
 (function () {
   var still = matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) document.getElementById("phoneNote").style.display = "block";
 
-  // шапка становится плотной при прокрутке; фон первого экрана медленно уезжает
-  var hdr = document.getElementById("hdr"), bg = document.getElementById("heroBg"), tick = false;
-  function onScroll() {
-    if (tick) return; tick = true;
-    requestAnimationFrame(function () {
-      tick = false;
-      hdr.classList.toggle("solid", scrollY > 40);
-      if (!still && scrollY < innerHeight * 1.2) bg.style.transform = "scale(1.06) translateY(" + (scrollY * 0.18) + "px)";
-    });
+  // появление при прокрутке; числа отсчитываются
+  function count(el) {
+    var n = +el.dataset.n, suf = el.dataset.s || (el.textContent.indexOf("₽") > -1 ? " ₽" : ""), t0 = performance.now();
+    if (!n || still) return;
+    (function f(t) { var k = Math.min(1, (t - t0) / 1100), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = Math.round(n * e) + suf; if (k < 1) requestAnimationFrame(f); })(t0);
   }
-  addEventListener("scroll", onScroll, { passive: true }); onScroll();
-
-  // появление: строки заголовков выезжают снизу, блоки проявляются
-  var items = document.querySelectorAll(".rv, .lines");
+  var items = document.querySelectorAll(".rv");
   if ("IntersectionObserver" in window && !still) {
     var io = new IntersectionObserver(function (es) {
       es.forEach(function (e) {
         if (!e.isIntersecting) return;
-        var t = e.target, k = 0;
-        if (t.classList.contains("feat")) k = Array.prototype.indexOf.call(t.parentNode.children, t) % 4;
-        setTimeout(function () { t.classList.add("in"); }, k * 90);
+        var t = e.target, k = (t.classList.contains("col") || t.classList.contains("stat")) ? Array.prototype.indexOf.call(t.parentNode.children, t) : 0;
+        setTimeout(function () { t.classList.add("in"); var b = t.querySelector("[data-n]"); if (b) count(b); }, (k % 4) * 100);
         io.unobserve(t);
       });
-    }, { threshold: 0.15, rootMargin: "0px 0px -40px 0px" });
+    }, { threshold: 0.15 });
     items.forEach(function (el) { io.observe(el); });
   } else items.forEach(function (el) { el.classList.add("in"); });
-  document.querySelectorAll(".hero .lines").forEach(function (el) { setTimeout(function () { el.classList.add("in"); }, 150); });
 
-  // лента снимков: кнопки и перетаскивание мышью
-  var strip = document.getElementById("strip");
-  function by(d) { var w = strip.querySelector(".shot").offsetWidth + 12; strip.scrollBy({ left: d * w * 2, behavior: "smooth" }); }
-  document.getElementById("prev").onclick = function () { by(-1); };
-  document.getElementById("next").onclick = function () { by(1); };
-  var down = false, x0 = 0, s0 = 0, moved = 0;
-  strip.addEventListener("pointerdown", function (e) { if (e.pointerType !== "mouse") return; down = true; moved = 0; x0 = e.clientX; s0 = strip.scrollLeft; strip.classList.add("drag"); });
-  addEventListener("pointermove", function (e) { if (!down) return; moved = Math.abs(e.clientX - x0); strip.scrollLeft = s0 - (e.clientX - x0); });
-  addEventListener("pointerup", function () { if (!down) return; down = false; strip.classList.remove("drag"); });
+  // фигуры на синем фоне слегка сдвигаются при прокрутке
+  var polys = document.querySelectorAll(".hero .shapes polygon"), tick = false;
+  addEventListener("scroll", function () {
+    if (still || tick) return; tick = true;
+    requestAnimationFrame(function () { tick = false; var y = Math.min(scrollY, 700);
+      polys.forEach(function (p) { p.style.transform = "translateY(" + (y * (+p.dataset.k || 0) * 0.25) + "px)"; }); });
+  }, { passive: true });
+
+  // список возможностей: раскрывается по щелчку
+  document.querySelectorAll("#list .item button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var it = b.parentNode, open = it.classList.contains("open");
+      document.querySelectorAll("#list .item").forEach(function (x) { x.classList.remove("open"); });
+      if (!open) it.classList.add("open");
+    });
+  });
+
+  // карусель снимков
+  var track = document.getElementById("track");
+  function go(d) { track.scrollBy({ left: d * (track.querySelector(".card").offsetWidth + 18) * 2, behavior: "smooth" }); }
+  document.getElementById("prev").onclick = function () { go(-1); };
+  document.getElementById("next").onclick = function () { go(1); };
 
   // экономия: минуты вручную → в программе
   var save = [[35, 4], [25, 3], [20, 2], [15, 2]], shown = 0;
@@ -354,14 +366,14 @@ footer a { text-decoration: none; } footer a:hover { color: var(--acc); }
       if (k < 1) requestAnimationFrame(step); else shown = h;
     })(t0);
     var d = String(Math.round(h / 8 * 10) / 10).replace(".", ",");
-    document.getElementById("days").textContent = h ? "Около " + d + " рабочих дн. в месяц. Расчёт примерный: минуты на ту же работу вручную и в программе." : "Укажите свои цифры слева.";
+    document.getElementById("days").textContent = h ? "Это около " + d + " рабочих дня. Расчёт примерный: время на ту же работу вручную и в программе." : "Укажите свои цифры.";
   }
   for (var i = 1; i <= 4; i++) document.getElementById("c" + i).addEventListener("input", calc);
   calc();
 
   // номер версии и ссылка на установщик: сначала — этот сайт, если установщика тут ещё нет — прежнее место
   var NEW_DL = "https://github.com/LegalHelper/legalhelper.github.io/releases/latest/download/LegalHelper-Setup.exe";
-  function show(v) { document.getElementById("ver").textContent = "Версия " + v.version; document.getElementById("ver2").textContent = "Версия " + v.version; }
+  function show(v) { document.getElementById("ver").textContent = "Версия " + v.version; }
   fetch("version.json", { cache: "no-store" })
     .then(function (r) { if (!r.ok) throw 0; return r.json(); })
     .then(function (v) { show(v); document.querySelectorAll('a[href$="LegalHelper-Setup.exe"]').forEach(function (a) { a.href = NEW_DL; }); })
