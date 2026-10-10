@@ -242,6 +242,32 @@ header .btn { padding: 10px 18px; font-size: 14px; }
 .lb { position: fixed; inset: 0; z-index: 100; background: rgba(9,20,33,.86); display: none; align-items: center; justify-content: center; padding: 30px; cursor: zoom-out; }
 .lb.on { display: flex; } .lb img { max-width: 100%; max-height: 100%; box-shadow: 0 30px 80px rgba(0,0,0,.5); background: #fff; }
 .lb span { position: absolute; top: 14px; right: 22px; color: #fff; font-size: 28px; }
+/* примеры из работы — настоящие снимки программы по шагам */
+.ex { padding: 80px 0 90px; }
+.ex .head { display: flex; justify-content: space-between; align-items: end; gap: 30px; flex-wrap: wrap; margin-bottom: 26px; }
+.ex .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 26px; }
+.ex .tabs button { border: 1px solid var(--line); background: #fff; color: var(--ink); padding: 10px 16px; font: 500 14px "Inter Tight", sans-serif; cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
+.ex .tabs button:hover { border-color: var(--blue); color: var(--blue); }
+.ex .tabs button.on { background: var(--blue); border-color: var(--blue); color: #fff; }
+.ex .body { display: grid; grid-template-columns: 340px 1fr; gap: 34px; align-items: start; }
+.ex ol { list-style: none; margin: 0; padding: 0; counter-reset: st; }
+.ex li { position: relative; padding: 14px 0 14px 46px; border-top: 1px solid var(--line); cursor: pointer; color: var(--mute); transition: color .2s; counter-increment: st; }
+.ex li:last-child { border-bottom: 1px solid var(--line); }
+.ex li::before { content: counter(st); position: absolute; left: 0; top: 13px; width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line);
+  display: grid; place-items: center; font-size: 13px; font-weight: 500; color: var(--mute); background: #fff; transition: all .25s; }
+.ex li b { display: block; font-weight: 500; font-size: 15.5px; color: var(--ink); margin-bottom: 2px; }
+.ex li span { font-size: 13.5px; line-height: 1.5; display: block; }
+.ex li.on::before { background: var(--blue); border-color: var(--blue); color: #fff; }
+.ex li.on b { color: var(--blue); }
+.ex li .bar { position: absolute; left: 46px; right: 0; bottom: -1px; height: 2px; background: var(--blue); transform-origin: left; transform: scaleX(0); }
+.ex li.on .bar { animation: exbar var(--dur, 6s) linear forwards; }
+.ex.paused li.on .bar { animation-play-state: paused; }
+@keyframes exbar { to { transform: scaleX(1); } }
+.ex .frame { position: relative; background: #eef2f6; border: 1px solid var(--line); box-shadow: 0 24px 60px rgba(15,34,54,.12); cursor: zoom-in; aspect-ratio: 1300 / 860; overflow: hidden; }
+.ex .frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity .45s ease, transform .6s cubic-bezier(.2,.8,.2,1); transform: scale(1.015); }
+.ex .frame img.on { opacity: 1; transform: none; }
+.ex .note { margin-top: 10px; font-size: 12.5px; color: var(--mute); }
+@media (max-width: 900px) { .ex .body { grid-template-columns: 1fr; gap: 18px; } .ex .fw { order: -1; } }
 /* экономия */
 .save { padding: 96px 0; }
 .save .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
@@ -287,7 +313,7 @@ footer a { text-decoration: none; } footer a:hover { color: var(--blue); }
 
 <header><div class="wrap">
   <a class="logo" href="#"><img src="img/logo-blue.svg" alt=""><span><b>LEGALHELPER</b><small>ПРОГРАММА ДЛЯ ЮРИСТОВ</small></span></a>
-  <nav><a href="#solutions">Возможности</a><a href="#about">О программе</a><a href="#shots">Как выглядит</a><a href="#install">Установка</a></nav>
+  <nav><a href="#solutions">Возможности</a><a href="#about">О программе</a><a href="#examples">Примеры</a><a href="#shots">Как выглядит</a><a href="#install">Установка</a></nav>
   <a class="btn" href="https://github.com/ezdk20000-code/LegalHelper/releases/latest/download/LegalHelper-Setup.exe">Скачать</a>
 </div></header>
 
@@ -422,6 +448,16 @@ footer a { text-decoration: none; } footer a:hover { color: var(--blue); }
     <div class="stat rv"><small>Инструментов для PDF и дел</small><b data-n="50" data-s="+">50+</b></div>
     <div class="stat rv"><small>Дней хранения удалённого в корзине</small><b data-n="30">30</b></div>
     <div class="stat rv"><small>Данных хранится на вашем компьютере</small><b data-n="100" data-s="%">100%</b></div>
+  </div>
+</div></section>
+
+<section class="ex" id="examples"><div class="wrap">
+  <div class="head"><div><h2 class="rv">Примеры из работы</h2>
+    <p class="small rv" style="margin:8px 0 0">Настоящие снимки программы, шаг за шагом. Нажмите на шаг слева или на снимок — он откроется крупно.</p></div></div>
+  <div class="tabs rv" id="exTabs"></div>
+  <div class="body rv">
+    <ol id="exSteps"></ol>
+    <div class="fw"><div class="frame" id="exFrame"></div><div class="note">Снимки сделаны в LegalHelper — так программа выглядит у вас на компьютере.</div></div>
   </div>
 </div></section>
 
@@ -653,6 +689,70 @@ footer a { text-decoration: none; } footer a:hover { color: var(--blue); }
         .then(function (r) { return r.json(); }).then(show)
         .catch(function () { document.getElementById("verWrap").style.display = "none"; });
     });
+})();
+</script>
+
+<script>
+(function () {
+  var EX = [
+    { t: "Определение суда → сроки", s: [
+      ["e1_dates", "Перетащите определение в дело", "Программа сама прочитает его и найдёт дату и время заседания, зал и сроки — «представить отзыв в срок до…»."],
+      ["e1_events", "«Добавить все» — и всё в календаре дела", "Заседание и срок отзыва появились во вкладке «Сроки». Программа заранее напомнит о них."],
+      ["e1_rename", "Имя файла — как в суде", "«Scan_0042.pdf» → «2026-10-01 Определение о принятии искового заявления к производству». Одна кнопка — и файл переименован."],
+      ["e1_calendar", "Сроки — на телефоне", "Подключите Яндекс Календарь один раз: заседания и сроки придут на телефон с напоминанием за день и за 2 часа."]] },
+    { t: "Опись ф. 107", s: [
+      ["e2_dialog", "Список вложений — и сразу видно, сколько листов", "Длинные названия программа печатает в две строки мельче или объединяет ячейки — без разрывов посреди текста."],
+      ["e2_short", "«Сократить названия» — и опись на одном листе", "«Общество с ограниченной ответственностью» → «ООО», «государственной пошлины» → «госпошлины». Любое название можно поправить."],
+      ["e2_pdf", "Готовый бланк Почты России", "Два экземпляра на листе, итог посчитан. Остаётся распечатать и отнести на почту."]] },
+    { t: "PDF дела", s: [
+      ["e3_stacks", "Все документы дела — одним файлом", "Каждый документ — своя стопка с названием и диапазоном страниц. Стопки переставляются мышью целиком."],
+      ["e3_open", "Развернули — видно каждую страницу", "Страницы одного документа — в общей карточке, справа крупный просмотр: листается колёсиком, без открытия файла."],
+      ["e3_search", "Поиск по всему тексту дела", "«Структура» — оглавление документа, а поиск находит слово на всех страницах. Щелчок — переход к нужной странице."]] },
+    { t: "Практика и нормы", s: [
+      ["e4_practice", "Судебная практика по доводам", "Вставьте реквизиты акта, как в иске, — вид акта, суд, дата и номер заполнятся сами. Акты разложены по доводам."],
+      ["e4_laws", "Нормы права — одной строкой", "Напишите «п. 1 ст. 330 ГК РФ, ст. 333 ГК РФ, ст. 110 АПК РФ» — нормы разложатся по кодексам и статьям."]] },
+    { t: "Деньги и доверитель", s: [
+      ["e5_money", "Учёт работы и оплат", "Часы, ставка и оплаты по делу — программа сразу считает, сколько начислено и сколько должен доверитель."],
+      ["e5_folder", "Всё по доверителю на одном экране", "Сроки по всем делам клиента, деньги и долг — в одной сводке. Удобно перед звонком или встречей."]] }
+  ];
+  var tabs = document.getElementById("exTabs"), steps = document.getElementById("exSteps"), frame = document.getElementById("exFrame");
+  var sec = document.getElementById("examples"), cur = 0, st = 0, timer = null, DUR = 6500, visible = false;
+  EX.forEach(function (e, i) {
+    var b = document.createElement("button"); b.textContent = e.t;
+    b.onclick = function () { pick(i, 0, true); }; tabs.appendChild(b);
+    e.s.forEach(function (x) { var im = new Image(); im.alt = x[1]; im.loading = "lazy"; im.src = "img/ex/" + x[0] + ".webp"; im.dataset.k = i + ":" + x[0]; frame.appendChild(im); });
+  });
+  function pick(i, k, user) {
+    cur = i; st = k;
+    [].forEach.call(tabs.children, function (b, j) { b.classList.toggle("on", j === i); });
+    steps.innerHTML = "";
+    EX[i].s.forEach(function (x, j) {
+      var li = document.createElement("li"); li.innerHTML = "<b></b><span></span><i class='bar'></i>";
+      li.querySelector("b").textContent = x[1]; li.querySelector("span").textContent = x[2];
+      li.style.setProperty("--dur", DUR + "ms"); li.onclick = function () { pick(cur, j, true); }; steps.appendChild(li);
+    });
+    var key = i + ":" + EX[i].s[k][0];
+    [].forEach.call(frame.querySelectorAll("img"), function (im) { im.classList.toggle("on", im.dataset.k === key); });
+    var li = steps.children[k]; li.classList.add("on");
+    clearTimeout(timer);
+    if (visible) timer = setTimeout(next, DUR);
+  }
+  function next() {
+    var k = st + 1, i = cur;
+    if (k >= EX[i].s.length) { k = 0; i = (i + 1) % EX.length; }
+    pick(i, k);
+  }
+  frame.onclick = function () {
+    var on = frame.querySelector("img.on"); if (!on) return;
+    var lb = document.getElementById("lb"); lb.querySelector("img").src = on.src; lb.classList.add("on");
+  };
+  sec.addEventListener("mouseenter", function () { sec.classList.add("paused"); clearTimeout(timer); });
+  sec.addEventListener("mouseleave", function () { sec.classList.remove("paused"); if (visible) { clearTimeout(timer); timer = setTimeout(next, DUR / 2); } });
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (es) { es.forEach(function (e) {
+      visible = e.isIntersecting; clearTimeout(timer); if (visible) pick(cur, st); }); }, { threshold: .35 }).observe(sec);
+  } else visible = true;
+  pick(0, 0);
 })();
 </script>
 </body>
