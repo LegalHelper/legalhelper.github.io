@@ -249,7 +249,7 @@ header .btn { padding: 10px 18px; font-size: 14px; }
 .ex .tabs button { border: 1px solid var(--line); background: #fff; color: var(--ink); padding: 10px 16px; font: 500 14px "Inter Tight", sans-serif; cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
 .ex .tabs button:hover { border-color: var(--blue); color: var(--blue); }
 .ex .tabs button.on { background: var(--blue); border-color: var(--blue); color: #fff; }
-.ex .body { display: grid; grid-template-columns: 340px 1fr; gap: 34px; align-items: start; }
+.ex .body { display: grid; grid-template-columns: 300px 1fr; gap: 30px; align-items: start; }
 .ex ol { list-style: none; margin: 0; padding: 0; counter-reset: st; }
 .ex li { position: relative; padding: 14px 0 14px 46px; border-top: 1px solid var(--line); cursor: pointer; color: var(--mute); transition: color .2s; counter-increment: st; }
 .ex li:last-child { border-bottom: 1px solid var(--line); }
@@ -260,12 +260,15 @@ header .btn { padding: 10px 18px; font-size: 14px; }
 .ex li.on::before { background: var(--blue); border-color: var(--blue); color: #fff; }
 .ex li.on b { color: var(--blue); }
 .ex li .bar { position: absolute; left: 46px; right: 0; bottom: -1px; height: 2px; background: var(--blue); transform-origin: left; transform: scaleX(0); }
-.ex li.on .bar { animation: exbar var(--dur, 6s) linear forwards; }
-.ex.paused li.on .bar { animation-play-state: paused; }
-@keyframes exbar { to { transform: scaleX(1); } }
-.ex .frame { position: relative; background: #eef2f6; border: 1px solid var(--line); box-shadow: 0 24px 60px rgba(15,34,54,.12); cursor: zoom-in; aspect-ratio: 1300 / 860; overflow: hidden; }
-.ex .frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity .45s ease, transform .6s cubic-bezier(.2,.8,.2,1); transform: scale(1.015); }
-.ex .frame img.on { opacity: 1; transform: none; }
+.ex li .bar { transition: transform .25s linear; }
+.ex .frame { position: relative; background: #eef2f6; border: 1px solid var(--line); box-shadow: 0 24px 60px rgba(15,34,54,.14); cursor: pointer; aspect-ratio: 1444 / 800; overflow: hidden; }
+.ex .frame video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; background: #f2f2f7; }
+.ex .vbtn { position: absolute; right: 12px; bottom: 14px; width: 38px; height: 38px; border-radius: 50%; border: 0; background: rgba(15,34,54,.72); color: #fff; font-size: 13px; cursor: pointer; opacity: 0; transition: opacity .25s; }
+.ex .vbtn.full { right: 58px; font-size: 16px; }
+.ex .frame:hover .vbtn, .ex .vbtn:focus { opacity: 1; }
+.ex .frame:fullscreen { aspect-ratio: auto; background: #0f2236; } .ex .frame:fullscreen .vbtn { opacity: 1; }
+.ex .vprog { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(15,34,54,.12); }
+.ex .vprog i { display: block; height: 100%; width: 0; background: var(--blue); }
 .ex .note { margin-top: 10px; font-size: 12.5px; color: var(--mute); }
 @media (max-width: 900px) { .ex .body { grid-template-columns: 1fr; gap: 18px; } .ex .fw { order: -1; } }
 /* экономия */
@@ -453,11 +456,13 @@ footer a { text-decoration: none; } footer a:hover { color: var(--blue); }
 
 <section class="ex" id="examples"><div class="wrap">
   <div class="head"><div><h2 class="rv">Примеры из работы</h2>
-    <p class="small rv" style="margin:8px 0 0">Настоящие снимки программы, шаг за шагом. Нажмите на шаг слева или на снимок — он откроется крупно.</p></div></div>
+    <p class="small rv" style="margin:8px 0 0">Настоящая программа в работе: курсор щёлкает, печатает и переключает вкладки — как вы сами. Видео идут по кругу; нажмите шаг, чтобы перейти к нему.</p></div></div>
   <div class="tabs rv" id="exTabs"></div>
   <div class="body rv">
     <ol id="exSteps"></ol>
-    <div class="fw"><div class="frame" id="exFrame"></div><div class="note">Снимки сделаны в LegalHelper — так программа выглядит у вас на компьютере.</div></div>
+    <div class="fw"><div class="frame" id="exFrame"><video id="exVideo" muted playsinline preload="none"></video>
+      <button class="vbtn" id="exPlay" aria-label="Пауза">❚❚</button><button class="vbtn full" id="exFull" aria-label="На весь экран">⛶</button><div class="vprog"><i id="exProg"></i></div></div>
+      <div class="note">Видео записаны в LegalHelper — так программа выглядит и работает у вас на компьютере.</div></div>
   </div>
 </div></section>
 
@@ -694,63 +699,58 @@ footer a { text-decoration: none; } footer a:hover { color: var(--blue); }
 
 <script>
 (function () {
-  var EX = [
-    { t: "Определение суда → сроки", s: [
-      ["e1_dates", "Перетащите определение в дело", "Программа сама прочитает его и найдёт дату и время заседания, зал и сроки — «представить отзыв в срок до…»."],
-      ["e1_events", "«Добавить все» — и всё в календаре дела", "Заседание и срок отзыва появились во вкладке «Сроки». Программа заранее напомнит о них."],
-      ["e1_rename", "Имя файла — как в суде", "«Scan_0042.pdf» → «2026-10-01 Определение о принятии искового заявления к производству». Одна кнопка — и файл переименован."],
-      ["e1_calendar", "Сроки — на телефоне", "Подключите Яндекс Календарь один раз: заседания и сроки придут на телефон с напоминанием за день и за 2 часа."]] },
-    { t: "Опись ф. 107", s: [
-      ["e2_dialog", "Список вложений — и сразу видно, сколько листов", "Длинные названия программа печатает в две строки мельче или объединяет ячейки — без разрывов посреди текста."],
-      ["e2_short", "«Сократить названия» — и опись на одном листе", "«Общество с ограниченной ответственностью» → «ООО», «государственной пошлины» → «госпошлины». Любое название можно поправить."],
-      ["e2_pdf", "Готовый бланк Почты России", "Два экземпляра на листе, итог посчитан. Остаётся распечатать и отнести на почту."]] },
-    { t: "PDF дела", s: [
-      ["e3_stacks", "Все документы дела — одним файлом", "Каждый документ — своя стопка с названием и диапазоном страниц. Стопки переставляются мышью целиком."],
-      ["e3_open", "Развернули — видно каждую страницу", "Страницы одного документа — в общей карточке, справа крупный просмотр: листается колёсиком, без открытия файла."],
-      ["e3_search", "Поиск по всему тексту дела", "«Структура» — оглавление документа, а поиск находит слово на всех страницах. Щелчок — переход к нужной странице."]] },
-    { t: "Практика и нормы", s: [
-      ["e4_practice", "Судебная практика по доводам", "Вставьте реквизиты акта, как в иске, — вид акта, суд, дата и номер заполнятся сами. Акты разложены по доводам."],
-      ["e4_laws", "Нормы права — одной строкой", "Напишите «п. 1 ст. 330 ГК РФ, ст. 333 ГК РФ, ст. 110 АПК РФ» — нормы разложатся по кодексам и статьям."]] },
-    { t: "Деньги и доверитель", s: [
-      ["e5_money", "Учёт работы и оплат", "Часы, ставка и оплаты по делу — программа сразу считает, сколько начислено и сколько должен доверитель."],
-      ["e5_folder", "Всё по доверителю на одном экране", "Сроки по всем делам клиента, деньги и долг — в одной сводке. Удобно перед звонком или встречей."]] }
-  ];
-  var tabs = document.getElementById("exTabs"), steps = document.getElementById("exSteps"), frame = document.getElementById("exFrame");
-  var sec = document.getElementById("examples"), cur = 0, st = 0, timer = null, DUR = 6500, visible = false;
+  var EX = [{"k": "opr", "t": "Определение → сроки", "d": 19.42, "s": [[0.79, "Перетаскиваем определение суда в дело", "Файл просто перетаскивают мышью в окно — он попадает в документы дела и в «PDF дела»."], [4.33, "Программа сама нашла заседание, зал и срок отзыва", "Дату и время заседания, адрес и зал, срок «представить отзыв до…» программа прочитала из текста определения."], [8.46, "Одна кнопка — и всё во вкладке «Сроки»", "«Добавить все» — заседание и срок появились в календаре дела. Программа заранее напомнит о них."], [11.79, "Имя файла — как в суде", "«Scan_0042.pdf» → «Определение о принятии искового заявления к производству» с датой — и в программе, и в папке на диске."]]}, {"k": "pdf", "t": "PDF дела", "d": 25.0, "s": [[0.79, "Все документы дела — одним PDF: каждый файл в своей карточке", "У каждой карточки — название файла и диапазон страниц. «Свернуть» складывает файлы в стопки."], [4.29, "Щелчок по заголовку — файл разворачивается", "Стопку можно развернуть одним щелчком, а файлы — переставлять мышью целиком."], [6.62, "«🔍 Крупно» — страницы читаются справа, листаются колёсиком", "Крупный просмотр: читаете документ, не открывая его. Щелчок по миниатюре — переход к странице."], [13.62, "«Структура» — оглавление и поиск по всему тексту", "Набрали «Лютик» и Enter — программа нашла слово на всех страницах дела. Щелчок — и вы на месте."]]}, {"k": "opis", "t": "Опись ф. 107", "d": 20.54, "s": [[0.58, "Опись ф. 107 — во вкладке «Создать»", "Официальный бланк Почты России: два экземпляра на листе, итог считается сам."], [3.88, "Добавляем строку — внизу видно, сколько листов займёт опись", "Длинные названия не рвутся линиями бланка, а внизу сразу видно: «Опись займёт 2 листа»."], [11.83, "«Сократить названия» — и опись помещается на один лист", "«Общество с ограниченной ответственностью» → «ООО», «государственной пошлины» → «госпошлины». Любую строку можно поправить."], [14.96, "Готовый бланк Почты России", "PDF готов: распечатать, подписать и отнести на почту."]]}, {"k": "prac", "t": "Практика и нормы", "d": 16.96, "s": [[0.58, "Судебная практика — по доводам", "Под каждым доводом — акты, которые его подкрепляют: позиция суда, цитата, как применяем."], [2.5, "Вставляем реквизиты, как в иске, — остальное программа заполнит сама", "Из строки «Определение ВС РФ от 12.03.2024 № 305-ЭС23-1234» программа сама заполнила вид акта, суд, дату и номер."], [8.0, "Нормы права — одной строкой", "Перечислили статьи через запятую — они разложились по кодексам и статьям. Ссылка на текст — рядом."]]}, {"k": "terms", "t": "Сроки и пошлина", "d": 17.83, "s": [[0.79, "Главная: всё срочное на сегодня и неделю", "Заседания и сроки на неделю, горящие и просроченные, напоминания и недавние дела — на одном экране."], [3.04, "Открываем дело", "Щелчок по делу в списке слева — и вы во всех его вкладках: документы, сроки, практика, деньги."], [5.38, "Процессуальный срок — с учётом выходных и праздников", "Поменяли длительность — последний день срока пересчитался сразу, с учётом нерабочих дней по АПК, ГПК и КАС."], [11.5, "Госпошлина — за секунду", "Ввели цену иска — пошлина по ст. 333.21 НК РФ посчитана, с расшифровкой расчёта."]]}, {"k": "client", "t": "Доверитель и деньги", "d": 16.46, "s": [[0.58, "Папка доверителя — сводка по всем его делам", "Все дела клиента, сроки по ним и деньги — начислено, оплачено, долг — в одной сводке."], [5.75, "Обзор дела: ближайшее, заметки, документы", "Номер, суд, судья, ближайшее заседание, заметки к заседанию и последние документы."], [9.62, "Деньги: часы, ставка, оплаты и долг", "Учёт работы по делу: программа сама считает начислено, оплачено и долг доверителя."], [12.75, "Сроки дела — с напоминаниями", "Все заседания, сроки и задачи дела — программа напомнит о них заранее."]]}];
+  var tabs = document.getElementById("exTabs"), steps = document.getElementById("exSteps"), video = document.getElementById("exVideo");
+  var sec = document.getElementById("examples"), play = document.getElementById("exPlay"), prog = document.getElementById("exProg");
+  var cur = 0, visible = false, userPaused = false, lis = [];
   EX.forEach(function (e, i) {
     var b = document.createElement("button"); b.textContent = e.t;
-    b.onclick = function () { pick(i, 0, true); }; tabs.appendChild(b);
-    e.s.forEach(function (x) { var im = new Image(); im.alt = x[1]; im.loading = "lazy"; im.src = "img/ex/" + x[0] + ".webp"; im.dataset.k = i + ":" + x[0]; frame.appendChild(im); });
+    b.onclick = function () { pick(i, 0); }; tabs.appendChild(b);
   });
-  function pick(i, k, user) {
-    cur = i; st = k;
+  function pick(i, k) {
+    cur = i; var e = EX[i];
     [].forEach.call(tabs.children, function (b, j) { b.classList.toggle("on", j === i); });
-    steps.innerHTML = "";
-    EX[i].s.forEach(function (x, j) {
+    steps.innerHTML = ""; lis = [];
+    e.s.forEach(function (x, j) {
       var li = document.createElement("li"); li.innerHTML = "<b></b><span></span><i class='bar'></i>";
       li.querySelector("b").textContent = x[1]; li.querySelector("span").textContent = x[2];
-      li.style.setProperty("--dur", DUR + "ms"); li.onclick = function () { pick(cur, j, true); }; steps.appendChild(li);
+      li.onclick = function () { video.currentTime = Math.max(0, x[0] - 0.2); go(); }; steps.appendChild(li); lis.push(li);
     });
-    var key = i + ":" + EX[i].s[k][0];
-    [].forEach.call(frame.querySelectorAll("img"), function (im) { im.classList.toggle("on", im.dataset.k === key); });
-    var li = steps.children[k]; li.classList.add("on");
-    clearTimeout(timer);
-    if (visible) timer = setTimeout(next, DUR);
+    video.poster = "video/" + e.k + ".webp";
+    video.innerHTML = '<source src="video/' + e.k + '.mp4" type="video/mp4"><source src="video/' + e.k + '.webm" type="video/webm">';
+    video.load();
+    if (k) video.currentTime = e.s[k][0];
+    go();
   }
-  function next() {
-    var k = st + 1, i = cur;
-    if (k >= EX[i].s.length) { k = 0; i = (i + 1) % EX.length; }
-    pick(i, k);
-  }
-  frame.onclick = function () {
-    var on = frame.querySelector("img.on"); if (!on) return;
-    var lb = document.getElementById("lb"); lb.querySelector("img").src = on.src; lb.classList.add("on");
+  function go() { if (visible && !userPaused) { var p = video.play(); if (p && p.catch) p.catch(function () {}); } }
+  video.addEventListener("timeupdate", function () {
+    var e = EX[cur], t = video.currentTime, k = 0;
+    e.s.forEach(function (x, j) { if (t >= x[0] - 0.05) k = j; });
+    lis.forEach(function (li, j) {
+      li.classList.toggle("on", j === k);
+      var a = e.s[j][0], b = j + 1 < e.s.length ? e.s[j + 1][0] : (video.duration || e.d);
+      li.querySelector(".bar").style.transform = "scaleX(" + (j === k ? Math.min(1, Math.max(0, (t - a) / (b - a))) : (j < k ? 0 : 0)) + ")";
+    });
+    prog.style.width = (100 * t / (video.duration || e.d)) + "%";
+  });
+  video.addEventListener("ended", function () { pick((cur + 1) % EX.length, 0); });   // по кругу: следующий пример
+  play.onclick = function (ev) {
+    ev.stopPropagation(); userPaused = !video.paused;
+    if (video.paused) { userPaused = false; go(); } else video.pause();
   };
-  sec.addEventListener("mouseenter", function () { sec.classList.add("paused"); clearTimeout(timer); });
-  sec.addEventListener("mouseleave", function () { sec.classList.remove("paused"); if (visible) { clearTimeout(timer); timer = setTimeout(next, DUR / 2); } });
+  video.addEventListener("play", function () { play.textContent = "❚❚"; play.setAttribute("aria-label", "Пауза"); });
+  video.addEventListener("pause", function () { play.textContent = "▶"; play.setAttribute("aria-label", "Смотреть"); });
+  document.getElementById("exFull").onclick = function (ev) {
+    ev.stopPropagation(); var f = document.getElementById("exFrame");
+    if (document.fullscreenElement) document.exitFullscreen(); else if (f.requestFullscreen) f.requestFullscreen();
+    else if (video.webkitEnterFullscreen) video.webkitEnterFullscreen();
+  };
+  document.getElementById("exFrame").onclick = function () {      // щелчок по видео — пауза/продолжить
+    if (video.paused) { userPaused = false; go(); } else { userPaused = true; video.pause(); }
+  };
   if ("IntersectionObserver" in window) {
-    new IntersectionObserver(function (es) { es.forEach(function (e) {
-      visible = e.isIntersecting; clearTimeout(timer); if (visible) pick(cur, st); }); }, { threshold: .35 }).observe(sec);
+    new IntersectionObserver(function (es) { es.forEach(function (en) {
+      visible = en.isIntersecting; if (visible) go(); else video.pause(); }); }, { threshold: .3 }).observe(sec);
   } else visible = true;
   pick(0, 0);
 })();
