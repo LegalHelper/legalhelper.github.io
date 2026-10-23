@@ -1,0 +1,22 @@
+{
+ "config.json": {
+  "size": 199,
+  "sha256": "6b495f4d1d32d8aca0c5c6d4cd7d863e65e899537970f1cfcef319e8c9f3af1c"
+ },
+ "pooling.json": {
+  "size": 196,
+  "sha256": "170d94c5493425d99fe17642c8969de0f689bb052a4f6eae4cb22726fb62ca00"
+ },
+ "rubert-tiny-turbo.npz": {
+  "size": 28116462,
+  "sha256": "23d4a3bbba7b43e63fbc80bc4ab67136b801572ecb4ec64d9641cce215adcf12"
+ },
+ "tokenizer_config.json": {
+  "size": 1293,
+  "sha256": "3e741fa769b1f026ea1752f224a73c78d74053c2de6871155c8d54d94b5c0894"
+ },
+ "vocab.txt": {
+  "size": 1164495,
+  "sha256": "922e683050fe99b6c458e2cde448bd7e090846afe5f4a66db5207b139d5a226f"
+ }
+}
