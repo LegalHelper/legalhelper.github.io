@@ -283,6 +283,15 @@ var DATA = {"KEY_RATES": [["2013-09-13", 5.5], ["2014-03-03", 7.0], ["2014-04-28
   // ---- проценты по ст. 395 (как legal_core.interest_calc, mode="395")
   document.getElementById("dataDate").textContent = DATA.DATA_DATE;
   var RATES = DATA.KEY_RATES.map(function (r) { return [parse(r[0]), r[1]]; });
+  // свежая ключевая ставка: key_rates.json обновляется по данным Банка России трижды в день
+  fetch("key_rates.json", { cache: "no-store" }).then(function (r) { return r.json(); }).then(function (k) {
+    if (!k || !k.rates || k.rates.length < 50) return;
+    RATES = k.rates.map(function (r) { return [parse(r[0]), +r[1]]; });
+    var last = k.rates[k.rates.length - 1];
+    document.getElementById("dataDate").textContent = (k.updated ? k.updated.split("-").reverse().join(".") : DATA.DATA_DATE) +
+      " (сейчас " + String(last[1]).replace(".", ",") + "% с " + last[0].split("-").reverse().join(".") + ")";
+    if (typeof p395 === "function") p395();
+  }).catch(function () {});
   function rateOn(d) { var v = null; for (var i = 0; i < RATES.length; i++) { if (RATES[i][0] <= d) v = RATES[i][1]; else break; } return v; }
   function ydays(y) { return (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0 ? 366 : 365; }
   var pF = document.getElementById("pFrom"), pT = document.getElementById("pTo"), pays = document.getElementById("pPays");
