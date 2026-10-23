@@ -1,0 +1,12 @@
+name: probe
+on:
+  workflow_dispatch:
+    inputs:
+      docs:
+        default: "5142 305 37800 10699 39331"
+jobs:
+  p:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python tools/probe.py ${{ github.event.inputs.docs }}
