@@ -3,738 +3,533 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LegalHelper — программа для юристов</title>
-<meta name="description" content="LegalHelper — бесплатная программа для юристов и адвокатов на Windows: документы дела в одном PDF, опись ф. 107, процессуальные сроки, судебная практика по доводам. Данные хранятся на вашем компьютере.">
-<meta name="theme-color" content="#1565c0">
+<title>LegalHelper — программа для юристов и адвокатов</title>
+<meta name="description" content="LegalHelper — бесплатная программа для юристов и адвокатов на Windows: документы дела, процессуальные сроки, почтовые отправления, нормы и судебная практика, расчёты. Данные хранятся на вашем компьютере.">
+<meta name="theme-color" content="#070f24">
 <link rel="icon" href="img/logo-blue.svg" type="image/svg+xml">
 <style>
 @font-face { font-family: 'Inter Tight'; font-style: normal; font-weight: 300 600; font-display: swap; src: url(fonts/InterTight-cyrillic-ext.woff2) format('woff2'); unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F; }
 @font-face { font-family: 'Inter Tight'; font-style: normal; font-weight: 300 600; font-display: swap; src: url(fonts/InterTight-cyrillic.woff2) format('woff2'); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
 @font-face { font-family: 'Inter Tight'; font-style: normal; font-weight: 300 600; font-display: swap; src: url(fonts/InterTight-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 
-:root { --ink: #0f2236; --mute: #6b7a8c; --line: #dfe6ee; --bg: #fff; --soft: #f4f6f9;
-  --blue: #1565c0; --blue2: #0d3e70; --sky: #3aa0ef; }
+:root {
+  --navy: #070f24; --navy2: #0c1a3e; --blue: #1f4dff; --blue-h: #3b63ff; --sky: #7fa2ff;
+  --ink: #0b1220; --mute: #687387; --line: #dfe3ea; --soft: #f2f3f6; --bg: #fff;
+}
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--bg); color: var(--ink); overflow-x: hidden;
-  font: 400 16px/1.6 "Inter Tight", -apple-system, "Segoe UI", Roboto, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+body { margin: 0; background: var(--soft); color: var(--ink); overflow-x: hidden;
+  font: 400 16px/1.55 "Inter Tight", -apple-system, "Segoe UI", Roboto, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
 a { color: inherit; }
 img { display: block; max-width: 100%; height: auto; }
-.wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
-@media (max-width: 600px) { .wrap { padding: 0 18px; } }
-h2 { font-weight: 400; font-size: clamp(28px, 3.2vw, 40px); line-height: 1.15; letter-spacing: -.01em; margin: 0; }
-.small { font-size: 13px; color: var(--mute); }
-.blue { background: linear-gradient(135deg, #2a8ae0 0%, var(--blue) 45%, var(--blue2) 100%); color: #fff; position: relative; overflow: hidden; }
-.blue .small { color: rgba(255,255,255,.72); }
+button { font: inherit; color: inherit; }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+@media (max-width: 640px) { .wrap { padding: 0 16px; } }
+.up { text-transform: uppercase; letter-spacing: .01em; }
+.cap { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+.mute { color: var(--mute); }
+h2 { font-weight: 500; text-transform: uppercase; font-size: clamp(26px, 3.4vw, 46px); line-height: 1.05; letter-spacing: -.01em; margin: 0; }
+section { position: relative; }
+.sec { padding: 120px 0; }
+@media (max-width: 800px) { .sec { padding: 76px 0; } }
+.arrow::after { content: "↗"; margin-left: 8px; font-size: .95em; }
 
-/* кнопки */
-.btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 24px; font-weight: 500; font-size: 15px; text-decoration: none;
-  background: var(--blue); color: #fff; border: 1px solid var(--blue); transition: background .2s, color .2s, border-color .2s; }
-.btn:hover { background: var(--blue2); border-color: var(--blue2); }
-.btn.white { background: #fff; color: var(--blue); border-color: #fff; }
-.btn.white:hover { background: transparent; color: #fff; }
-.btn.ghost { background: transparent; color: #fff; border-color: rgba(255,255,255,.55); }
-.btn.ghost:hover { border-color: #fff; background: rgba(255,255,255,.08); }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 22px; font-size: 13px; letter-spacing: .06em;
+  text-transform: uppercase; text-decoration: none; background: var(--blue); color: #fff; border: 1px solid var(--blue);
+  transition: background .2s, border-color .2s, color .2s; cursor: pointer; }
+.btn:hover { background: var(--blue-h); border-color: var(--blue-h); }
+.btn.line { background: transparent; color: inherit; border-color: currentColor; }
+.btn.line:hover { background: var(--blue); border-color: var(--blue); color: #fff; }
 
-/* шапка */
-header { position: sticky; top: 0; z-index: 40; background: rgba(255,255,255,.96); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
-header .wrap { display: flex; align-items: center; gap: 30px; height: 66px; }
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.logo img { width: 34px; height: 34px; }
-.logo b { display: block; font-weight: 600; font-size: 15px; letter-spacing: .06em; line-height: 1; }
-.logo small { display: block; font-size: 8.5px; letter-spacing: .2em; color: var(--mute); margin-top: 3px; }
+/* ---------- шапка ---------- */
+header { position: fixed; inset: 0 0 auto 0; z-index: 50; transition: background .3s, border-color .3s; border-bottom: 1px solid transparent; }
+header.solid { background: rgba(7,15,36,.92); backdrop-filter: blur(10px); border-color: rgba(255,255,255,.08); }
+.bar { display: flex; align-items: center; gap: 28px; height: 68px; color: #fff; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 600; letter-spacing: .04em; }
+.logo img { width: 28px; height: 28px; }
 nav { display: flex; gap: 26px; margin-left: auto; }
-nav a { font-size: 14px; text-decoration: none; color: var(--ink); position: relative; padding: 4px 0; }
-nav a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: 0; height: 1px; background: var(--blue); transition: right .25s; }
-nav a:hover::after { right: 0; }
-header .btn { padding: 10px 18px; font-size: 14px; }
-@media (max-width: 860px) { nav { display: none; } header .btn { margin-left: auto; } }
+nav a { text-decoration: none; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; opacity: .8; }
+nav a:hover { opacity: 1; }
+.bar .btn { padding: 10px 18px; }
+@media (max-width: 900px) { nav { display: none; } .bar .btn { margin-left: auto; } }
 
-/* первый экран */
-.hero { min-height: 560px; display: flex; }
-.shapes { position: absolute; inset: 0; width: 100%; height: 100%; }
-.shapes polygon { transition: transform 1.6s cubic-bezier(.2,.8,.2,1); }
-.hero .wrap { position: relative; z-index: 1; width: 100%; display: grid; grid-template-columns: 1fr 1fr; align-items: end; padding-top: 70px; padding-bottom: 46px; }
-.hero .left { align-self: end; }
-.hero .left p { margin: 0 0 22px; font-size: 15px; color: rgba(255,255,255,.85); max-width: 330px; }
-.hero .cta { display: flex; gap: 10px; flex-wrap: wrap; }
-.hero .meta { margin-top: 14px; font-size: 12px; color: rgba(255,255,255,.65); }
-.mark { align-self: center; justify-self: end; text-align: left; padding-bottom: 40px; }
-.mark .word { font-weight: 300; font-size: clamp(46px, 6.4vw, 92px); letter-spacing: .06em; line-height: 1; }
-.mark .sub { font-weight: 600; font-size: clamp(14px, 1.7vw, 24px); letter-spacing: .12em; margin-top: 10px; }
-.phone-note { display: none; margin-top: 14px; font-size: 13px; color: rgba(255,255,255,.8); }
-@media (max-width: 860px) {
-  .hero { min-height: 0; } .hero .wrap { grid-template-columns: 1fr; padding-top: 56px; gap: 40px; }
-  .mark { justify-self: start; order: -1; padding-bottom: 0; }
-}
+/* ---------- первый экран ---------- */
+.hero { background: radial-gradient(1200px 700px at 55% 30%, #12245a 0%, var(--navy) 60%); color: #fff; overflow: hidden; padding-top: 68px; }
+.themis { position: absolute; right: max(0px, calc((100vw - 1240px) / 2)); top: 52px; width: min(430px, 90vw); pointer-events: none; }
+.themis svg { width: 100%; height: auto; overflow: visible; filter: drop-shadow(0 0 14px rgba(80,120,255,.45)); }
+.themis .ln { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 2.6s cubic-bezier(.6,.1,.2,1) forwards; }
+.themis .dim { stroke-opacity: .45; }
+.themis .orbit { transform-origin: 225px 300px; animation: spin 90s linear infinite; }
+.themis .orbit2 { transform-origin: 225px 300px; animation: spin 140s linear infinite reverse; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (max-width: 900px) { .themis { opacity: .35; right: -60px; top: 110px; width: 360px; } }
+@media (prefers-reduced-motion: reduce) { .themis .ln { animation: none; stroke-dashoffset: 0; } .themis .orbit, .themis .orbit2 { animation: none; } }
+.hero .top { position: relative; padding-top: 90px; min-height: 560px; }
+.hero h1 { position: relative; z-index: 2; margin: 0; font-weight: 500; text-transform: uppercase; line-height: .95; letter-spacing: -.02em; font-size: clamp(44px, 7vw, 108px); }
+.hero h1 span { display: block; }
+.hero h1 .r2 { padding-left: 1.2em; color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,.9); }
+.hero .lead { position: relative; z-index: 2; width: 340px; margin-top: 34px; font-size: 15px; color: rgba(255,255,255,.75); }
+.hero .lead .btn { margin-top: 18px; }
+.hero .ver { font-size: 12px; color: rgba(255,255,255,.5); margin-top: 10px; }
+@media (max-width: 900px) { .hero .lead { width: auto; max-width: 420px; } .hero .top { min-height: 0; padding-bottom: 40px; } }
+.strip { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 70px; border-top: 1px solid rgba(255,255,255,.12); }
+.strip a { padding: 22px 18px 70px 0; text-decoration: none; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.85);
+  border-right: 1px solid rgba(255,255,255,.12); transition: color .2s; }
+.strip a + a { padding-left: 18px; }
+.strip a:last-child { border-right: 0; }
+.strip a:hover { color: var(--sky); }
+@media (max-width: 760px) { .strip { grid-template-columns: 1fr 1fr; } .strip a { padding-bottom: 26px; border-bottom: 1px solid rgba(255,255,255,.12); } .strip a:nth-child(odd) { padding-left: 0; } .strip a:nth-child(even) { border-right: 0; } }
+.panel { position: relative; margin-left: 26%; background: linear-gradient(180deg, rgba(12,26,62,.85), rgba(7,15,36,.95));
+  border: 1px solid rgba(255,255,255,.08); border-bottom: 0; padding: 44px 40px 30px; }
+@media (max-width: 900px) { .panel { margin-left: 0; padding: 32px 20px 24px; } }
+.panel p.big { margin: 0; font-size: clamp(20px, 2.6vw, 34px); line-height: 1.12; text-transform: uppercase; font-weight: 500; text-align: justify; text-align-last: justify; }
+@media (max-width: 640px) { .panel p.big { text-align: left; text-align-last: left; } }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 46px; }
+.stat .n { font-style: normal; }
+.stat b { display: block; font-weight: 300; font-size: clamp(38px, 5vw, 68px); line-height: 1; letter-spacing: -.02em; }
+.stat b i { font-style: normal; color: var(--blue-h); }
+.stat span { display: block; margin-top: 10px; font-size: 12px; color: rgba(255,255,255,.6); letter-spacing: .04em; }
+@media (max-width: 640px) { .stats { grid-template-columns: 1fr; } }
 
-/* возможности — список */
-.solutions { padding: 96px 0; }
-.solutions .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
-.solutions .brand { margin-top: 70px; display: flex; flex-direction: column; align-items: center; gap: 18px; }
-.solutions .brand img { width: 120px; height: 120px; }
-.solutions .brand b { font-weight: 300; font-size: 34px; letter-spacing: .08em; line-height: 1; }
-.solutions .brand small { font-weight: 600; font-size: 11px; letter-spacing: .2em; }
-.solutions .intro { font-size: 14px; color: var(--mute); margin: 64px 0 30px; max-width: 420px; }
-.list { border-top: 1px solid var(--line); }
-.item { border-bottom: 1px solid var(--line); }
-.item button { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 16px; background: none; border: 0;
-  padding: 15px 0; cursor: pointer; font: inherit; font-size: 16px; color: var(--ink); text-align: left; }
-.item button span { font-size: 12px; color: var(--mute); white-space: nowrap; transition: color .2s; }
-.item button:hover span { color: var(--blue); }
-.item button i { display: inline-block; font-style: normal; transition: transform .25s; margin-left: 4px; }
-.item.open button i { transform: rotate(90deg); }
-.item .body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .35s ease; }
-.item .body > div { overflow: hidden; }
-.item .body p { margin: 0 0 16px; font-size: 14px; color: var(--mute); max-width: 520px; }
-.item.open .body { grid-template-rows: 1fr; }
-@media (max-width: 860px) { .solutions .wrap { grid-template-columns: 1fr; gap: 10px; } .solutions .brand { display: none; } .solutions .intro { margin-top: 20px; } }
+/* ---------- задачи ---------- */
+.tasks { background: #fff; }
+.tasks h2 { text-align: center; }
+.seg { display: grid; grid-template-columns: 1fr 1fr; margin-top: 50px; border: 1px solid var(--blue); }
+.seg button { padding: 13px; border: 0; background: transparent; cursor: pointer; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--blue); }
+.seg button.on { background: var(--blue); color: #fff; }
+.grid { display: none; grid-template-columns: repeat(4, 1fr); margin-top: 26px; border-left: 1px solid var(--line); border-top: 1px solid var(--line); }
+.grid.on { display: grid; }
+.grid div { padding: 22px 20px 36px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); min-height: 190px; transition: background .25s; }
+.grid div:hover { background: var(--soft); }
+.grid .cap { color: var(--blue); }
+.grid p { margin: 14px 0 0; font-size: 15px; }
+@media (max-width: 980px) { .grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .grid { grid-template-columns: 1fr; } .grid div { min-height: 0; } }
 
+/* ---------- бегущая строка ---------- */
+.run { background: var(--blue); color: #fff; overflow: hidden; white-space: nowrap; padding: 16px 0; }
+.run div { display: inline-block; animation: run 38s linear infinite; font-size: clamp(22px, 2.6vw, 34px); text-transform: uppercase; letter-spacing: -.01em; }
+.run span { margin: 0 22px; opacity: .55; }
+@keyframes run { to { transform: translateX(-50%); } }
 
-/* снимок программы рядом со списком возможностей */
-.demo { margin-top: 34px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: #fff; box-shadow: 0 24px 60px rgba(15,34,54,.12); }
-.demo .shot { position: relative; aspect-ratio: 1440 / 790; background: #eef2f6; cursor: zoom-in; }
-.demo .shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity .45s ease; }
-.demo .shot img.on { opacity: 1; }
-.demo .cap2 { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 11px 14px 12px; border-top: 1px solid var(--line); font-size: 12.5px; }
-.demo .cap2 b { font-weight: 500; color: var(--blue); } .demo .cap2 span { color: var(--mute); }
-/* преимущества — синий блок */
-.benefits { padding: 86px 0 96px; }
-.benefits .wrap { position: relative; z-index: 1; }
-.cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 50px 40px; margin-top: 54px; }
-.col .n { font-weight: 300; font-size: 34px; line-height: 1; }
-.col b { display: block; font-weight: 500; font-size: 15px; margin: 18px 0 8px; }
-.col p { margin: 0; font-size: 13.5px; line-height: 1.55; color: rgba(255,255,255,.75); }
-@media (max-width: 860px) { .cols { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 520px) { .cols { grid-template-columns: 1fr; gap: 34px; } }
+/* ---------- новое ---------- */
+.news { background: #fff; }
+.news .cols { display: grid; grid-template-columns: 1fr 1.4fr; gap: 40px; }
+@media (max-width: 900px) { .news .cols { grid-template-columns: 1fr; } }
+.news h2 { font-size: clamp(24px, 2.6vw, 34px); }
+.rows .r { display: grid; grid-template-columns: 56px 1fr; gap: 20px; padding: 22px 0; border-top: 1px solid var(--line); }
+.rows .r:last-child { border-bottom: 1px solid var(--line); }
+.rows .r b { font-weight: 300; font-size: 22px; color: var(--blue); line-height: 1.2; }
+.rows .r span { font-size: 16px; }
+@media (max-width: 560px) { .rows .r { grid-template-columns: 1fr; gap: 6px; } }
 
-/* о программе и цифры */
-.about { padding: 96px 0 40px; background: var(--soft); }
-.about .top { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
-.about .top p { margin: 0; font-size: 14px; color: var(--mute); }
-.about .top p + p { margin-top: 14px; }
-.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; margin-top: 64px; }
-.stat small { display: block; font-size: 12px; color: var(--mute); padding-bottom: 12px; border-bottom: 1px solid #c9d3de; min-height: 46px; }
-.stat b { display: block; font-weight: 300; font-size: clamp(46px, 5.2vw, 70px); line-height: 1.1; letter-spacing: -.02em; margin-top: 8px; }
-@media (max-width: 860px) { .about .top { grid-template-columns: 1fr; gap: 20px; } .stats { grid-template-columns: 1fr 1fr; } }
+/* ---------- видео ---------- */
+.video { background: var(--navy); color: #fff; }
+.video h2 { text-align: center; }
+.video .sub { text-align: center; color: rgba(255,255,255,.6); margin: 16px auto 0; max-width: 560px; }
+.vtabs { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin: 44px 0 26px; }
+.vtabs button { border: 1px solid rgba(255,255,255,.2); background: transparent; padding: 9px 14px; cursor: pointer; font-size: 12px; letter-spacing: .05em; text-transform: uppercase; }
+.vtabs button.on, .vtabs button:hover { background: var(--blue); border-color: var(--blue); }
+.player { display: grid; grid-template-columns: 1.7fr 1fr; gap: 26px; }
+@media (max-width: 980px) { .player { grid-template-columns: 1fr; } }
+.frame { position: relative; background: #000; border: 1px solid rgba(255,255,255,.1); cursor: pointer; }
+.frame video { display: block; width: 100%; height: auto; }
+.frame .ctl { position: absolute; left: 12px; bottom: 12px; display: flex; gap: 8px; }
+.frame .ctl button { width: 38px; height: 38px; border: 0; background: rgba(7,15,36,.8); cursor: pointer; }
+.frame .prog { position: absolute; left: 0; bottom: 0; height: 3px; background: var(--blue-h); width: 0; }
+.steps { list-style: none; padding: 0; margin: 0; }
+.steps li { position: relative; padding: 14px 0 16px; border-top: 1px solid rgba(255,255,255,.12); cursor: pointer; color: rgba(255,255,255,.55); transition: color .2s; }
+.steps li.on { color: #fff; }
+.steps li b { display: block; font-weight: 500; font-size: 15px; }
+.steps li span { display: block; font-size: 13px; margin-top: 4px; }
+.steps li .bar { position: absolute; left: 0; top: -1px; height: 1px; width: 100%; background: var(--blue-h); transform: scaleX(0); transform-origin: left; }
 
-/* снимки — карусель */
-.shots { padding: 70px 0 96px; background: var(--soft); }
-.head { display: flex; justify-content: space-between; align-items: center; gap: 20px; margin-bottom: 30px; }
-.arrows { display: flex; gap: 8px; }
-.arrows button { width: 40px; height: 40px; border-radius: 50%; border: 0; background: var(--ink); color: #fff; cursor: pointer; font-size: 16px; transition: background .2s; }
-.arrows button:hover { background: var(--blue); }
-.track { display: flex; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 6px; }
-.track::-webkit-scrollbar { display: none; }
-.card { flex: none; width: min(520px, 82vw); cursor: zoom-in; scroll-snap-align: start; background: #fff; border: 1px solid var(--line); text-decoration: none; transition: box-shadow .3s, transform .3s; }
-.card:hover { box-shadow: 0 16px 40px rgba(15,34,54,.12); transform: translateY(-4px); }
-.card .pic { aspect-ratio: 16 / 10.5; overflow: hidden; background: #eef2f6; display: grid; place-items: center; }
-.card .pic img { width: 100%; height: 100%; object-fit: contain; }
-.card .cap { padding: 14px 16px 16px; }
-.card .cap b { display: block; font-weight: 500; font-size: 15px; }
-.card .cap span { font-size: 13px; color: var(--mute); }
+/* ---------- калькуляторы ---------- */
+.calcs .cols { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 50px; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.calcs a { display: block; padding: 28px 24px 34px; text-decoration: none; background: #fff; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); transition: background .25s, color .25s; }
+.calcs a:hover { background: var(--blue); color: #fff; }
+.calcs a:hover .mute { color: rgba(255,255,255,.75); }
+.calcs b { display: block; font-weight: 500; font-size: 20px; text-transform: uppercase; margin: 46px 0 10px; }
+@media (max-width: 860px) { .calcs .cols { grid-template-columns: 1fr; } }
 
-.lb { position: fixed; inset: 0; z-index: 100; background: rgba(9,20,33,.86); display: none; align-items: center; justify-content: center; padding: 30px; cursor: zoom-out; }
-.lb.on { display: flex; } .lb img { max-width: 100%; max-height: 100%; box-shadow: 0 30px 80px rgba(0,0,0,.5); background: #fff; }
-.lb span { position: absolute; top: 14px; right: 22px; color: #fff; font-size: 28px; }
-/* примеры из работы — настоящие снимки программы по шагам */
-.ex { padding: 80px 0 90px; }
-.ex .head { display: flex; justify-content: space-between; align-items: end; gap: 30px; flex-wrap: wrap; margin-bottom: 26px; }
-.ex .tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 26px; }
-.ex .tabs button { border: 1px solid var(--line); background: #fff; color: var(--ink); padding: 10px 16px; font: 500 14px "Inter Tight", sans-serif; cursor: pointer; transition: background .2s, color .2s, border-color .2s; }
-.ex .tabs button:hover { border-color: var(--blue); color: var(--blue); }
-.ex .tabs button.on { background: var(--blue); border-color: var(--blue); color: #fff; }
-.ex .body { display: grid; grid-template-columns: 300px 1fr; gap: 30px; align-items: start; }
-.ex ol { list-style: none; margin: 0; padding: 0; counter-reset: st; }
-.ex li { position: relative; padding: 14px 0 14px 46px; border-top: 1px solid var(--line); cursor: pointer; color: var(--mute); transition: color .2s; counter-increment: st; }
-.ex li:last-child { border-bottom: 1px solid var(--line); }
-.ex li::before { content: counter(st); position: absolute; left: 0; top: 13px; width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line);
-  display: grid; place-items: center; font-size: 13px; font-weight: 500; color: var(--mute); background: #fff; transition: all .25s; }
-.ex li b { display: block; font-weight: 500; font-size: 15.5px; color: var(--ink); margin-bottom: 2px; }
-.ex li span { font-size: 13.5px; line-height: 1.5; display: block; }
-.ex li.on::before { background: var(--blue); border-color: var(--blue); color: #fff; }
-.ex li.on b { color: var(--blue); }
-.ex li .bar { position: absolute; left: 46px; right: 0; bottom: -1px; height: 2px; background: var(--blue); transform-origin: left; transform: scaleX(0); }
-.ex li .bar { transition: transform .25s linear; }
-.ex .frame { position: relative; background: #eef2f6; border: 1px solid var(--line); box-shadow: 0 24px 60px rgba(15,34,54,.14); cursor: pointer; aspect-ratio: 1444 / 800; overflow: hidden; }
-.ex .frame video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; display: block; background: #f2f2f7; }
-.ex .vbtn { position: absolute; right: 12px; bottom: 14px; width: 38px; height: 38px; border-radius: 50%; border: 0; background: rgba(15,34,54,.72); color: #fff; font-size: 13px; cursor: pointer; opacity: 0; transition: opacity .25s; }
-.ex .vbtn.full { right: 58px; font-size: 16px; }
-.ex .frame:hover .vbtn, .ex .vbtn:focus { opacity: 1; }
-.ex .frame:fullscreen { aspect-ratio: auto; background: #0f2236; } .ex .frame:fullscreen .vbtn { opacity: 1; }
-.ex .vprog { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(15,34,54,.12); }
-.ex .vprog i { display: block; height: 100%; width: 0; background: var(--blue); }
-.ex .note { margin-top: 10px; font-size: 12.5px; color: var(--mute); }
-@media (max-width: 900px) { .ex .body { grid-template-columns: 1fr; gap: 18px; } .ex .fw { order: -1; } }
-/* экономия */
-.save { padding: 96px 0; }
-.save .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
-.rows { margin-top: 30px; }
-.r { display: grid; grid-template-columns: 1fr 90px; gap: 16px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
-.r label { font-size: 15px; }
-.r small { display: block; font-size: 12px; color: var(--mute); }
-.r input { width: 100%; border: 1px solid var(--line); padding: 10px; font: 500 17px "Inter Tight", sans-serif; text-align: center; color: var(--ink); background: #fff; }
-.r input:focus { outline: none; border-color: var(--blue); }
-.res { border-left: 1px solid var(--line); padding-left: 50px; }
-.res .big { font-weight: 300; font-size: clamp(90px, 12vw, 160px); line-height: .9; color: var(--blue); letter-spacing: -.03em; }
-.res .big small { font-size: .22em; color: var(--ink); letter-spacing: 0; margin-left: 8px; }
-.res p { color: var(--mute); font-size: 14px; max-width: 380px; margin: 18px 0 0; }
-@media (max-width: 860px) { .save .wrap { grid-template-columns: 1fr; gap: 30px; } .res { border-left: 0; padding-left: 0; } }
+/* ---------- безопасность ---------- */
+.safe { background: var(--navy2); color: #fff; }
+.safe .cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 50px; border-top: 1px solid rgba(255,255,255,.14); }
+.safe .cols div { padding: 24px 22px 0 0; }
+.safe .cols div + div { padding-left: 22px; border-left: 1px solid rgba(255,255,255,.14); }
+.safe b { display: block; font-weight: 500; text-transform: uppercase; font-size: 14px; letter-spacing: .04em; }
+.safe p { color: rgba(255,255,255,.65); font-size: 14px; margin: 12px 0 0; }
+@media (max-width: 900px) { .safe .cols { grid-template-columns: 1fr 1fr; } .safe .cols div { padding: 22px 16px 22px 0 !important; border-left: 0 !important; border-bottom: 1px solid rgba(255,255,255,.14); } }
+@media (max-width: 560px) { .safe .cols { grid-template-columns: 1fr; } }
 
-/* установка — синяя полоса */
-.install { padding: 70px 0 74px; }
-.install .wrap { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1.4fr; gap: 50px; align-items: center; }
-.install p.lead { margin: 12px 0 0; font-size: 14px; color: rgba(255,255,255,.8); max-width: 380px; }
-.isteps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.isteps div { border: 1px solid rgba(255,255,255,.35); padding: 14px 16px; font-size: 13.5px; line-height: 1.45; }
-.isteps div b { display: block; font-weight: 300; font-size: 26px; margin-bottom: 6px; }
-.install .go { grid-column: 2; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
-.install .note { font-size: 12px; color: rgba(255,255,255,.7); max-width: 420px; }
-.install .note a { color: #fff; }
-@media (max-width: 860px) { .install .wrap { grid-template-columns: 1fr; gap: 26px; } .install .go { grid-column: auto; } .isteps { grid-template-columns: 1fr; } }
+/* ---------- вопросы ---------- */
+.faq .cols { display: grid; grid-template-columns: 1fr 1.6fr; gap: 40px; }
+@media (max-width: 900px) { .faq .cols { grid-template-columns: 1fr; } }
+.q { border-top: 1px solid var(--line); }
+.q:last-child { border-bottom: 1px solid var(--line); }
+.q button { width: 100%; text-align: left; background: none; border: 0; padding: 20px 40px 20px 0; cursor: pointer; font-size: 17px; font-weight: 500; position: relative; }
+.q button::after { content: "+"; position: absolute; right: 4px; top: 16px; font-size: 24px; font-weight: 300; transition: transform .25s; }
+.q.open button::after { transform: rotate(45deg); }
+.q div { max-height: 0; overflow: hidden; transition: max-height .35s ease; color: var(--mute); }
+.q.open div { max-height: 400px; }
+.q div p { margin: 0 0 20px; }
 
-footer { padding: 34px 0 40px; border-top: 1px solid var(--line); }
-footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; font-size: 13px; color: var(--mute); }
-footer .logo img { width: 26px; height: 26px; }
-footer a { text-decoration: none; } footer a:hover { color: var(--blue); }
-
-/* ИИ-помощник */
-.ai { padding: 96px 0; }
-.ai .wrap { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 56px; align-items: center; }
-.ai .badge { display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: .08em; color: var(--blue); border: 1px solid var(--blue); padding: 4px 10px; margin-bottom: 18px; }
-.ai p.lead { font-size: 15px; color: var(--mute); margin: 16px 0 0; max-width: 470px; }
-.ai ul { list-style: none; margin: 26px 0 0; padding: 0; border-top: 1px solid var(--line); }
-.ai li { padding: 13px 0 13px 34px; border-bottom: 1px solid var(--line); position: relative; font-size: 14.5px; }
-.ai li b { font-weight: 500; }
-.ai li::before { content: attr(data-i); position: absolute; left: 0; top: 12px; font-size: 17px; }
-.ai .prov { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 22px; }
-.ai .prov div { border: 1px solid var(--line); padding: 12px 14px; font-size: 13px; color: var(--mute); }
-.ai .prov b { display: block; color: var(--ink); font-weight: 500; font-size: 14.5px; margin-bottom: 2px; }
-.ai .vid { position: relative; background: #eef2f6; border: 1px solid var(--line); box-shadow: 0 24px 60px rgba(15,34,54,.14); aspect-ratio: 1444 / 800; overflow: hidden; }
-.ai .vid video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #f2f2f7; }
-.ai .note { font-size: 12.5px; color: var(--mute); margin-top: 10px; }
-@media (max-width: 900px) { .ai .wrap { grid-template-columns: 1fr; gap: 30px; } }
-@media (max-width: 480px) { .ai .prov { grid-template-columns: 1fr; } }
-/* для кого */
-.who { padding: 90px 0; background: var(--soft); }
-.who .cards3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 40px; }
-.who .c { background: #fff; border: 1px solid var(--line); padding: 26px 24px 22px; transition: box-shadow .3s, transform .3s; }
-.who .c:hover { box-shadow: 0 16px 40px rgba(15,34,54,.10); transform: translateY(-3px); }
-.who .c .ic { font-size: 30px; line-height: 1; }
-.who .c b { display: block; font-weight: 500; font-size: 18px; margin: 14px 0 10px; }
-.who .c ul { margin: 0; padding-left: 18px; font-size: 13.8px; color: var(--mute); }
-.who .c li { margin: 6px 0; }
-@media (max-width: 900px) { .who .cards3 { grid-template-columns: 1fr; } }
-/* калькуляторы */
-.calcs { padding: 90px 0; }
-.calcs .cards3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 36px; }
-.calcs a.c { display: block; border: 1px solid var(--line); padding: 26px 24px; text-decoration: none; transition: border-color .2s, box-shadow .3s, transform .3s; }
-.calcs a.c:hover { border-color: var(--blue); box-shadow: 0 16px 40px rgba(15,34,54,.10); transform: translateY(-3px); }
-.calcs .c .ic { font-size: 28px; }
-.calcs .c b { display: block; font-weight: 500; font-size: 17px; margin: 12px 0 6px; }
-.calcs .c span { font-size: 13.5px; color: var(--mute); display: block; }
-.calcs .c i { font-style: normal; color: var(--blue); font-size: 14px; display: block; margin-top: 14px; }
-@media (max-width: 900px) { .calcs .cards3 { grid-template-columns: 1fr; } }
-/* видео-уроки */
-.lessons { padding: 30px 0 90px; }
-.lgrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 30px; }
-.lgrid button { display: block; text-align: left; background: #fff; border: 1px solid var(--line); padding: 0; cursor: pointer; font: inherit; color: var(--ink); transition: box-shadow .3s, transform .3s; }
-.lgrid button:hover { box-shadow: 0 16px 40px rgba(15,34,54,.12); transform: translateY(-3px); }
-.lgrid .pic { position: relative; aspect-ratio: 1444 / 800; background: #eef2f6 center / contain no-repeat; }
-.lgrid .pic::after { content: "▶"; position: absolute; left: 50%; top: 50%; width: 46px; height: 46px; margin: -23px 0 0 -23px; border-radius: 50%;
-  background: rgba(21,101,192,.9); color: #fff; display: grid; place-items: center; font-size: 15px; padding-left: 3px; box-sizing: border-box; }
-.lgrid .t { padding: 12px 14px 14px; }
-.lgrid .t b { display: block; font-weight: 500; font-size: 14.5px; }
-.lgrid .t span { font-size: 12.5px; color: var(--mute); }
-.lgrid .new { color: var(--blue); font-weight: 600; font-size: 11px; letter-spacing: .06em; margin-left: 6px; }
-@media (max-width: 1000px) { .lgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 520px) { .lgrid { grid-template-columns: 1fr; } }
-/* что нового */
-.news { padding: 90px 0; background: var(--soft); }
-.news .wrap { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 56px; }
-.news .feed { border-top: 1px solid #c9d3de; }
-.news .v { border-bottom: 1px solid #c9d3de; padding: 16px 0; }
-.news .v h3 { margin: 0; font-weight: 500; font-size: 16px; }
-.news .v h3 small { font-weight: 600; color: var(--blue); margin-right: 8px; font-size: 13px; letter-spacing: .04em; }
-.news .v ul { margin: 8px 0 0; padding-left: 18px; font-size: 13.8px; color: var(--mute); }
-.news .v li { margin: 4px 0; }
-.news .more { margin-top: 16px; font-size: 14px; }
-@media (max-width: 900px) { .news .wrap { grid-template-columns: 1fr; gap: 24px; } }
-/* вопросы и безопасность */
-.faq { padding: 96px 0; }
-.faq .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 60px; }
-.faq .list { margin-top: 30px; }
-.faq .item .body p { max-width: none; }
-.safe { margin-top: 30px; display: grid; gap: 12px; }
-.safe div { border: 1px solid var(--line); padding: 16px 18px 16px 54px; position: relative; font-size: 13.8px; color: var(--mute); }
-.safe div::before { content: attr(data-i); position: absolute; left: 18px; top: 15px; font-size: 20px; }
-.safe b { display: block; color: var(--ink); font-weight: 500; font-size: 15px; margin-bottom: 2px; }
-@media (max-width: 900px) { .faq .wrap { grid-template-columns: 1fr; gap: 20px; } }
+/* ---------- установка ---------- */
+.install { background: var(--blue); color: #fff; overflow: hidden; }
+.install h2 { font-size: clamp(30px, 5vw, 72px); }
+.install .three { display: grid; grid-template-columns: repeat(3, 1fr); margin: 50px 0 40px; border-top: 1px solid rgba(255,255,255,.3); }
+.install .three div { padding: 20px 20px 0 0; }
+.install .three b { display: block; font-weight: 300; font-size: 44px; line-height: 1; }
+.install .three span { display: block; margin-top: 10px; color: rgba(255,255,255,.85); }
+@media (max-width: 700px) { .install .three { grid-template-columns: 1fr; } .install .three div { padding-bottom: 18px; } }
+.install .btn { background: #fff; color: var(--blue); border-color: #fff; }
+.install .btn:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+.install .small { margin-top: 18px; font-size: 13px; color: rgba(255,255,255,.75); max-width: 640px; }
+footer { background: var(--navy); color: rgba(255,255,255,.6); font-size: 13px; padding: 36px 0; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 18px 32px; align-items: center; }
+footer a { text-decoration: none; } footer a:hover { color: #fff; }
 
 /* появление */
-.rv { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.8,.2,1); }
+.rv { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
 .rv.in { opacity: 1; transform: none; }
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
-  .rv { opacity: 1 !important; transform: none !important; }
-}
+@media (prefers-reduced-motion: reduce) { .rv { opacity: 1; transform: none; transition: none; } .run div { animation: none; } html { scroll-behavior: auto; } }
+
+#phoneNote { display: none; margin-top: 14px; font-size: 13px; color: var(--sky); }
 </style>
 </head>
 <body>
 
-<header><div class="wrap">
-  <a class="logo" href="#"><img src="img/logo-blue.svg" alt=""><span><b>LEGALHELPER</b><small>ПРОГРАММА ДЛЯ ЮРИСТОВ</small></span></a>
-  <nav><a href="#solutions">Возможности</a><a href="#ai">ИИ-помощник</a><a href="calc.html">Калькуляторы</a><a href="#lessons">Видео-уроки</a><a href="#faq">Вопросы</a><a href="#install">Установка</a></nav>
-  <a class="btn" href="https://github.com/LegalHelper/legalhelper.github.io/releases/latest/download/LegalHelper-Setup.exe">Скачать</a>
-</div></header>
+<header id="hdr">
+  <div class="wrap bar">
+    <a class="logo" href="#"><img src="img/logo.svg" alt="">LEGALHELPER</a>
+    <nav><a href="#tasks">Возможности</a><a href="#video">Видео</a><a href="calc.html">Калькуляторы</a><a href="#faq">Вопросы</a></nav>
+    <a class="btn" href="https://github.com/LegalHelper/legalhelper.github.io/releases/latest/download/LegalHelper-Setup.exe">Скачать</a>
+  </div>
+</header>
 
-<section class="hero blue">
-  <svg class="shapes" viewBox="0 0 1440 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-    <polygon points="80,0 520,0 300,600 0,600 0,180" fill="#fff" opacity=".07" data-k="-0.6"/>
-    <polygon points="340,0 640,0 1440,250 1440,330 560,140" fill="#fff" opacity=".09" data-k="0.4"/>
-    <polygon points="620,600 1440,380 1440,600" fill="#071f3a" opacity=".28" data-k="0.25"/>
-    <polygon points="0,420 420,600 0,600" fill="#071f3a" opacity=".22" data-k="-0.3"/>
-    <polygon points="900,0 1200,0 1440,90 1440,160" fill="#fff" opacity=".06" data-k="0.7"/>
-  </svg>
+<!-- ============ первый экран ============ -->
+<section class="hero">
+  <div class="themis" aria-hidden="true">
+    <svg viewBox="0 0 420 640" id="themis">
+      <defs>
+        <radialGradient id="halo" cx="50%" cy="45%" r="50%">
+          <stop offset="0" stop-color="#3b63ff" stop-opacity=".75"/><stop offset=".55" stop-color="#1f4dff" stop-opacity=".25"/><stop offset="1" stop-color="#1f4dff" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="blade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe0ff" stop-opacity=".9"/><stop offset="1" stop-color="#7fa2ff" stop-opacity=".2"/></linearGradient>
+      </defs>
+      <circle cx="225" cy="300" r="250" fill="url(#halo)"/>
+      <circle class="orbit" cx="225" cy="300" r="232" fill="none" stroke="#7fa2ff" stroke-opacity=".35" stroke-width="1" stroke-dasharray="2 9"/>
+      <circle class="orbit2" cx="225" cy="300" r="268" fill="none" stroke="#7fa2ff" stroke-opacity=".18" stroke-width="1" stroke-dasharray="40 14"/>
+      <g class="fig" fill="none" stroke="#dbe6ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+        <!-- голова, волосы, повязка -->
+        <ellipse class="ln" pathLength="1" cx="232" cy="104" rx="25" ry="30"/>
+        <path class="ln" pathLength="1" d="M207 96 C204 64 258 58 259 94"/>
+        <path class="ln" pathLength="1" d="M258 92 C272 112 270 142 256 160"/>
+        <path class="ln" pathLength="1" d="M207 99 L258 95 L259 108 L208 112 Z" fill="#1f4dff" fill-opacity=".55"/>
+        <g id="tails"><path class="ln" pathLength="1" d="M258 100 C276 102 286 94 298 102"/><path class="ln" pathLength="1" d="M258 106 C278 114 288 110 296 124"/></g>
+        <path class="ln" pathLength="1" d="M222 132 L220 150 M242 132 L244 150"/>
+        <!-- одеяние -->
+        <path class="ln" pathLength="1" d="M188 172 C206 150 258 150 278 170"/>
+        <path class="ln" pathLength="1" d="M188 172 C176 240 166 330 148 600"/>
+        <path class="ln" pathLength="1" d="M278 170 C292 250 300 360 318 600"/>
+        <path class="ln" pathLength="1" d="M148 600 C190 612 226 598 250 610 C276 620 300 606 318 600"/>
+        <path class="ln" pathLength="1" d="M194 268 C220 278 254 278 282 266"/>
+        <path class="ln" pathLength="1" d="M190 182 C220 230 252 238 284 214"/>
+        <path class="ln dim" pathLength="1" d="M210 282 C206 380 200 480 190 598"/>
+        <path class="ln dim" pathLength="1" d="M232 284 C234 390 236 490 238 606"/>
+        <path class="ln dim" pathLength="1" d="M256 282 C264 380 272 480 284 604"/>
+        <!-- рука с весами -->
+        <path class="ln" pathLength="1" d="M190 176 C160 150 132 128 118 100 C112 88 110 78 110 70"/>
+        <path class="ln" pathLength="1" d="M200 198 C170 176 146 150 130 116 C124 100 122 86 121 72"/>
+        <ellipse class="ln" pathLength="1" cx="115" cy="64" rx="9" ry="8"/>
+        <path class="ln" pathLength="1" d="M115 56 L115 40"/>
+        <circle class="ln" pathLength="1" cx="115" cy="35" r="4"/>
+        <g id="beam"><path class="ln" pathLength="1" d="M45 44 L185 44"/><circle cx="45" cy="44" r="3" fill="#dbe6ff"/><circle cx="185" cy="44" r="3" fill="#dbe6ff"/></g>
+        <g id="panL"><path class="ln" pathLength="1" d="M0 0 L-20 58 M0 0 L20 58"/><path class="ln" pathLength="1" d="M-24 58 C-15 78 15 78 24 58 Z" fill="#1f4dff" fill-opacity=".35"/></g>
+        <g id="panR"><path class="ln" pathLength="1" d="M0 0 L-20 58 M0 0 L20 58"/><path class="ln" pathLength="1" d="M-24 58 C-15 78 15 78 24 58 Z" fill="#1f4dff" fill-opacity=".35"/></g>
+        <!-- рука с мечом -->
+        <path class="ln" pathLength="1" d="M278 174 C292 210 300 250 303 288"/>
+        <path class="ln" pathLength="1" d="M272 206 C282 236 288 266 291 292"/>
+        <circle class="ln" pathLength="1" cx="299" cy="298" r="9"/>
+        <path class="ln" pathLength="1" d="M299 276 L299 288"/>
+        <circle cx="299" cy="273" r="3.5" fill="#dbe6ff"/>
+        <path class="ln" pathLength="1" d="M284 312 L316 306"/>
+        <path class="ln" pathLength="1" d="M293 313 L313 566 L309 310" fill="url(#blade)"/>
+        <!-- пьедестал -->
+        <path class="ln dim" pathLength="1" d="M118 600 L350 600 L362 620 L106 620 Z"/>
+      </g>
+    </svg>
+  </div>
+  <div class="wrap top">
+    <h1><span>Рабочее</span><span class="r2">место</span><span>юриста</span></h1>
+    <div class="lead">
+      Программа для адвокатов и юристов на Windows. Документы, сроки, переписка, нормы и практика по каждому делу.
+      <br><a class="btn arrow" href="https://github.com/LegalHelper/legalhelper.github.io/releases/latest/download/LegalHelper-Setup.exe">Скачать бесплатно</a>
+      <div class="ver" id="ver">Windows 10 и 11 · 64 бит</div>
+      <div id="phoneNote">Программа ставится на компьютер. Откройте эту страницу на компьютере с Windows.</div>
+    </div>
+  </div>
   <div class="wrap">
-    <div class="left rv">
-      <p>Документы, сроки и судебная практика в одном окне. Освободите время для работы с правом.</p>
-      <div class="cta">
-        <a class="btn white" href="https://github.com/LegalHelper/legalhelper.github.io/releases/latest/download/LegalHelper-Setup.exe">Скачать бесплатно</a>
-        <a class="btn ghost" href="#solutions">Возможности</a>
+    <div class="strip">
+      <a class="arrow" href="#tasks">Возможности</a>
+      <a class="arrow" href="#video">Видео из программы</a>
+      <a class="arrow" href="calc.html">Калькуляторы онлайн</a>
+      <a class="arrow" href="#install">Установка</a>
+    </div>
+    <div class="panel">
+      <p class="big">Для юристов, которые ведут дела сами или&nbsp;небольшой командой</p>
+      <div class="stats">
+        <div class="stat"><b><i>&gt;</i><em class="n" data-n="50">50</em></b><span>инструментов для документов и дел</span></div>
+        <div class="stat"><b><em class="n">0</em><i>&nbsp;₽</i></b><span>программа и обновления</span></div>
+        <div class="stat"><b><em class="n" data-n="100">100</em><i>%</i></b><span>данных хранится у вас на компьютере</span></div>
       </div>
-      <div class="meta"><span id="verWrap"><span id="ver">Последняя версия</span> · </span>Windows 10 и 11 · около 175 МБ</div>
-      <p class="phone-note" id="phoneNote">Программа устанавливается на компьютер с Windows. Откройте эту страницу на компьютере.</p>
     </div>
-    <div class="mark rv"><div class="word">LEGALHELPER</div><div class="sub">ПРОГРАММА ДЛЯ ЮРИСТОВ</div></div>
   </div>
 </section>
 
-<section class="solutions" id="solutions"><div class="wrap">
-  <div>
-    <h2 class="rv">Всё для ведения дел<br>в одной программе</h2>
-    <p class="small rv" style="margin:12px 0 0">Так это выглядит в программе. Выберите пункт справа — снимок поменяется. Видео работы — в разделе «Примеры из работы».</p>
-    <div class="demo rv" id="demo">
-      <div class="shot" id="demoShot"></div>
-      <div class="cap2"><b id="demoTitle"></b><span>Снимок из программы LegalHelper · нажмите, чтобы открыть крупно</span></div>
-    </div>
-  </div>
-  <div>
-    <p class="intro rv">LegalHelper берёт на себя техническую работу по делу: оформление, подсчёт сроков, расчёты и учёт. Нажмите на пункт — рядом откроется снимок этого раздела программы.</p>
-    <div class="list rv" id="list">
-      <div class="item" data-k="pdf"><button>PDF дела и редактор документов <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Иск, договор, сканы и фотографии собираются в один PDF по порядку. Нумерация листов и «Копия верна» одной кнопкой. Текст PDF и документы Word правятся прямо в программе.</p></div></div></div>
-      <div class="item" data-k="f107"><button>Опись вложения ф. 107 <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Опись заполняется на официальном бланке Почты России: длинные наименования переносятся, количество листов считается автоматически.</p></div></div></div>
-      <div class="item" data-k="term"><button>Процессуальные сроки и заседания <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Срок считается с учётом выходных и праздничных дней. Заседания и задачи с напоминаниями, на Главной видно всё на сегодня.</p></div></div></div>
-      <div class="item" data-k="prac"><button>Судебная практика по доводам <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Вставьте реквизиты акта, и суд, дата и номер заполнятся сами. Акты распределяются по доводам и копируются в иск списком.</p></div></div></div>
-      <div class="item" data-k="laws"><button>Нормы права <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Напишите «ст. 395 ГК РФ, ст. 110 АПК РФ», и кодексы со статьями появятся в деле. Программа находит нормы и в документах дела.</p></div></div></div>
-      <div class="item" data-k="tpl"><button>Шаблоны документов <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Иски, ходатайства, претензии. Суд, номер дела, стороны и суммы подставляются из карточки дела.</p></div></div></div>
-      <div class="item" data-k="duty"><button>Госпошлина, проценты, неустойка <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Калькуляторы госпошлины и процентов по ст. 395 ГК РФ с таблицей расчёта для приложения к иску.</p></div></div></div>
-      <div class="item" data-k="cli"><button>Доверители и учёт времени <span>Подробнее <i>›</i></span></button><div class="body"><div><p>Дела одного доверителя собираются в папку со сводкой по срокам и оплатам. Учёт часов и платежей, акт выполненных работ.</p></div></div></div>
-    </div>
-  </div>
-</div></section>
-
-<section class="benefits blue">
-  <svg class="shapes" viewBox="0 0 1440 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-    <polygon points="0,700 260,240 420,700" fill="#fff" opacity=".06"/>
-    <polygon points="1000,0 1440,0 1440,420" fill="#071f3a" opacity=".22"/>
-    <polygon points="0,0 380,0 0,210" fill="#fff" opacity=".05"/>
-  </svg>
+<!-- ============ задачи и роли ============ -->
+<section class="sec tasks" id="tasks">
   <div class="wrap">
-    <h2 class="rv">Техническая работа — программе,<br>юридическая — вам</h2>
-    <div class="cols">
-      <div class="col rv"><div class="n">01</div><b>Меньше рутины</b><p>Описи, нумерация, заверение и расчёты выполняются за минуты вместо часов.</p></div>
-      <div class="col rv"><div class="n">02</div><b>Сроки под контролем</b><p>Процессуальные сроки считаются автоматически, о заседаниях программа напоминает заранее.</p></div>
-      <div class="col rv"><div class="n">03</div><b>Порядок в документах</b><p>Каждое дело — одна папка и один PDF. Файлы называются понятно: дата и вид документа.</p></div>
-      <div class="col rv"><div class="n">04</div><b>Сильная позиция</b><p>Нормы права и судебная практика собраны по доводам и переносятся в иск одним списком.</p></div>
-      <div class="col rv"><div class="n">05</div><b>Конфиденциальность</b><p>Данные хранятся на вашем компьютере и не передаются третьим лицам. Обезличивание по 152-ФЗ.</p></div>
-      <div class="col rv"><div class="n">06</div><b>Сохранность</b><p>Резервная копия базы дел каждый день, корзина на 30 дней, отмена любого удаления.</p></div>
+    <h2 class="rv">Чем поможет в работе</h2>
+    <div class="seg rv" id="seg"><button class="on" data-g="0">По задачам</button><button data-g="1">По роли</button></div>
+    <div class="grid on" data-g="0">
+      <div><span class="cap">Подать иск</span><p>Шаблон иска с реквизитами из карточки дела, расчёт пошлины, приложения по списку и комплект для «Мой арбитр».</p></div>
+      <div><span class="cap">Разослать копии</span><p>Программа подскажет, кому и в каком порядке отправлять, заполнит описи и подставит трек-номера в письмо в суд.</p></div>
+      <div><span class="cap">Подготовиться к заседанию</span><p>Памятка по делу, нужные нормы и практика по доводам. Перед заседанием всё можно открыть на телефоне.</p></div>
+      <div><span class="cap">Не пропустить срок</span><p>Сроки и заседания всех дел на главной странице, напоминания заранее, синхронизация с календарём.</p></div>
+      <div><span class="cap">Найти документ</span><p>Поиск по словам и по смыслу во всех делах, включая сканы и фотографии документов.</p></div>
+      <div><span class="cap">Проверить норму</span><p>Действующий текст статьи загружается с КонсультантПлюс. Устаревшие статьи в архиве помечаются.</p></div>
+      <div><span class="cap">Посчитать</span><p>Проценты по ст. 395 ГК, неустойка, госпошлина и сроки с учётом праздников.</p></div>
+      <div><span class="cap">Отчитаться доверителю</span><p>Часы, оплаты, задолженность и акт выполненных работ по каждому делу.</p></div>
+    </div>
+    <div class="grid" data-g="1">
+      <div><span class="cap">Адвокат</span><p>Дела и доверители по папкам, сроки с напоминаниями, описи и заверение копий, учёт гонорара.</p></div>
+      <div><span class="cap">Юрист компании</span><p>Претензии и иски по шаблонам, расчёты для взыскания, подача в арбитраж, практика по типовым спорам.</p></div>
+      <div><span class="cap">Частнопрактикующий юрист</span><p>Бесплатно и без подписок, работает без интернета, ставится на обычный ноутбук.</p></div>
+      <div><span class="cap">Помощник и стажёр</span><p>Документы раскладываются по делам автоматически, справка и обучение встроены в программу.</p></div>
     </div>
   </div>
 </section>
 
-<section class="ai" id="ai"><div class="wrap">
-  <div>
-    <span class="badge rv">НОВОЕ · ВЕРСИЯ 3.18</span>
-    <h2 class="rv">ИИ-помощник<br>прямо в деле</h2>
-    <p class="lead rv">ИИ читает документ дела и отвечает на вопросы. Сам ИИ работает на сайте выбранной службы — программе нужен только ваш ключ, а как его получить, она покажет по шагам.</p>
-    <ul class="rv">
-      <li data-i="📝"><b>Кратко о документе</b> — пересказ иска, отзыва или решения на полстраницы.</li>
-      <li data-i="⚖️"><b>Разбор судебного акта</b> — что решил суд, мотивы, сроки; найденные сроки — одной кнопкой в «Сроки» дела.</li>
-      <li data-i="💬"><b>Свой вопрос</b> — «какие доводы истца слабые?», «составь план отзыва» — и уточнения в разговоре.</li>
-      <li data-i="🕶"><b>Обезличивание</b> — ФИО, паспорта, адреса уходят в ИИ метками [ФИО-1]; в ответе — настоящие данные.</li>
-    </ul>
-    <div class="prov rv"><div><b>GigaChat от Сбера</b>Бесплатно · данные в России · вход по Сбер ID</div><div><b>DeepSeek</b>Платно, но копейки · умнее в сложных вопросах</div></div>
-  </div>
-  <div class="rv">
-    <div class="vid"><video id="aiVideo" muted loop playsinline preload="none" poster="video/ai.webp"><source src="video/ai.mp4" type="video/mp4"><source src="video/ai.webm" type="video/webm"></video></div>
-    <div class="note">Запись из программы. В ИИ уходит только выбранный документ и только по вашей кнопке. ИИ может ошибаться — даты и нормы проверяйте.</div>
-  </div>
-</div></section>
+<div class="run" aria-hidden="true"><div>
+  Документы<span>/</span>Сроки<span>/</span>Почта<span>/</span>Практика<span>/</span>Архив норм<span>/</span>Поиск по смыслу<span>/</span>Расчёты<span>/</span>
+  Документы<span>/</span>Сроки<span>/</span>Почта<span>/</span>Практика<span>/</span>Архив норм<span>/</span>Поиск по смыслу<span>/</span>Расчёты<span>/</span>
+</div></div>
 
-<section class="who" id="who"><div class="wrap">
-  <h2 class="rv">Для кого</h2>
-  <div class="cards3">
-    <div class="c rv"><div class="ic">⚖️</div><b>Адвокату</b><ul>
-      <li>Все дела и доверители — в одном месте, по папкам клиентов</li>
-      <li>Сроки и заседания с напоминаниями, синхронизация с Яндекс Календарём</li>
-      <li>Опись ф. 107, нумерация листов, «Копия верна» — за минуты</li>
-      <li>Учёт часов, ставок и оплат по каждому делу</li></ul></div>
-    <div class="c rv"><div class="ic">🏢</div><b>Юристу компании</b><ul>
-      <li>Претензии, иски и отзывы по шаблонам с реквизитами из карточки дела</li>
-      <li>Госпошлина, проценты по ст. 395 ГК, неустойка — с таблицей для иска</li>
-      <li>Комплект для подачи в «Мой арбитр» и ГАС «Правосудие» с проверкой размеров</li>
-      <li>Судебная практика по доводам, нормы права по кодексам</li></ul></div>
-    <div class="c rv"><div class="ic">🧑‍💼</div><b>Частному юристу и помощнику</b><ul>
-      <li>Бесплатно и без подписок, работает без интернета</li>
-      <li>Документы дела — одним PDF: перетащил файл, и он в деле</li>
-      <li>Определение суда → сроки и заседание сами попадают в календарь</li>
-      <li>Дела на телефоне через Яндекс Диск — памятка к заседанию</li></ul></div>
-  </div>
-</div></section>
-
-<section class="about" id="about"><div class="wrap">
-  <div class="top">
-    <h2 class="rv">LegalHelper</h2>
+<!-- ============ новое ============ -->
+<section class="sec news" id="news">
+  <div class="wrap cols">
     <div class="rv">
-      <p>Программа создана для юристов и адвокатов, которые ведут дела самостоятельно или в небольшой команде. В ней собраны инструменты, которые обычно приходится искать в разных программах: PDF-редактор, калькуляторы, календарь сроков, база практики.</p>
-      <p>Программа бесплатна, работает без интернета и обновляется автоматически.</p>
+      <h2>Последние обновления</h2>
+      <p class="mute" id="newsVer" style="margin-top:18px">Программа обновляется сама: при запуске проверяет новую версию и предлагает её установить.</p>
+      <a class="btn line arrow" style="margin-top:14px" href="https://github.com/LegalHelper/legalhelper.github.io/blob/main/CHANGELOG.md">История версий</a>
     </div>
+    <div class="rows rv" id="newsRows"></div>
   </div>
-  <div class="stats">
-    <div class="stat rv"><small>Стоимость программы</small><b data-n="0">0 ₽</b></div>
-    <div class="stat rv"><small>Инструментов для PDF и дел</small><b data-n="50" data-s="+">50+</b></div>
-    <div class="stat rv"><small>Дней хранения удалённого в корзине</small><b data-n="30">30</b></div>
-    <div class="stat rv"><small>Данных хранится на вашем компьютере</small><b data-n="100" data-s="%">100%</b></div>
-  </div>
-</div></section>
+</section>
 
-<section class="ex" id="examples"><div class="wrap">
-  <div class="head"><div><h2 class="rv">Примеры из работы</h2>
-    <p class="small rv" style="margin:8px 0 0">Настоящая программа в работе: курсор щёлкает, печатает и переключает вкладки — как вы сами. Видео идут по кругу; нажмите шаг, чтобы перейти к нему.</p></div></div>
-  <div class="tabs rv" id="exTabs"></div>
-  <div class="body rv">
-    <ol id="exSteps"></ol>
-    <div class="fw"><div class="frame" id="exFrame"><video id="exVideo" muted playsinline preload="none"></video>
-      <button class="vbtn" id="exPlay" aria-label="Пауза">❚❚</button><button class="vbtn full" id="exFull" aria-label="На весь экран">⛶</button><div class="vprog"><i id="exProg"></i></div></div>
-      <div class="note">Видео записаны в LegalHelper — так программа выглядит и работает у вас на компьютере.</div></div>
-  </div>
-</div></section>
-
-<section class="lessons" id="lessons"><div class="wrap">
-  <h2 class="rv">Видео-уроки</h2>
-  <p class="small rv" style="margin:8px 0 0">Короткие записи из программы: как сделать то или иное за пару щелчков. Нажмите на урок — он откроется в плеере выше, с пояснениями по шагам.</p>
-  <div class="lgrid rv" id="lessonGrid"></div>
-</div></section>
-
-<section class="shots" id="shots"><div class="wrap">
-  <div class="head"><div><h2 class="rv">Как выглядит программа</h2><p class="small rv" style="margin:8px 0 0">Нажмите на снимок, чтобы открыть его крупно.</p></div><div class="arrows"><button id="prev" aria-label="Назад">‹</button><button id="next" aria-label="Вперёд">›</button></div></div>
-  <div class="track" id="track">
-    <div class="card"><div class="pic"><img src="img/docs.webp" alt="" loading="lazy"></div><div class="cap"><b>Документы дела</b><span>Каждый файл — своя карточка, страницы крупно справа</span></div></div>
-    <div class="card"><div class="pic"><img src="img/home.webp" alt="" loading="lazy"></div><div class="cap"><b>Главная</b><span>Сроки и заседания на сегодня</span></div></div>
-    <div class="card"><div class="pic"><img src="img/structure.webp" alt="" loading="lazy"></div><div class="cap"><b>Структура документа</b><span>Оглавление и поиск по тексту</span></div></div>
-    <div class="card"><div class="pic"><img src="img/practice.webp" alt="" loading="lazy"></div><div class="cap"><b>Судебная практика</b><span>Акты по доводам</span></div></div>
-    <div class="card"><div class="pic"><img src="img/folder.webp" alt="" loading="lazy"></div><div class="cap"><b>Доверитель</b><span>Сводка по всем делам клиента</span></div></div>
-    <div class="card"><div class="pic"><img src="img/f107_result.webp" alt="" loading="lazy"></div><div class="cap"><b>Опись ф. 107</b><span>Бланк Почты России</span></div></div>
-    <div class="card"><div class="pic"><img src="img/stamp_result.webp" alt="" loading="lazy"></div><div class="cap"><b>Заверение</b><span>Номер листа и «Копия верна»</span></div></div>
-    <div class="card"><div class="pic"><img src="img/deadline.webp" alt="" loading="lazy"></div><div class="cap"><b>Процессуальный срок</b><span>С учётом праздников</span></div></div>
-    <div class="card"><div class="pic"><img src="img/templates.webp" alt="" loading="lazy"></div><div class="cap"><b>Шаблоны</b><span>Реквизиты из карточки дела</span></div></div>
-    <div class="card"><div class="pic"><img src="img/duty.webp" alt="" loading="lazy"></div><div class="cap"><b>Госпошлина</b><span>Расчёт для суда</span></div></div>
-  </div>
-</div></section>
-
-<section class="save"><div class="wrap">
-  <div>
-    <h2 class="rv">Сколько времени<br>вы сэкономите</h2>
-    <div class="rows rv">
-      <div class="r"><label for="c1">Отправок почтой в месяц<small>опись, нумерация, заверение: 35 → 4 мин</small></label><input id="c1" type="number" min="0" value="8"></div>
-      <div class="r"><label for="c2">Документов по шаблону<small>ходатайства, заявления: 25 → 3 мин</small></label><input id="c2" type="number" min="0" value="10"></div>
-      <div class="r"><label for="c3">Расчётов процентов и пошлины<small>ст. 395 ГК, неустойка: 20 → 2 мин</small></label><input id="c3" type="number" min="0" value="6"></div>
-      <div class="r"><label for="c4">Рабочих дней в месяце<small>утренний разбор сроков: 15 → 2 мин</small></label><input id="c4" type="number" min="0" value="21"></div>
-    </div>
-  </div>
-  <div class="res rv">
-    <div class="big"><span id="hrs">0</span><small>часов в месяц</small></div>
-    <p id="days">Расчёт примерный: время на ту же работу вручную и в программе.</p>
-  </div>
-</div></section>
-
-<section class="calcs" id="calcs"><div class="wrap">
-  <h2 class="rv">Калькуляторы юриста — онлайн</h2>
-  <p class="small rv" style="margin:8px 0 0">Бесплатно, без регистрации, прямо в браузере. Те же расчёты, что в программе.</p>
-  <div class="cards3">
-    <a class="c rv" href="calc.html#srok"><div class="ic">⏱</div><b>Процессуальный срок</b><span>АПК, ГПК, КАС, УПК, исковая давность — с выходными и праздниками по производственному календарю.</span><i>Посчитать срок →</i></a>
-    <a class="c rv" href="calc.html#duty"><div class="ic">🏛</div><b>Госпошлина</b><span>Арбитраж и суды общей юрисдикции по шкале 2024 года, фиксированные размеры, судебный приказ.</span><i>Посчитать пошлину →</i></a>
-    <a class="c rv" href="calc.html#p395"><div class="ic">₽</div><b>Проценты по ст. 395 ГК</b><span>По ключевой ставке Банка России с разбивкой по периодам, частичные оплаты, мораторий 2022 года.</span><i>Посчитать проценты →</i></a>
-  </div>
-</div></section>
-
-<section class="news" id="news"><div class="wrap">
-  <div><h2 class="rv">Что нового</h2>
-    <p class="small rv" style="margin:12px 0 0;max-width:340px">Программа обновляется сама: при запуске она проверяет новую версию и предлагает установить её одной кнопкой. Здесь — последние обновления.</p></div>
-  <div><div class="feed" id="newsFeed"><div class="v"><h3>Загружаю список обновлений…</h3></div></div>
-    <div class="more"><a href="CHANGELOG.md" target="_blank" rel="noopener">Вся история версий →</a></div></div>
-</div></section>
-
-<section class="faq" id="faq"><div class="wrap">
-  <div>
-    <h2 class="rv">Вопросы и ответы</h2>
-    <div class="list rv" id="faqList">
-      <div class="item"><button>Программа правда бесплатная? <span><i>›</i></span></button><div class="body"><div><p>Да. Скачивание, установка, все функции и обновления — бесплатно, без подписок и пробных периодов. Платить нужно только за ИИ-службу DeepSeek, если вы выберете её; GigaChat от Сбера для физлиц бесплатен.</p></div></div></div>
-      <div class="item"><button>Нужен ли интернет? <span><i>›</i></span></button><div class="body"><div><p>Нет — программа работает без интернета. Интернет нужен только чтобы проверить и скачать обновление, открыть картотеку суда и практику, отправить дела на телефон через Яндекс Диск, синхронизировать сроки с Яндекс Календарём и для ИИ-помощника. Всё это — по вашему желанию.</p></div></div></div>
-      <div class="item"><button>На каком компьютере работает? <span><i>›</i></span></button><div class="body"><div><p>Windows 10 и 11, 64-битные. Установщик — около 175 МБ. Программа рассчитана и на недорогие ноутбуки: тяжёлое она готовит заранее, в паузах, а если памяти совсем мало, это можно выключить (☰ → Вид).</p></div></div></div>
-      <div class="item"><button>Нужен ли Microsoft Word? <span><i>›</i></span></button><div class="body"><div><p>Не обязательно. Шаблоны и ответы ИИ сохраняются в .docx, а Word-файлы в деле программа умеет превращать в PDF: через Microsoft Word (2010 и новее) или бесплатный LibreOffice, а если нет ни того, ни другого, — сама, упрощённо.</p></div></div></div>
-      <div class="item"><button>Как перенести дела на другой компьютер? <span><i>›</i></span></button><div class="body"><div><p>У каждого дела есть своя папка с документами и файлом «LegalHelper-дело.json». Скопируйте папку дела на новый компьютер и откройте её: ☰ → Файл → «Открыть дело из папки». Ещё есть резервные копии всей базы: ☰ → Файл → «Резервные копии».</p></div></div></div>
-      <div class="item"><button>Что будет, если случайно удалить документ или дело? <span><i>›</i></span></button><div class="body"><div><p>Сразу после удаления внизу появляется кнопка «Отменить». А всё удалённое 30 дней лежит в корзине (☰ → Правка → «Корзина») — оттуда его можно вернуть.</p></div></div></div>
-      <div class="item"><button>Как обновлять программу? <span><i>›</i></span></button><div class="body"><div><p>Ничего делать не нужно: при запуске программа сама проверяет новую версию и предлагает установить её. Дела, документы и настройки при обновлении сохраняются. Если новая версия чем-то не понравилась — ☰ → Справка → «Вернуть предыдущую версию».</p></div></div></div>
-      <div class="item"><button>Как сообщить об ошибке или предложить идею? <span><i>›</i></span></button><div class="body"><div><p>Напишите в <a href="https://t.me/axis_juris">Telegram @axis_juris</a> или на <a href="mailto:axis.juris@bk.ru">axis.juris@bk.ru</a>. Если что-то сломалось, приложите запись из журнала ошибок: ☰ → Справка → «Журнал ошибок» → «Скопировать эту ошибку».</p></div></div></div>
-    </div>
-  </div>
-  <div>
-    <h2 class="rv">Безопасность и тайна</h2>
-    <div class="safe">
-      <div class="rv" data-i="💻"><b>Всё на вашем компьютере</b>Дела, документы и база хранятся у вас, а не «в облаке». Программа не собирает статистику и сама ничего не отправляет — только то, что вы попросили (дела на телефон через Яндекс Диск, вопрос ИИ).</div>
-      <div class="rv" data-i="🛟"><b>Резервные копии и корзина</b>Программа сама делает резервные копии базы и проверяет её; удалённое 30 дней можно вернуть из корзины.</div>
-      <div class="rv" data-i="🕶"><b>Обезличивание по 152-ФЗ</b>Скрыть ФИО, паспорта, СНИЛС, ИНН, адреса и телефоны в PDF — для публикации и отправки образцов.</div>
-      <div class="rv" data-i="🤖"><b>ИИ — только по вашей кнопке</b>В ИИ уходит лишь выбранный документ и только когда вы нажали кнопку; персональные данные можно заменять метками. Ключ хранится зашифрованным средствами Windows.</div>
-      <div class="rv" data-i="🔒"><b>Пароль на PDF</b>Шифрование AES-256, запрет печати и копирования — для документов, которые отправляете по почте.</div>
-    </div>
-  </div>
-</div></section>
-
-<section class="install blue" id="install">
-  <svg class="shapes" viewBox="0 0 1440 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-    <polygon points="1100,0 1440,0 1440,400 1250,400" fill="#fff" opacity=".06"/>
-    <polygon points="0,400 300,0 520,0 240,400" fill="#071f3a" opacity=".18"/>
-  </svg>
+<!-- ============ видео ============ -->
+<section class="sec video" id="video">
   <div class="wrap">
-    <div class="rv"><h2>Бесплатная установка</h2><p class="lead">Три шага и пара минут. Дальше обновления устанавливаются автоматически.</p></div>
-    <div class="isteps rv">
-      <div><b>01</b>Скачайте установщик LegalHelper-Setup.exe</div>
-      <div><b>02</b>Запустите его из загрузок браузера</div>
-      <div><b>03</b>Нажмите «Установить», затем «Завершить»</div>
-    </div>
-    <div class="go rv">
-      <a class="btn white" href="https://github.com/LegalHelper/legalhelper.github.io/releases/latest/download/LegalHelper-Setup.exe">Скачать LegalHelper</a>
-      <span class="note">Если появится окно «Windows защитила ваш компьютер», нажмите «Подробнее», затем «Выполнить в любом случае». Вопросы: <a href="https://t.me/axis_juris">Telegram</a>, <a href="mailto:axis.juris@bk.ru">axis.juris@bk.ru</a>.</span>
+    <h2 class="rv">Программа в работе</h2>
+    <p class="sub rv">Записи с экрана. Выберите тему, нажмите на шаг справа, чтобы перейти к нему.</p>
+    <div class="vtabs" id="exTabs"></div>
+    <div class="player">
+      <div class="frame" id="exFrame">
+        <video id="exVideo" muted playsinline preload="metadata"></video>
+        <div class="ctl"><button id="exPlay" aria-label="Смотреть">▶</button><button id="exFull" aria-label="На весь экран">⛶</button></div>
+        <div class="prog" id="exProg"></div>
+      </div>
+      <ol class="steps" id="exSteps"></ol>
     </div>
   </div>
 </section>
 
-<div class="lb" id="lb"><span>✕</span><img alt=""></div>
+<!-- ============ калькуляторы ============ -->
+<section class="sec calcs" id="calcs">
+  <div class="wrap">
+    <h2 class="rv">Калькуляторы онлайн</h2>
+    <p class="mute rv" style="margin-top:16px;max-width:560px">Те же расчёты, что в программе. Работают в браузере, без регистрации.</p>
+    <div class="cols rv">
+      <a href="calc.html#deadline"><span class="cap">01</span><b class="arrow">Процессуальный срок</b><span class="mute">АПК, ГПК, КАС, УПК и исковая давность по производственному календарю.</span></a>
+      <a href="calc.html#duty"><span class="cap">02</span><b class="arrow">Госпошлина</b><span class="mute">Суды общей юрисдикции и арбитраж по действующей шкале.</span></a>
+      <a href="calc.html#interest"><span class="cap">03</span><b class="arrow">Проценты по ст. 395 ГК</b><span class="mute">По ключевой ставке ЦБ с разбивкой по периодам и частичными оплатами.</span></a>
+    </div>
+  </div>
+</section>
 
-<footer><div class="wrap">
-  <a class="logo" href="#"><img src="img/logo-blue.svg" alt=""><span><b>LEGALHELPER</b><small>ПРОГРАММА ДЛЯ ЮРИСТОВ</small></span></a>
-  <span><a href="mailto:axis.juris@bk.ru">axis.juris@bk.ru</a> · <a href="https://t.me/axis_juris">Telegram @axis_juris</a></span>
-  <span><a href="calc.html">Калькуляторы юриста</a> · © 2026 LegalHelper · <a href="license.html">Условия использования</a></span>
-</div></footer>
+<!-- ============ безопасность ============ -->
+<section class="sec safe" id="safe">
+  <div class="wrap">
+    <h2 class="rv">Данные остаются у вас</h2>
+    <div class="cols rv">
+      <div><b>На вашем компьютере</b><p>Дела и документы хранятся локально. Программа не собирает статистику и ничего не отправляет без вашей команды.</p></div>
+      <div><b>Копии и корзина</b><p>Резервная копия базы каждый день. Удалённое можно вернуть в течение 30 дней.</p></div>
+      <div><b>Персональные данные</b><p>Обезличивание PDF по 152-ФЗ: ФИО, паспорта, адреса и телефоны закрашиваются без возможности восстановить.</p></div>
+      <div><b>ИИ по запросу</b><p>Документ уходит в ИИ только по вашей кнопке, персональные данные заменяются метками.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ вопросы ============ -->
+<section class="sec faq" id="faq">
+  <div class="wrap cols">
+    <h2 class="rv">Вопросы</h2>
+    <div class="rv" id="faqList">
+      <div class="q"><button>Сколько стоит программа?</button><div><p>Нисколько. Установка, все функции и обновления бесплатны. Платной может быть только служба ИИ DeepSeek, если вы её выберете. GigaChat для физических лиц бесплатен.</p></div></div>
+      <div class="q"><button>Нужен ли интернет?</button><div><p>Для работы нет. Интернет нужен для обновлений, картотеки арбитражных дел, проверки ключевой ставки и актуальности норм, синхронизации с Яндекс Календарём и для ИИ.</p></div></div>
+      <div class="q"><button>Какой нужен компьютер?</button><div><p>Windows 10 или 11, 64 бит. Программа рассчитана и на недорогие ноутбуки: тяжёлую работу, например распознавание сканов, она делает в паузах.</p></div></div>
+      <div class="q"><button>Нужен ли Microsoft Word?</button><div><p>Нет. Документы сохраняются в формате .docx, Word-файлы в деле открываются и без Word. Старые файлы .doc и .xls читаются через Microsoft Office или LibreOffice, если они установлены.</p></div></div>
+      <div class="q"><button>Как перенести дела на другой компьютер?</button><div><p>Скопируйте папку дела и откройте её в программе: ☰ → Файл → «Открыть дело из папки». Резервные копии всей базы находятся в разделе ☰ → Файл → «Резервные копии».</p></div></div>
+      <div class="q"><button>Куда писать об ошибке или с предложением?</button><div><p>В Telegram <a href="https://t.me/axis_juris">@axis_juris</a> или на <a href="mailto:axis.juris@bk.ru">axis.juris@bk.ru</a>. Если программа выдала ошибку, приложите запись из журнала: ☰ → Справка → «Журнал ошибок».</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ установка ============ -->
+<section class="sec install" id="install">
+  <div class="wrap">
+    <h2 class="rv">Установка<br>за пару минут</h2>
+    <div class="three rv">
+      <div><b>01</b><span>Скачайте LegalHelper-Setup.exe</span></div>
+      <div><b>02</b><span>Запустите установщик</span></div>
+      <div><b>03</b><span>Нажмите «Установить»</span></div>
+    </div>
+    <a class="btn arrow" href="https://github.com/LegalHelper/legalhelper.github.io/releases/latest/download/LegalHelper-Setup.exe">Скачать LegalHelper</a>
+    <p class="small">Если Windows покажет окно «Windows защитила ваш компьютер», нажмите «Подробнее», затем «Выполнить в любом случае». Обновления устанавливаются автоматически.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a class="logo" href="#"><img src="img/logo.svg" alt="" style="width:22px;height:22px">LEGALHELPER</a>
+    <a href="mailto:axis.juris@bk.ru">axis.juris@bk.ru</a>
+    <a href="https://t.me/axis_juris">Telegram @axis_juris</a>
+    <a href="calc.html">Калькуляторы</a>
+    <a href="license.html">Условия использования</a>
+    <span style="margin-left:auto">© 2026 LegalHelper</span>
+  </div>
+</footer>
+
 
 <script>
 (function () {
   var still = matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) document.getElementById("phoneNote").style.display = "block";
 
-  // появление при прокрутке; числа отсчитываются
+  // шапка темнеет после первого экрана
+  var hdr = document.getElementById("hdr");
+  function onScroll() { hdr.classList.toggle("solid", scrollY > 40); }
+  addEventListener("scroll", onScroll, { passive: true }); onScroll();
+
+  // появление при прокрутке, числа отсчитываются
   function count(el) {
-    var n = +el.dataset.n, suf = el.dataset.s || (el.textContent.indexOf("₽") > -1 ? " ₽" : ""), t0 = performance.now();
+    var n = +el.dataset.n, t0 = performance.now();
     if (!n || still) return;
-    (function f(t) { var k = Math.min(1, (t - t0) / 1100), e = 1 - Math.pow(1 - k, 3);
-      el.textContent = Math.round(n * e) + suf; if (k < 1) requestAnimationFrame(f); })(t0);
+    (function f(t) { var k = Math.min(1, (t - t0) / 1200), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = Math.round(n * e); if (k < 1) requestAnimationFrame(f); })(t0);
   }
-  var items = document.querySelectorAll(".rv");
+  var rv = document.querySelectorAll(".rv");
   if ("IntersectionObserver" in window && !still) {
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        var t = e.target, k = (t.classList.contains("col") || t.classList.contains("stat")) ? Array.prototype.indexOf.call(t.parentNode.children, t) : 0;
-        setTimeout(function () { t.classList.add("in"); var b = t.querySelector("[data-n]"); if (b) count(b); }, (k % 4) * 100);
-        io.unobserve(t);
-      });
-    }, { threshold: 0.15 });
-    items.forEach(function (el) { io.observe(el); });
-  } else items.forEach(function (el) { el.classList.add("in"); });
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) {
+      if (!e.isIntersecting) return; e.target.classList.add("in"); io.unobserve(e.target); }); }, { threshold: 0, rootMargin: "0px 0px -8% 0px" });
+    // на всякий случай: всё, что уже выше экрана, показать (быстрая прокрутка, переход по ссылке)
+    addEventListener("scroll", function () {
+      rv.forEach(function (el) { if (!el.classList.contains("in") && el.getBoundingClientRect().top < innerHeight) el.classList.add("in"); });
+    }, { passive: true });
+    rv.forEach(function (el) { io.observe(el); });
+    var so = new IntersectionObserver(function (es) { es.forEach(function (e) {
+      if (!e.isIntersecting) return; e.target.querySelectorAll("[data-n]").forEach(count); so.unobserve(e.target); }); }, { threshold: .4 });
+    so.observe(document.querySelector(".stats"));
+  } else rv.forEach(function (el) { el.classList.add("in"); });
 
-  // фигуры на синем фоне слегка сдвигаются при прокрутке
-  var polys = document.querySelectorAll(".hero .shapes polygon"), tick = false;
-  addEventListener("scroll", function () {
-    if (still || tick) return; tick = true;
-    requestAnimationFrame(function () { tick = false; var y = Math.min(scrollY, 700);
-      polys.forEach(function (p) { p.style.transform = "translateY(" + (y * (+p.dataset.k || 0) * 0.25) + "px)"; }); });
-  }, { passive: true });
+  // Фемида: весы плавно покачиваются, концы повязки — на ветру
+  (function () {
+    var beam = document.getElementById("beam"), pl = document.getElementById("panL"), pr = document.getElementById("panR"),
+        tails = document.getElementById("tails"), P = [115, 44], L = 70, on = true, t0 = performance.now();
+    function frame(t) {
+      var s = (t - t0) / 1000, a = still ? 0 : 7 * Math.sin(s * 0.9) * Math.min(1, s / 2.5), r = a * Math.PI / 180;
+      beam.setAttribute("transform", "rotate(" + a.toFixed(2) + " " + P[0] + " " + P[1] + ")");
+      var dx = Math.cos(r) * L, dy = Math.sin(r) * L;
+      pl.setAttribute("transform", "translate(" + (P[0] - dx).toFixed(2) + " " + (P[1] - dy).toFixed(2) + ") rotate(" + (-a * .25).toFixed(2) + ")");
+      pr.setAttribute("transform", "translate(" + (P[0] + dx).toFixed(2) + " " + (P[1] + dy).toFixed(2) + ") rotate(" + (-a * .25).toFixed(2) + ")");
+      tails.setAttribute("transform", "rotate(" + (still ? 0 : 5 * Math.sin(s * 1.7)).toFixed(2) + " 258 103)");
+      if (on && !still) requestAnimationFrame(frame);
+    }
+    if ("IntersectionObserver" in window) new IntersectionObserver(function (es) {
+      var was = on; on = es[0].isIntersecting; if (on && !was) requestAnimationFrame(frame); }).observe(document.getElementById("themis"));
+    requestAnimationFrame(frame);
+  })();
 
-  // снимки программы: пункт списка справа — свой настоящий снимок
-  var SHOTS = { pdf: ["docs", "PDF дела и документы"], f107: ["f107_dialog", "Опись вложения ф. 107"], term: ["deadline", "Процессуальный срок"],
-    prac: ["practice", "Судебная практика по доводам"], laws: ["laws", "Нормы права"], tpl: ["templates", "Шаблоны документов"],
-    duty: ["duty", "Калькулятор госпошлины"], cli: ["folder", "Папка доверителя"] };
-  var shot = document.getElementById("demoShot"), demo = document.getElementById("demo"), auto = true, cur = null, timer = null, seen = false;
-  Object.keys(SHOTS).forEach(function (k) {
-    var im = new Image(); im.src = "img/" + SHOTS[k][0] + ".webp"; im.alt = SHOTS[k][1]; im.loading = "lazy"; im.dataset.k = k; shot.appendChild(im);
-  });
-  function showShot(k) {
-    cur = k;
-    shot.querySelectorAll("img").forEach(function (im) { im.classList.toggle("on", im.dataset.k === k); });
-    document.getElementById("demoTitle").textContent = SHOTS[k][1];
-    document.querySelectorAll("#list .item").forEach(function (x) { x.classList.toggle("open", x.dataset.k === k); });
-    clearTimeout(timer);
-    if (auto && seen) timer = setTimeout(function () { var ks = Object.keys(SHOTS); showShot(ks[(ks.indexOf(k) + 1) % ks.length]); }, 5000);
-  }
-  document.querySelectorAll("#list .item button").forEach(function (b) {
-    b.addEventListener("click", function () { auto = false; showShot(b.parentNode.dataset.k); });
-  });
-  shot.addEventListener("click", function () {
-    var on = shot.querySelector("img.on"); if (!on) return;
-    var lb = document.getElementById("lb"); lb.querySelector("img").src = on.src; lb.classList.add("on");
-  });
-  if ("IntersectionObserver" in window && !still) {
-    new IntersectionObserver(function (es) { es.forEach(function (e) {
-      seen = e.isIntersecting; if (seen) showShot(cur || "pdf"); else clearTimeout(timer); }); }, { threshold: 0.35 }).observe(demo);
-  }
-  showShot("pdf");
+  // по задачам / по роли
+  document.querySelectorAll("#seg button").forEach(function (b) { b.addEventListener("click", function () {
+    document.querySelectorAll("#seg button").forEach(function (x) { x.classList.toggle("on", x === b); });
+    document.querySelectorAll(".grid").forEach(function (g) { g.classList.toggle("on", g.dataset.g === b.dataset.g); });
+  }); });
 
-  // карусель снимков
-  var track = document.getElementById("track");
-  function go(d) { track.scrollBy({ left: d * (track.querySelector(".card").offsetWidth + 18) * 2, behavior: "smooth" }); }
-  document.getElementById("prev").onclick = function () { go(-1); };
-  document.getElementById("next").onclick = function () { go(1); };
+  // вопросы
+  document.querySelectorAll(".q button").forEach(function (b) { b.addEventListener("click", function () { b.parentNode.classList.toggle("open"); }); });
 
-  var lb = document.getElementById("lb");
-  document.querySelectorAll(".card").forEach(function (c) { c.addEventListener("click", function () {
-    lb.querySelector("img").src = c.querySelector("img").src; lb.classList.add("on"); }); });
-  lb.addEventListener("click", function () { lb.classList.remove("on"); });
-  addEventListener("keydown", function (e) { if (e.key === "Escape") lb.classList.remove("on"); });
+  // версия и последние обновления — из version.json (его выкладывает сборка)
+  fetch("version.json", { cache: "no-store" }).then(function (r) { return r.json(); }).then(function (v) {
+    document.getElementById("ver").textContent = "Версия " + v.version + " · Windows 10 и 11";
+    document.getElementById("newsVer").textContent = "Сейчас актуальна версия " + v.version + ". Программа обновляется сама: при запуске проверяет новую версию и предлагает её установить.";
+    var box = document.getElementById("newsRows");
+    (v.notes || []).slice(0, 6).forEach(function (n) {
+      n = n.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}]/gu, "").replace(/\s{2,}/g, " ").replace(/«\s+/g, "«").trim();
+      var r = document.createElement("div");
+      r.className = "r"; r.innerHTML = "<b></b><span></span>";
+      r.querySelector("b").textContent = String(box.children.length + 1).padStart(2, "0");
+      r.querySelector("span").textContent = n;
+      box.appendChild(r);
+    });
+  }).catch(function () {});
 
-  // экономия: минуты вручную → в программе
-  var save = [[35, 4], [25, 3], [20, 2], [15, 2]], shown = 0;
-  function calc() {
-    var m = 0;
-    for (var i = 0; i < 4; i++) m += Math.max(0, parseFloat(document.getElementById("c" + (i + 1)).value) || 0) * (save[i][0] - save[i][1]);
-    var h = Math.round(m / 60), from = shown, t0 = performance.now();
-    (function step(t) {
-      var k = still ? 1 : Math.min(1, (t - t0) / 700), e = 1 - Math.pow(1 - k, 3);
-      document.getElementById("hrs").textContent = Math.round(from + (h - from) * e);
-      if (k < 1) requestAnimationFrame(step); else shown = h;
-    })(t0);
-    var d = String(Math.round(h / 8 * 10) / 10).replace(".", ",");
-    document.getElementById("days").textContent = h ? "Это около " + d + " рабочих дня. Расчёт примерный: время на ту же работу вручную и в программе." : "Укажите свои цифры.";
-  }
-  for (var i = 1; i <= 4; i++) document.getElementById("c" + i).addEventListener("input", calc);
-  calc();
-
-  // номер версии — из version.json этого сайта (его кладёт сборка установщика)
-  var NEW_DL = "https://github.com/LegalHelper/legalhelper.github.io/releases/latest/download/LegalHelper-Setup.exe";
-  function show(v) { document.getElementById("ver").textContent = "Версия " + v.version; }
-  fetch("version.json", { cache: "no-store" })
-    .then(function (r) { if (!r.ok) throw 0; return r.json(); })
-    .then(function (v) { show(v); document.querySelectorAll('a[href$="LegalHelper-Setup.exe"]').forEach(function (a) { a.href = NEW_DL; }); })
-    .catch(function () { document.getElementById("verWrap").style.display = "none"; });
-})();
-</script>
-
-<script>
-(function () {
-  var EX = [{"k": "opr", "t": "Определение → сроки", "d": 19.42, "s": [[0.79, "Перетаскиваем определение суда в дело", "Файл просто перетаскивают мышью в окно — он попадает в документы дела и в «PDF дела»."], [4.33, "Программа сама нашла заседание, зал и срок отзыва", "Дату и время заседания, адрес и зал, срок «представить отзыв до…» программа прочитала из текста определения."], [8.46, "Одна кнопка — и всё во вкладке «Сроки»", "«Добавить все» — заседание и срок появились в календаре дела. Программа заранее напомнит о них."], [11.79, "Имя файла — как в суде", "«Scan_0042.pdf» → «Определение о принятии искового заявления к производству» с датой — и в программе, и в папке на диске."]]}, {"k": "pdf", "t": "PDF дела", "d": 25.0, "s": [[0.79, "Все документы дела — одним PDF: каждый файл в своей карточке", "У каждой карточки — название файла и диапазон страниц. «Свернуть» складывает файлы в стопки."], [4.29, "Щелчок по заголовку — файл разворачивается", "Стопку можно развернуть одним щелчком, а файлы — переставлять мышью целиком."], [6.62, "«🔍 Крупно» — страницы читаются справа, листаются колёсиком", "Крупный просмотр: читаете документ, не открывая его. Щелчок по миниатюре — переход к странице."], [13.62, "«Структура» — оглавление и поиск по всему тексту", "Набрали «Лютик» и Enter — программа нашла слово на всех страницах дела. Щелчок — и вы на месте."]]}, {"k": "opis", "t": "Опись ф. 107", "d": 20.54, "s": [[0.58, "Опись ф. 107 — во вкладке «Создать»", "Официальный бланк Почты России: два экземпляра на листе, итог считается сам."], [3.88, "Добавляем строку — внизу видно, сколько листов займёт опись", "Длинные названия не рвутся линиями бланка, а внизу сразу видно: «Опись займёт 2 листа»."], [11.83, "«Сократить названия» — и опись помещается на один лист", "«Общество с ограниченной ответственностью» → «ООО», «государственной пошлины» → «госпошлины». Любую строку можно поправить."], [14.96, "Готовый бланк Почты России", "PDF готов: распечатать, подписать и отнести на почту."]]}, {"k": "prac", "t": "Практика и нормы", "d": 16.96, "s": [[0.58, "Судебная практика — по доводам", "Под каждым доводом — акты, которые его подкрепляют: позиция суда, цитата, как применяем."], [2.5, "Вставляем реквизиты, как в иске, — остальное программа заполнит сама", "Из строки «Определение ВС РФ от 12.03.2024 № 305-ЭС23-1234» программа сама заполнила вид акта, суд, дату и номер."], [8.0, "Нормы права — одной строкой", "Перечислили статьи через запятую — они разложились по кодексам и статьям. Ссылка на текст — рядом."]]}, {"k": "terms", "t": "Сроки и пошлина", "d": 17.83, "s": [[0.79, "Главная: всё срочное на сегодня и неделю", "Заседания и сроки на неделю, горящие и просроченные, напоминания и недавние дела — на одном экране."], [3.04, "Открываем дело", "Щелчок по делу в списке слева — и вы во всех его вкладках: документы, сроки, практика, деньги."], [5.38, "Процессуальный срок — с учётом выходных и праздников", "Поменяли длительность — последний день срока пересчитался сразу, с учётом нерабочих дней по АПК, ГПК и КАС."], [11.5, "Госпошлина — за секунду", "Ввели цену иска — пошлина по ст. 333.21 НК РФ посчитана, с расшифровкой расчёта."]]}, {"k": "client", "t": "Доверитель и деньги", "d": 16.46, "s": [[0.58, "Папка доверителя — сводка по всем его делам", "Все дела клиента, сроки по ним и деньги — начислено, оплачено, долг — в одной сводке."], [5.75, "Обзор дела: ближайшее, заметки, документы", "Номер, суд, судья, ближайшее заседание, заметки к заседанию и последние документы."], [9.62, "Деньги: часы, ставка, оплаты и долг", "Учёт работы по делу: программа сама считает начислено, оплачено и долг доверителя."], [12.75, "Сроки дела — с напоминаниями", "Все заседания, сроки и задачи дела — программа напомнит о них заранее."]]}, {"k": "ai", "t": "ИИ-помощник", "d": 22.38, "s": [[0.5, "ИИ-помощник: кнопка «🤖 ИИ» над страницами", "Кнопка «🤖 ИИ» — над страницами дела (или «🤖 ИИ-помощник» в обзоре дела). Окно чата открывается рядом."], [2.67, "Выбираем документ — и «Кратко о документе»", "Вверху — какой документ дать ИИ. «📝 Кратко о документе» — пересказ печатается по мере готовности."], [8.75, "Разбор судебного акта — и сроки сразу в дело", "«⚖️ Разобрать судебный акт» — что решил суд и какие сроки; программа предлагает добавить их в «Сроки» с галочками."], [18.04, "Готово — заседание и срок во вкладке «Сроки»", "Заседание и срок — во вкладке «Сроки» дела, с напоминаниями. Ответ можно скопировать или сохранить в Word."]]}, {"k": "aisetup", "t": "Подключить ИИ", "d": 21.88, "s": [[0.58, "Подключаем ИИ: «🤖 ИИ-помощник» в обзоре дела", "В обзоре дела — кнопка «🤖 ИИ-помощник». В первый раз программа предлагает подключить ИИ."], [2.71, "GigaChat от Сбера — бесплатно", "GigaChat от Сбера — бесплатно, вход по Сбер ID. DeepSeek — платно, но копейки."], [6.58, "Программа по шагам показывает, где взять ключ", "Пошаговая инструкция и кнопка «Открыть сайт Сбера»: проект → «Настройки API» → «Получить ключ»."], [10.17, "Вставляем ключ и проверяем", "Вставляем ключ, «Проверить» — «✅ Ключ работает!», модель выбирается сама."], [16.96, "Обезличивание — включено сразу", "Обезличивание включено сразу: ФИО и паспорта уходят в ИИ метками. «Готово» — можно работать."]]}];
+  // видео
+  var EX = [{"k": "opr", "t": "Определение суда", "d": 19.42, "s": [[0.79, "Определение перетаскивается в окно дела", "Файл попадает в документы дела и в общий PDF."], [4.33, "Заседание и срок отзыва найдены в тексте", "Дата и время заседания, адрес, зал и срок представления отзыва взяты из определения."], [8.46, "Всё переносится во вкладку «Сроки»", "Заседание и срок появляются в календаре дела с напоминаниями."], [11.79, "Файл переименован", "Вместо «Scan_0042.pdf» — «Определение о принятии искового заявления к производству» с датой."]]}, {"k": "pdf", "t": "PDF дела", "d": 25.0, "s": [[0.79, "Документы дела в одном PDF", "Каждый файл — отдельная карточка с названием и диапазоном страниц."], [4.29, "Файлы разворачиваются и переставляются", "Карточки можно свернуть в стопку и переставить мышью."], [6.62, "Просмотр страниц справа", "Документ читается без открытия, страницы листаются колёсиком."], [13.62, "Оглавление и поиск по тексту", "Поиск находит слово на всех страницах дела, щелчок переводит к нужному месту."]]}, {"k": "opis", "t": "Опись ф. 107", "d": 20.54, "s": [[0.58, "Опись на бланке Почты России", "Два экземпляра на листе, итоговые цифры считаются автоматически."], [3.88, "Сколько листов займёт опись", "При добавлении строки внизу видно, поместится ли опись на один лист."], [11.83, "Сокращение названий", "«Общество с ограниченной ответственностью» заменяется на «ООО». Любую строку можно поправить вручную."], [14.96, "Готовый бланк", "PDF можно распечатать, подписать и сдать на почте."]]}, {"k": "prac", "t": "Практика и нормы", "d": 16.96, "s": [[0.58, "Практика по доводам", "Под каждым доводом — акты, позиция суда, цитата и комментарий о применении."], [2.5, "Реквизиты акта вставляются строкой", "Вид акта, суд, дата и номер заполняются по строке из иска."], [8.0, "Нормы права списком", "Статьи, перечисленные через запятую, раскладываются по кодексам."]]}, {"k": "terms", "t": "Сроки и госпошлина", "d": 17.83, "s": [[0.79, "Главная страница", "Заседания и сроки на неделю, просроченное и недавние дела."], [3.04, "Переход в дело", "Щелчок по делу открывает его вкладки: документы, сроки, практику, расчёты."], [5.38, "Процессуальный срок", "Последний день считается с учётом выходных и праздников по АПК, ГПК и КАС."], [11.5, "Госпошлина", "Пошлина по ст. 333.21 НК РФ считается по цене иска, с расшифровкой."]]}, {"k": "client", "t": "Доверитель и оплата", "d": 16.46, "s": [[0.58, "Папка доверителя", "Все дела клиента, сроки и расчёты с ним на одной странице."], [5.75, "Обзор дела", "Номер, суд, судья, ближайшее заседание, заметки и последние документы."], [9.62, "Часы, ставка, оплаты", "Начислено, оплачено и долг доверителя считаются автоматически."], [12.75, "Сроки дела", "Заседания, сроки и задачи дела с напоминаниями."]]}, {"k": "ai", "t": "ИИ-помощник", "d": 22.38, "s": [[0.5, "Кнопка «ИИ» над страницами дела", "Окно помощника открывается рядом с документом."], [2.67, "Краткое содержание документа", "Выбирается документ, ответ появляется по мере готовности."], [8.75, "Разбор судебного акта", "Решение суда, мотивы и сроки. Найденные сроки можно добавить в дело."], [18.04, "Сроки добавлены в дело", "Заседание и срок появились во вкладке «Сроки». Ответ можно сохранить в Word."]]}, {"k": "aisetup", "t": "Подключение ИИ", "d": 21.88, "s": [[0.58, "Первое подключение", "В обзоре дела кнопка «ИИ-помощник» предлагает подключить службу."], [2.71, "Выбор службы", "GigaChat от Сбера бесплатен, вход по Сбер ID. DeepSeek платный, но недорогой."], [6.58, "Где взять ключ", "Пошаговая инструкция и ссылка на нужную страницу сайта Сбера."], [10.17, "Проверка ключа", "После вставки ключа программа проверяет, что он работает."], [16.96, "Скрытие персональных данных", "ФИО и паспортные данные уходят в ИИ в виде меток. Настройка включена по умолчанию."]]}];
   var tabs = document.getElementById("exTabs"), steps = document.getElementById("exSteps"), video = document.getElementById("exVideo");
-  var sec = document.getElementById("examples"), play = document.getElementById("exPlay"), prog = document.getElementById("exProg");
+  var sec = document.getElementById("video"), play = document.getElementById("exPlay"), prog = document.getElementById("exProg");
   var cur = 0, visible = false, userPaused = false, lis = [];
-  EX.forEach(function (e, i) {
-    var b = document.createElement("button"); b.textContent = e.t;
-    b.onclick = function () { pick(i, 0); }; tabs.appendChild(b);
-  });
-  function pick(i, k) {
+  EX.forEach(function (e, i) { var b = document.createElement("button"); b.textContent = e.t; b.onclick = function () { pick(i); }; tabs.appendChild(b); });
+  function pick(i) {
     cur = i; var e = EX[i];
     [].forEach.call(tabs.children, function (b, j) { b.classList.toggle("on", j === i); });
     steps.innerHTML = ""; lis = [];
-    e.s.forEach(function (x, j) {
+    e.s.forEach(function (x) {
       var li = document.createElement("li"); li.innerHTML = "<b></b><span></span><i class='bar'></i>";
       li.querySelector("b").textContent = x[1]; li.querySelector("span").textContent = x[2];
-      li.onclick = function () { video.currentTime = Math.max(0, x[0] - 0.2); go(); }; steps.appendChild(li); lis.push(li);
+      li.onclick = function () { video.currentTime = Math.max(0, x[0] - .2); go(); }; steps.appendChild(li); lis.push(li);
     });
     video.poster = "video/" + e.k + ".webp";
     video.innerHTML = '<source src="video/' + e.k + '.mp4" type="video/mp4"><source src="video/' + e.k + '.webm" type="video/webm">';
-    video.load();
-    if (k) video.currentTime = e.s[k][0];
-    go();
+    video.load(); go();
   }
   function go() { if (visible && !userPaused) { var p = video.play(); if (p && p.catch) p.catch(function () {}); } }
   video.addEventListener("timeupdate", function () {
     var e = EX[cur], t = video.currentTime, k = 0;
-    e.s.forEach(function (x, j) { if (t >= x[0] - 0.05) k = j; });
+    e.s.forEach(function (x, j) { if (t >= x[0] - .05) k = j; });
     lis.forEach(function (li, j) {
       li.classList.toggle("on", j === k);
       var a = e.s[j][0], b = j + 1 < e.s.length ? e.s[j + 1][0] : (video.duration || e.d);
-      li.querySelector(".bar").style.transform = "scaleX(" + (j === k ? Math.min(1, Math.max(0, (t - a) / (b - a))) : (j < k ? 0 : 0)) + ")";
+      li.querySelector(".bar").style.transform = "scaleX(" + (j === k ? Math.min(1, Math.max(0, (t - a) / (b - a))) : 0) + ")";
     });
     prog.style.width = (100 * t / (video.duration || e.d)) + "%";
   });
-  video.addEventListener("ended", function () { pick((cur + 1) % EX.length, 0); });   // по кругу: следующий пример
-  play.onclick = function (ev) {
-    ev.stopPropagation(); userPaused = !video.paused;
-    if (video.paused) { userPaused = false; go(); } else video.pause();
-  };
-  video.addEventListener("play", function () { play.textContent = "❚❚"; play.setAttribute("aria-label", "Пауза"); });
-  video.addEventListener("pause", function () { play.textContent = "▶"; play.setAttribute("aria-label", "Смотреть"); });
+  video.addEventListener("ended", function () { pick((cur + 1) % EX.length); });
+  play.onclick = function (ev) { ev.stopPropagation(); if (video.paused) { userPaused = false; go(); } else { userPaused = true; video.pause(); } };
+  video.addEventListener("play", function () { play.textContent = "❚❚"; });
+  video.addEventListener("pause", function () { play.textContent = "▶"; });
   document.getElementById("exFull").onclick = function (ev) {
     ev.stopPropagation(); var f = document.getElementById("exFrame");
     if (document.fullscreenElement) document.exitFullscreen(); else if (f.requestFullscreen) f.requestFullscreen();
     else if (video.webkitEnterFullscreen) video.webkitEnterFullscreen();
   };
-  document.getElementById("exFrame").onclick = function () {      // щелчок по видео — пауза/продолжить
-    if (video.paused) { userPaused = false; go(); } else { userPaused = true; video.pause(); }
-  };
+  document.getElementById("exFrame").onclick = function () { play.onclick({ stopPropagation: function () {} }); };
   if ("IntersectionObserver" in window) {
-    new IntersectionObserver(function (es) { es.forEach(function (en) {
-      visible = en.isIntersecting; if (visible) go(); else video.pause(); }); }, { threshold: .3 }).observe(sec);
+    new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) go(); else video.pause(); }, { threshold: .3 }).observe(sec);
   } else visible = true;
-  pick(0, 0);
-
-  var still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  // видео-уроки: все сценарии плеера «Примеры из работы» — карточками
-  (function () {
-    var grid = document.getElementById("lessonGrid"); if (!grid || typeof EX === "undefined") return;
-    var NEW = { ai: 1, aisetup: 1 };
-    EX.forEach(function (e, i) {
-      var b = document.createElement("button"); b.type = "button";
-      var m = Math.floor(e.d / 60), sec = Math.round(e.d % 60);
-      b.innerHTML = '<div class="pic" style="background-image:url(video/' + e.k + '.webp)"></div><div class="t"><b>' + e.t +
-        (NEW[e.k] ? '<span class="new">НОВОЕ</span>' : "") + '</b><span>' + e.s.length + " шага · " + (m ? m + " мин " : "") + sec + " с</span></div>";
-      b.addEventListener("click", function () {
-        var tb = document.querySelectorAll("#exTabs button")[i]; if (tb) tb.click();
-        document.getElementById("examples").scrollIntoView({ behavior: still ? "auto" : "smooth" });
-      });
-      grid.appendChild(b);
-    });
-  })();
-  // ИИ-ролик играет, только когда его видно
-  (function () {
-    var v = document.getElementById("aiVideo"); if (!v) return;
-    if (!("IntersectionObserver" in window) || still) return;
-    new IntersectionObserver(function (es) { es.forEach(function (e) {
-      if (e.isIntersecting) { var p = v.play(); if (p && p.catch) p.catch(function () {}); } else v.pause(); }); }, { threshold: 0.4 }).observe(v);
-  })();
-  // вопросы — раскрываются по щелчку
-  document.querySelectorAll("#faqList .item button").forEach(function (b) {
-    b.addEventListener("click", function () { b.parentNode.classList.toggle("open"); });
-  });
-  // что нового — из CHANGELOG.md (его выкладывает сборка каждой версии)
-  (function () {
-    var feed = document.getElementById("newsFeed"); if (!feed) return;
-    function esc(t) { return t.replace(/&/g, "&amp;").replace(/</g, "&lt;"); }
-    fetch("CHANGELOG.md", { cache: "no-cache" }).then(function (r) { return r.text(); }).then(function (md) {
-      var parts = md.split(/\n## /).slice(1, 6), html = "";
-      parts.forEach(function (p) {
-        var lines = p.split("\n"), head = lines[0], k = head.indexOf(" — ");
-        var ver = k > 0 ? head.slice(0, k) : head, title = k > 0 ? head.slice(k + 3) : "";
-        var pts = lines.slice(1).filter(function (l) { return /^- /.test(l); }).slice(0, 3).map(function (l) {
-          var t = l.slice(2).split("Как пользоваться:")[0].trim(), c = t.search(/[.!?](\s+[А-ЯЁA-Z]|$)/);
-          if (c > 40 && c < 260) t = t.slice(0, c + 1);
-          else if (t.length > 230) t = t.slice(0, t.lastIndexOf(" ", 225)) + "…";
-          return "<li>" + esc(t) + "</li>"; }).join("");
-        title = title.charAt(0).toUpperCase() + title.slice(1);
-        html += '<div class="v"><h3><small>' + esc(ver) + "</small>" + esc(title) + "</h3>" + (pts ? "<ul>" + pts + "</ul>" : "") + "</div>";
-      });
-      feed.innerHTML = html || '<div class="v"><h3>Список обновлений пока пуст</h3></div>';
-    }).catch(function () { feed.innerHTML = '<div class="v"><h3>Не удалось загрузить список обновлений</h3></div>'; });
-  })();
+  pick(0);
 })();
 </script>
 </body>
