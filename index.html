@@ -55,16 +55,34 @@ nav a:hover { opacity: 1; }
 
 /* ---------- первый экран ---------- */
 .hero { background: radial-gradient(1200px 700px at 55% 30%, #12245a 0%, var(--navy) 60%); color: #fff; overflow: hidden; padding-top: 68px; }
-.themis { position: absolute; right: max(0px, calc((100vw - 1240px) / 2)); top: 52px; width: min(430px, 90vw); pointer-events: none; }
-.themis svg { width: 100%; height: auto; overflow: visible; filter: drop-shadow(0 0 14px rgba(80,120,255,.45)); }
-.themis .ln { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 2.6s cubic-bezier(.6,.1,.2,1) forwards; }
-.themis .dim { stroke-opacity: .45; }
-.themis .orbit { transform-origin: 225px 300px; animation: spin 90s linear infinite; }
-.themis .orbit2 { transform-origin: 225px 300px; animation: spin 140s linear infinite reverse; }
-@keyframes draw { to { stroke-dashoffset: 0; } }
+.themis { position: absolute; right: max(0px, calc((100vw - 1240px) / 2)); top: 40px; width: 560px; height: 700px; pointer-events: none; perspective: 900px; }
+.themis canvas { position: absolute; inset: -40px; width: calc(100% + 80px); height: calc(100% + 80px); }
+.themis .halo { position: absolute; left: 50%; top: 46%; width: 620px; height: 620px; transform: translate(-50%, -50%); border-radius: 50%;
+  background: radial-gradient(circle, rgba(59,99,255,.55) 0%, rgba(31,77,255,.18) 45%, rgba(31,77,255,0) 70%); animation: breathe 7s ease-in-out infinite; }
+.themis .rings { position: absolute; left: 50%; top: 46%; width: 600px; height: 600px; transform: translate(-50%, -50%); overflow: visible; }
+.themis .orbit { transform-origin: 300px 300px; animation: spin 90s linear infinite; }
+.themis .orbit2 { transform-origin: 300px 300px; animation: spin 140s linear infinite reverse; }
+.statue { position: absolute; left: 50%; top: 20px; height: 640px; aspect-ratio: 744 / 1068; margin: 0; transform: translateX(-50%);
+  transform-style: preserve-3d; transition: transform .8s cubic-bezier(.2,.7,.2,1); pointer-events: auto; }
+.statue .art { position: relative; width: 100%; height: 100%; overflow: hidden; animation: float 10s ease-in-out infinite;
+  -webkit-mask: radial-gradient(ellipse 50% 50% at 50% 47%, #000 58%, transparent 100%); mask: radial-gradient(ellipse 50% 50% at 50% 47%, #000 58%, transparent 100%); }
+.statue img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.12) brightness(.98);
+  animation: reveal 2.6s cubic-bezier(.3,.1,.2,1) .15s both, breathe2 22s ease-in-out 2.8s infinite alternate; }
+.statue .art::after { content: ""; position: absolute; inset: 0; background: linear-gradient(160deg, #6f8fff 0%, #1f4dff 55%, #0a1640 100%);
+  mix-blend-mode: color; opacity: .42; pointer-events: none; }
+.statue .sweep { position: absolute; inset: 0; z-index: 2; pointer-events: none; mix-blend-mode: soft-light;
+  background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.85) 48%, rgba(190,210,255,.4) 53%, transparent 64%) 0 0 / 280% 100% no-repeat;
+  animation: sweep 7s ease-in-out 3s infinite; opacity: 0; }
+.statue figcaption { position: absolute; left: 0; right: 0; bottom: -6px; text-align: center; font-size: 11px; letter-spacing: .06em; color: rgba(255,255,255,.45); }
+.statue figcaption a { text-decoration: none; color: rgba(255,255,255,.7); }
+@keyframes breathe2 { from { transform: scale(1); } to { transform: scale(1.06); } }
+@keyframes reveal { 0% { opacity: 0; filter: grayscale(1) blur(14px) brightness(1.6); transform: scale(1.08); } 100% { opacity: 1; filter: grayscale(1) contrast(1.12) brightness(.98) blur(0); transform: scale(1); } }
+@keyframes sweep { 0% { background-position: 130% 0; opacity: 1; } 55% { background-position: -30% 0; opacity: 1; } 56%, 100% { opacity: 0; } }
+@keyframes float { 0%, 100% { margin-top: 0; } 50% { margin-top: -10px; } }
+@keyframes breathe { 0%, 100% { opacity: .85; } 50% { opacity: 1; } }
 @keyframes spin { to { transform: rotate(360deg); } }
-@media (max-width: 900px) { .themis { opacity: .35; right: -60px; top: 110px; width: 360px; } }
-@media (prefers-reduced-motion: reduce) { .themis .ln { animation: none; stroke-dashoffset: 0; } .themis .orbit, .themis .orbit2 { animation: none; } }
+@media (max-width: 900px) { .themis { right: -120px; top: 80px; width: 420px; height: 540px; opacity: .4; } .statue { height: 500px; } .statue figcaption { display: none; } }
+@media (prefers-reduced-motion: reduce) { .statue .art, .statue img, .statue .sweep, .themis .halo, .themis .orbit, .themis .orbit2 { animation: none; } }
 .hero .top { position: relative; padding-top: 90px; min-height: 560px; }
 .hero h1 { position: relative; z-index: 2; margin: 0; font-weight: 500; text-transform: uppercase; line-height: .95; letter-spacing: -.02em; font-size: clamp(44px, 7vw, 108px); }
 .hero h1 span { display: block; }
@@ -211,55 +229,11 @@ footer a { text-decoration: none; } footer a:hover { color: #fff; }
 <!-- ============ первый экран ============ -->
 <section class="hero">
   <div class="themis" aria-hidden="true">
-    <svg viewBox="0 0 420 640" id="themis">
-      <defs>
-        <radialGradient id="halo" cx="50%" cy="45%" r="50%">
-          <stop offset="0" stop-color="#3b63ff" stop-opacity=".75"/><stop offset=".55" stop-color="#1f4dff" stop-opacity=".25"/><stop offset="1" stop-color="#1f4dff" stop-opacity="0"/>
-        </radialGradient>
-        <linearGradient id="blade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe0ff" stop-opacity=".9"/><stop offset="1" stop-color="#7fa2ff" stop-opacity=".2"/></linearGradient>
-      </defs>
-      <circle cx="225" cy="300" r="250" fill="url(#halo)"/>
-      <circle class="orbit" cx="225" cy="300" r="232" fill="none" stroke="#7fa2ff" stroke-opacity=".35" stroke-width="1" stroke-dasharray="2 9"/>
-      <circle class="orbit2" cx="225" cy="300" r="268" fill="none" stroke="#7fa2ff" stroke-opacity=".18" stroke-width="1" stroke-dasharray="40 14"/>
-      <g class="fig" fill="none" stroke="#dbe6ff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-        <!-- голова, волосы, повязка -->
-        <ellipse class="ln" pathLength="1" cx="232" cy="104" rx="25" ry="30"/>
-        <path class="ln" pathLength="1" d="M207 96 C204 64 258 58 259 94"/>
-        <path class="ln" pathLength="1" d="M258 92 C272 112 270 142 256 160"/>
-        <path class="ln" pathLength="1" d="M207 99 L258 95 L259 108 L208 112 Z" fill="#1f4dff" fill-opacity=".55"/>
-        <g id="tails"><path class="ln" pathLength="1" d="M258 100 C276 102 286 94 298 102"/><path class="ln" pathLength="1" d="M258 106 C278 114 288 110 296 124"/></g>
-        <path class="ln" pathLength="1" d="M222 132 L220 150 M242 132 L244 150"/>
-        <!-- одеяние -->
-        <path class="ln" pathLength="1" d="M188 172 C206 150 258 150 278 170"/>
-        <path class="ln" pathLength="1" d="M188 172 C176 240 166 330 148 600"/>
-        <path class="ln" pathLength="1" d="M278 170 C292 250 300 360 318 600"/>
-        <path class="ln" pathLength="1" d="M148 600 C190 612 226 598 250 610 C276 620 300 606 318 600"/>
-        <path class="ln" pathLength="1" d="M194 268 C220 278 254 278 282 266"/>
-        <path class="ln" pathLength="1" d="M190 182 C220 230 252 238 284 214"/>
-        <path class="ln dim" pathLength="1" d="M210 282 C206 380 200 480 190 598"/>
-        <path class="ln dim" pathLength="1" d="M232 284 C234 390 236 490 238 606"/>
-        <path class="ln dim" pathLength="1" d="M256 282 C264 380 272 480 284 604"/>
-        <!-- рука с весами -->
-        <path class="ln" pathLength="1" d="M190 176 C160 150 132 128 118 100 C112 88 110 78 110 70"/>
-        <path class="ln" pathLength="1" d="M200 198 C170 176 146 150 130 116 C124 100 122 86 121 72"/>
-        <ellipse class="ln" pathLength="1" cx="115" cy="64" rx="9" ry="8"/>
-        <path class="ln" pathLength="1" d="M115 56 L115 40"/>
-        <circle class="ln" pathLength="1" cx="115" cy="35" r="4"/>
-        <g id="beam"><path class="ln" pathLength="1" d="M45 44 L185 44"/><circle cx="45" cy="44" r="3" fill="#dbe6ff"/><circle cx="185" cy="44" r="3" fill="#dbe6ff"/></g>
-        <g id="panL"><path class="ln" pathLength="1" d="M0 0 L-20 58 M0 0 L20 58"/><path class="ln" pathLength="1" d="M-24 58 C-15 78 15 78 24 58 Z" fill="#1f4dff" fill-opacity=".35"/></g>
-        <g id="panR"><path class="ln" pathLength="1" d="M0 0 L-20 58 M0 0 L20 58"/><path class="ln" pathLength="1" d="M-24 58 C-15 78 15 78 24 58 Z" fill="#1f4dff" fill-opacity=".35"/></g>
-        <!-- рука с мечом -->
-        <path class="ln" pathLength="1" d="M278 174 C292 210 300 250 303 288"/>
-        <path class="ln" pathLength="1" d="M272 206 C282 236 288 266 291 292"/>
-        <circle class="ln" pathLength="1" cx="299" cy="298" r="9"/>
-        <path class="ln" pathLength="1" d="M299 276 L299 288"/>
-        <circle cx="299" cy="273" r="3.5" fill="#dbe6ff"/>
-        <path class="ln" pathLength="1" d="M284 312 L316 306"/>
-        <path class="ln" pathLength="1" d="M293 313 L313 566 L309 310" fill="url(#blade)"/>
-        <!-- пьедестал -->
-        <path class="ln dim" pathLength="1" d="M118 600 L350 600 L362 620 L106 620 Z"/>
-      </g>
-    </svg>
+    <canvas id="dust"></canvas>
+    <div class="halo"></div>
+    <svg class="rings" viewBox="0 0 600 600"><circle class="orbit" cx="300" cy="300" r="250" fill="none" stroke="#7fa2ff" stroke-opacity=".35" stroke-dasharray="2 9"/><circle class="orbit2" cx="300" cy="300" r="290" fill="none" stroke="#7fa2ff" stroke-opacity=".18" stroke-dasharray="40 14"/></svg>
+    <figure class="statue" id="statue"><div class="art"><img src="img/themis-evans.webp" alt="Фемида с повязкой на глазах. Рисунок @evans.ink" width="744" height="1068"><i class="sweep"></i></div>
+      <figcaption>Рисунок: <a href="https://www.instagram.com/evans.ink/">@evans.ink</a> · с разрешения автора</figcaption></figure>
   </div>
   <div class="wrap top">
     <h1><span>Рабочее</span><span class="r2">место</span><span>юриста</span></h1>
@@ -408,6 +382,7 @@ footer a { text-decoration: none; } footer a:hover { color: #fff; }
     <a href="https://t.me/axis_juris">Telegram @axis_juris</a>
     <a href="calc.html">Калькуляторы</a>
     <a href="license.html">Условия использования</a>
+    <a href="https://www.instagram.com/evans.ink/">Рисунок Фемиды — @evans.ink, с разрешения автора</a>
     <span style="margin-left:auto">© 2026 LegalHelper</span>
   </div>
 </footer>
@@ -444,22 +419,33 @@ footer a { text-decoration: none; } footer a:hover { color: #fff; }
     so.observe(document.querySelector(".stats"));
   } else rv.forEach(function (el) { el.classList.add("in"); });
 
-  // Фемида: весы плавно покачиваются, концы повязки — на ветру
+  // Фемида: светящаяся пыль вокруг и лёгкий поворот вслед за мышью
   (function () {
-    var beam = document.getElementById("beam"), pl = document.getElementById("panL"), pr = document.getElementById("panR"),
-        tails = document.getElementById("tails"), P = [115, 44], L = 70, on = true, t0 = performance.now();
-    function frame(t) {
-      var s = (t - t0) / 1000, a = still ? 0 : 7 * Math.sin(s * 0.9) * Math.min(1, s / 2.5), r = a * Math.PI / 180;
-      beam.setAttribute("transform", "rotate(" + a.toFixed(2) + " " + P[0] + " " + P[1] + ")");
-      var dx = Math.cos(r) * L, dy = Math.sin(r) * L;
-      pl.setAttribute("transform", "translate(" + (P[0] - dx).toFixed(2) + " " + (P[1] - dy).toFixed(2) + ") rotate(" + (-a * .25).toFixed(2) + ")");
-      pr.setAttribute("transform", "translate(" + (P[0] + dx).toFixed(2) + " " + (P[1] + dy).toFixed(2) + ") rotate(" + (-a * .25).toFixed(2) + ")");
-      tails.setAttribute("transform", "rotate(" + (still ? 0 : 5 * Math.sin(s * 1.7)).toFixed(2) + " 258 103)");
-      if (on && !still) requestAnimationFrame(frame);
+    var cv = document.getElementById("dust"), cx = cv.getContext("2d"), dpr = Math.min(2, devicePixelRatio || 1), P = [], on = true, last = 0;
+    function size() { var r = cv.getBoundingClientRect(); cv.width = r.width * dpr; cv.height = r.height * dpr; }
+    size(); addEventListener("resize", size);
+    for (var i = 0; i < 60; i++) P.push({ x: Math.random(), y: Math.random(), r: .4 + Math.random() * 1.6, v: .0004 + Math.random() * .0012, a: Math.random() * 6.3 });
+    function draw(t) {
+      if (on && t - last > 33) {
+        last = t; var W = cv.width, H = cv.height; cx.clearRect(0, 0, W, H);
+        P.forEach(function (p) {
+          if (!still) { p.y -= p.v; p.a += .02; if (p.y < -.02) { p.y = 1.02; p.x = Math.random(); } }
+          var x = (p.x + Math.sin(p.a) * .01) * W, y = p.y * H, al = Math.min(1, Math.min(p.y, 1 - p.y) * 6) * .8;
+          var g = cx.createRadialGradient(x, y, 0, x, y, p.r * 4 * dpr);
+          g.addColorStop(0, "rgba(200,215,255," + al + ")"); g.addColorStop(1, "rgba(80,120,255,0)");
+          cx.fillStyle = g; cx.beginPath(); cx.arc(x, y, p.r * 4 * dpr, 0, 6.3); cx.fill();
+        });
+      }
+      requestAnimationFrame(draw);
     }
-    if ("IntersectionObserver" in window) new IntersectionObserver(function (es) {
-      var was = on; on = es[0].isIntersecting; if (on && !was) requestAnimationFrame(frame); }).observe(document.getElementById("themis"));
-    requestAnimationFrame(frame);
+    if ("IntersectionObserver" in window) new IntersectionObserver(function (es) { on = es[0].isIntersecting; }).observe(cv);
+    requestAnimationFrame(draw);
+    var st = document.getElementById("statue");
+    if (!still && matchMedia("(pointer: fine)").matches) addEventListener("mousemove", function (e) {
+      if (scrollY > innerHeight) return;
+      var kx = e.clientX / innerWidth - .5, ky = e.clientY / innerHeight - .5;
+      st.style.transform = "translateX(-50%) rotateY(" + (kx * 10).toFixed(2) + "deg) rotateX(" + (-ky * 5).toFixed(2) + "deg)";
+    }, { passive: true });
   })();
 
   // по задачам / по роли
