@@ -1,16 +1,69 @@
 <!doctype html>
 <html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Условия использования — LegalHelper</title>
-<link rel="icon" href="img/logo-blue.svg">
+<meta name="theme-color" content="#070f24">
+<link rel="icon" href="img/logo-blue.svg" type="image/svg+xml">
 <style>
-:root { --ink:#0f2236; --mute:#6b7a8c; --line:#dfe6ee; --bg:#fff; --blue:#1565c0; }
-body { margin:0; background:var(--bg); color:var(--ink); font:400 16px/1.6 -apple-system,"Segoe UI",Roboto,Arial,sans-serif; }
-.wrap { max-width:860px; margin:0 auto; padding:32px 16px 60px; }
-a { color:var(--blue); }
-pre { white-space:pre-wrap; font:inherit; }
-</style></head><body><div class="wrap">
-<p><a href="./">← На главную</a></p>
-<h1 style="font-weight:500">Условия использования LegalHelper</h1>
+
+@font-face { font-family: 'Inter Tight'; font-style: normal; font-weight: 300 600; font-display: swap; src: url(fonts/InterTight-cyrillic-ext.woff2) format('woff2'); unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F; }
+@font-face { font-family: 'Inter Tight'; font-style: normal; font-weight: 300 600; font-display: swap; src: url(fonts/InterTight-cyrillic.woff2) format('woff2'); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
+@font-face { font-family: 'Inter Tight'; font-style: normal; font-weight: 300 600; font-display: swap; src: url(fonts/InterTight-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+:root {
+  --navy: #070f24; --navy2: #0c1a3e; --blue: #1f4dff; --blue-h: #3b63ff; --sky: #7fa2ff;
+  --ink: #0b1220; --mute: #687387; --line: #dfe3ea; --soft: #f2f3f6; --bg: #fff; --blue2: #1638c4;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+body { margin: 0; background: var(--soft); color: var(--ink); overflow-x: hidden;
+  font: 400 16px/1.55 "Inter Tight", -apple-system, "Segoe UI", Roboto, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+@media (max-width: 640px) { .wrap { padding: 0 16px; } }
+.cap { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+h1 { font-weight: 500; text-transform: uppercase; font-size: clamp(34px, 6vw, 84px); line-height: 1; margin: 0; letter-spacing: -.01em; }
+h2 { font-weight: 500; text-transform: uppercase; font-size: clamp(24px, 3vw, 40px); line-height: 1.05; margin: 0 0 12px; letter-spacing: -.01em; }
+.small { font-size: 13.5px; color: var(--mute); max-width: 860px; }
+.arrow::after { content: "↗"; margin-left: 8px; font-size: .95em; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 22px; font-size: 13px; letter-spacing: .06em;
+  text-transform: uppercase; text-decoration: none; background: var(--blue); color: #fff; border: 1px solid var(--blue);
+  transition: background .2s, border-color .2s, color .2s; cursor: pointer; font-family: inherit; }
+.btn:hover { background: var(--blue-h); border-color: var(--blue-h); }
+.btn.line { background: transparent; color: var(--blue); border-color: currentColor; }
+.btn.line:hover { background: var(--blue); border-color: var(--blue); color: #fff; }
+header { position: sticky; top: 0; z-index: 50; background: rgba(7,15,36,.94); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,.08); }
+.bar { display: flex; align-items: center; gap: 28px; height: 68px; color: #fff; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 600; letter-spacing: .04em; }
+.logo img { width: 28px; height: 28px; }
+nav { display: flex; gap: 26px; margin-left: auto; }
+nav a { text-decoration: none; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; opacity: .8; }
+nav a:hover { opacity: 1; }
+.bar .btn { padding: 10px 18px; }
+@media (max-width: 900px) { nav { display: none; } .bar .btn { margin-left: auto; } }
+.top { background: radial-gradient(1200px 600px at 60% 20%, #12245a 0%, var(--navy) 65%); color: #fff; padding: 90px 0 0; }
+.top p { max-width: 700px; color: rgba(255,255,255,.72); margin: 22px 0 0; font-size: 16px; }
+footer { background: var(--navy); color: rgba(255,255,255,.6); font-size: 13px; padding: 36px 0; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 18px 32px; align-items: center; }
+footer a { text-decoration: none; } footer a:hover { color: #fff; }
+
+.doc { padding: 70px 0 100px; }
+.doc pre { white-space: pre-wrap; font: inherit; font-size: 15px; line-height: 1.7; margin: 0; max-width: 900px; background: #fff; border: 1px solid var(--line); padding: 34px 36px; }
+@media (max-width: 640px) { .doc pre { padding: 22px 18px; font-size: 14px; } }
+</style></head><body>
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="index.html"><img src="img/logo.svg" alt="">LEGALHELPER</a>
+    <nav><a href="index.html">О программе</a><a href="calc.html">Калькуляторы</a></nav>
+    <a class="btn" href="https://github.com/LegalHelper/legalhelper.github.io/releases/latest/download/LegalHelper-Setup.exe">Скачать</a>
+  </div>
+</header>
+
+<section class="top"><div class="wrap" style="padding-bottom:70px">
+  <h1>Условия<br>использования</h1>
+  <p>Лицензионное соглашение LegalHelper. Программа бесплатна; ниже — что можно и чего нельзя делать с ней.</p>
+</div></section>
+
+<section class="doc"><div class="wrap">
 <pre>LegalHelper — рабочее место юриста
 © 2026 LegalHelper (axis.juris@bk.ru). Все права защищены.
 
@@ -49,4 +102,16 @@ pre { white-space:pre-wrap; font:inherit; }
 
 По вопросам: axis.juris@bk.ru, Telegram @axis_juris.
 </pre>
-</div></body></html>
+</div></section>
+
+<footer>
+  <div class="wrap">
+    <a class="logo" href="index.html"><img src="img/logo.svg" alt="" style="width:22px;height:22px">LEGALHELPER</a>
+    <a href="mailto:axis.juris@bk.ru">axis.juris@bk.ru</a>
+    <a href="https://t.me/axis_juris">Telegram @axis_juris</a>
+    <a href="index.html">О программе</a>
+    <a href="calc.html">Калькуляторы</a>
+    <span style="margin-left:auto">© 2026 LegalHelper</span>
+  </div>
+</footer>
+</body></html>

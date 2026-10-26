@@ -5,91 +5,107 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Калькуляторы юриста — LegalHelper</title>
 <meta name="description" content="Бесплатные калькуляторы для юристов: процессуальные сроки по АПК, ГПК, КАС и УПК с учётом праздников, госпошлина в суд общей юрисдикции и арбитраж (ст. 333.19, 333.21 НК РФ), проценты по ст. 395 ГК РФ по ключевой ставке.">
-<meta name="theme-color" content="#1565c0">
+<meta name="theme-color" content="#070f24">
 <link rel="icon" href="img/logo-blue.svg" type="image/svg+xml">
 <style>
+@font-face { font-family: 'Inter Tight'; font-style: normal; font-weight: 300 600; font-display: swap; src: url(fonts/InterTight-cyrillic-ext.woff2) format('woff2'); unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F; }
 @font-face { font-family: 'Inter Tight'; font-style: normal; font-weight: 300 600; font-display: swap; src: url(fonts/InterTight-cyrillic.woff2) format('woff2'); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
 @font-face { font-family: 'Inter Tight'; font-style: normal; font-weight: 300 600; font-display: swap; src: url(fonts/InterTight-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-:root { --ink: #0f2236; --mute: #6b7a8c; --line: #dfe6ee; --bg: #fff; --soft: #f4f6f9; --blue: #1565c0; --blue2: #0d3e70; }
+
+:root {
+  --navy: #070f24; --navy2: #0c1a3e; --blue: #1f4dff; --blue-h: #3b63ff; --sky: #7fa2ff;
+  --ink: #0b1220; --mute: #687387; --line: #dfe3ea; --soft: #f2f3f6; --bg: #fff; --blue2: #1638c4;
+}
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--bg); color: var(--ink); overflow-x: hidden;
-  font: 400 16px/1.6 "Inter Tight", -apple-system, "Segoe UI", Roboto, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+body { margin: 0; background: var(--soft); color: var(--ink); overflow-x: hidden;
+  font: 400 16px/1.55 "Inter Tight", -apple-system, "Segoe UI", Roboto, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
 a { color: inherit; }
-.wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
-@media (max-width: 600px) { .wrap { padding: 0 16px; } }
-h1 { font-weight: 300; font-size: clamp(32px, 4.4vw, 54px); line-height: 1.1; margin: 0; letter-spacing: -.01em; }
-h2 { font-weight: 400; font-size: clamp(24px, 2.6vw, 32px); line-height: 1.2; margin: 0 0 6px; }
-.small { font-size: 13px; color: var(--mute); }
-header { position: sticky; top: 0; z-index: 40; background: rgba(255,255,255,.96); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
-header .wrap { display: flex; align-items: center; gap: 24px; height: 66px; }
-.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-.logo img { width: 34px; height: 34px; }
-.logo b { display: block; font-weight: 600; font-size: 15px; letter-spacing: .06em; line-height: 1; }
-.logo small { display: block; font-size: 8.5px; letter-spacing: .2em; color: var(--mute); margin-top: 3px; }
-nav { display: flex; gap: 22px; margin-left: auto; }
-nav a { font-size: 14px; text-decoration: none; }
-nav a:hover { color: var(--blue); }
-.btn { display: inline-flex; align-items: center; gap: 10px; padding: 10px 18px; font-weight: 500; font-size: 14px; text-decoration: none;
-  background: var(--blue); color: #fff; border: 1px solid var(--blue); cursor: pointer; font-family: inherit; }
-.btn:hover { background: var(--blue2); border-color: var(--blue2); }
-.btn.line { background: #fff; color: var(--blue); }
-.btn.line:hover { background: var(--soft); }
-@media (max-width: 760px) { nav { display: none; } header .btn { margin-left: auto; } }
-.top { background: linear-gradient(135deg, #2a8ae0 0%, var(--blue) 45%, var(--blue2) 100%); color: #fff; padding: 56px 0 46px; }
-.top p { max-width: 640px; color: rgba(255,255,255,.85); margin: 14px 0 0; font-size: 15px; }
-.jump { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 22px; }
-.jump a { border: 1px solid rgba(255,255,255,.5); padding: 8px 14px; text-decoration: none; font-size: 14px; }
-.jump a:hover { background: rgba(255,255,255,.12); }
-.calc { padding: 54px 0; border-bottom: 1px solid var(--line); }
-.calc:nth-of-type(even) { background: var(--soft); }
-.grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 34px; margin-top: 22px; align-items: start; }
-@media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
-.f { display: grid; gap: 12px; }
-.f label { display: grid; gap: 5px; font-size: 13.5px; color: var(--mute); }
-.f input, .f select { width: 100%; min-width: 0; border: 1px solid var(--line); background: #fff; padding: 10px 12px; font: 500 15px "Inter Tight", sans-serif; color: var(--ink); }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 32px; }
+@media (max-width: 640px) { .wrap { padding: 0 16px; } }
+.cap { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+h1 { font-weight: 500; text-transform: uppercase; font-size: clamp(34px, 6vw, 84px); line-height: 1; margin: 0; letter-spacing: -.01em; }
+h2 { font-weight: 500; text-transform: uppercase; font-size: clamp(24px, 3vw, 40px); line-height: 1.05; margin: 0 0 12px; letter-spacing: -.01em; }
+.small { font-size: 13.5px; color: var(--mute); max-width: 860px; }
+.arrow::after { content: "↗"; margin-left: 8px; font-size: .95em; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 22px; font-size: 13px; letter-spacing: .06em;
+  text-transform: uppercase; text-decoration: none; background: var(--blue); color: #fff; border: 1px solid var(--blue);
+  transition: background .2s, border-color .2s, color .2s; cursor: pointer; font-family: inherit; }
+.btn:hover { background: var(--blue-h); border-color: var(--blue-h); }
+.btn.line { background: transparent; color: var(--blue); border-color: currentColor; }
+.btn.line:hover { background: var(--blue); border-color: var(--blue); color: #fff; }
+header { position: sticky; top: 0; z-index: 50; background: rgba(7,15,36,.94); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,.08); }
+.bar { display: flex; align-items: center; gap: 28px; height: 68px; color: #fff; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 600; letter-spacing: .04em; }
+.logo img { width: 28px; height: 28px; }
+nav { display: flex; gap: 26px; margin-left: auto; }
+nav a { text-decoration: none; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; opacity: .8; }
+nav a:hover { opacity: 1; }
+.bar .btn { padding: 10px 18px; }
+@media (max-width: 900px) { nav { display: none; } .bar .btn { margin-left: auto; } }
+.top { background: radial-gradient(1200px 600px at 60% 20%, #12245a 0%, var(--navy) 65%); color: #fff; padding: 90px 0 0; }
+.top p { max-width: 700px; color: rgba(255,255,255,.72); margin: 22px 0 0; font-size: 16px; }
+.jump { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 60px; border-top: 1px solid rgba(255,255,255,.14); }
+.jump a { padding: 20px 20px 24px 0; text-decoration: none; font-size: 14px; letter-spacing: .05em; text-transform: uppercase; color: rgba(255,255,255,.8); transition: color .2s; }
+.jump a + a { padding-left: 20px; border-left: 1px solid rgba(255,255,255,.14); }
+.jump a span { display: block; color: var(--sky); font-size: 12px; margin-bottom: 8px; }
+.jump a:hover { color: #fff; }
+@media (max-width: 700px) { .jump { grid-template-columns: 1fr; } .jump a + a { padding-left: 0; border-left: 0; border-top: 1px solid rgba(255,255,255,.14); } }
+.calc { padding: 90px 0; border-bottom: 1px solid var(--line); }
+.calc:nth-of-type(even) { background: #fff; }
+.grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 34px; margin-top: 34px; align-items: start; }
+@media (max-width: 860px) { .grid { grid-template-columns: 1fr; } .calc { padding: 64px 0; } }
+.f { display: grid; gap: 14px; }
+.f label { display: grid; gap: 6px; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--mute); }
+.f input, .f select { width: 100%; min-width: 0; border: 1px solid var(--line); background: #fff; padding: 12px 14px; font: 500 15px "Inter Tight", sans-serif; color: var(--ink); border-radius: 0; }
 .f input:focus, .f select:focus { outline: none; border-color: var(--blue); }
 .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 @media (max-width: 520px) { .row2 { grid-template-columns: 1fr; } }
-.chk { display: flex !important; grid-template-columns: none; align-items: center; gap: 8px; color: var(--ink) !important; }
+.chk { display: flex !important; grid-template-columns: none; align-items: center; gap: 8px; color: var(--ink) !important; text-transform: none !important; letter-spacing: 0 !important; font-size: 14px !important; }
 .chk input { width: auto; }
 .seg { display: flex; flex-wrap: wrap; border: 1px solid var(--line); background: #fff; width: fit-content; max-width: 100%; }
-.seg button { border: 0; background: none; padding: 9px 14px; font: 500 14px "Inter Tight", sans-serif; color: var(--ink); cursor: pointer; }
+.seg button { border: 0; background: none; padding: 10px 16px; font: 500 13px "Inter Tight", sans-serif; letter-spacing: .04em; text-transform: uppercase; color: var(--ink); cursor: pointer; }
 .seg button.on { background: var(--blue); color: #fff; }
-.res { background: #fff; border: 1px solid var(--line); padding: 22px 24px; box-shadow: 0 18px 48px rgba(15,34,54,.08); min-width: 0; }
-.res .big { font-weight: 300; font-size: clamp(34px, 4vw, 48px); line-height: 1.1; color: var(--blue); letter-spacing: -.01em; overflow-wrap: anywhere; }
-.res .lbl { font-size: 13px; color: var(--mute); }
-.res ul { margin: 12px 0 0; padding-left: 18px; font-size: 13.5px; color: var(--mute); }
+.res { background: var(--navy); color: #fff; padding: 28px 28px 30px; min-width: 0; }
+.res .big { font-weight: 300; font-size: clamp(34px, 4vw, 54px); line-height: 1.05; color: #fff; letter-spacing: -.01em; overflow-wrap: anywhere; margin: 6px 0 4px; }
+.res .lbl { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--sky); }
+.res ul { margin: 16px 0 0; padding-left: 18px; font-size: 13.5px; color: rgba(255,255,255,.7); }
 .res li { margin: 4px 0; }
-.tbl { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 13px; }
-.tbl th, .tbl td { padding: 6px 6px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+.tbl { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 13px; }
+.tbl th, .tbl td { padding: 7px 6px; border-bottom: 1px solid rgba(255,255,255,.12); text-align: right; white-space: nowrap; }
+.tbl th { color: var(--sky); font-weight: 500; }
 .tbl th:first-child, .tbl td:first-child { text-align: left; }
 .tblwrap { overflow-x: auto; max-width: 100%; }
+.res .btn.line { color: #fff; border-color: rgba(255,255,255,.5); }
+.res .btn.line:hover { background: var(--blue); border-color: var(--blue); }
 .pays { display: grid; gap: 8px; }
-.pay { display: grid; grid-template-columns: 1fr 1fr 34px; gap: 8px; }
+.pay { display: grid; grid-template-columns: 1fr 1fr 40px; gap: 8px; }
 .pay button { border: 1px solid var(--line); background: #fff; cursor: pointer; font-size: 16px; color: var(--mute); }
-.link { background: none; border: 0; color: var(--blue); cursor: pointer; font: 500 14px "Inter Tight", sans-serif; padding: 0; text-align: left; }
-.promo { background: linear-gradient(135deg, #2a8ae0 0%, var(--blue) 45%, var(--blue2) 100%); color: #fff; padding: 50px 0; }
-.promo .wrap { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; }
-.promo p { margin: 8px 0 0; color: rgba(255,255,255,.82); max-width: 620px; font-size: 14.5px; }
-.promo .btn { background: #fff; color: var(--blue); border-color: #fff; padding: 14px 24px; font-size: 15px; }
-.warn { font-size: 12.5px; color: var(--mute); margin-top: 14px; }
-footer { padding: 30px 0 36px; }
-footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--mute); }
-footer a { text-decoration: none; } footer a:hover { color: var(--blue); }
+.link { background: none; border: 0; color: var(--blue); cursor: pointer; font: 500 13px "Inter Tight", sans-serif; letter-spacing: .05em; text-transform: uppercase; padding: 0; text-align: left; }
+.promo { background: var(--blue); color: #fff; padding: 90px 0; }
+.promo .wrap { display: flex; justify-content: space-between; align-items: flex-end; gap: 30px; flex-wrap: wrap; }
+.promo p { margin: 14px 0 0; color: rgba(255,255,255,.85); max-width: 640px; font-size: 15px; }
+.promo .btn { background: #fff; color: var(--blue); border-color: #fff; }
+.promo .btn:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+.warn { font-size: 12.5px; color: var(--mute); margin: 0; padding: 26px 0; }
+footer { background: var(--navy); color: rgba(255,255,255,.6); font-size: 13px; padding: 36px 0; }
+footer .wrap { display: flex; flex-wrap: wrap; gap: 18px 32px; align-items: center; }
+footer a { text-decoration: none; } footer a:hover { color: #fff; }
 </style>
 </head>
 <body>
-<header><div class="wrap">
-  <a class="logo" href="index.html"><img src="img/logo-blue.svg" alt=""><span><b>LEGALHELPER</b><small>ПРОГРАММА ДЛЯ ЮРИСТОВ</small></span></a>
-  <nav><a href="#srok">Сроки</a><a href="#duty">Госпошлина</a><a href="#p395">Проценты 395</a><a href="index.html">О программе</a></nav>
-  <a class="btn" href="https://github.com/LegalHelper/legalhelper.github.io/releases/latest/download/LegalHelper-Setup.exe">Скачать программу</a>
-</div></header>
+<header>
+  <div class="wrap bar">
+    <a class="logo" href="index.html"><img src="img/logo.svg" alt="">LEGALHELPER</a>
+    <nav><a href="#srok">Сроки</a><a href="#duty">Госпошлина</a><a href="#p395">Проценты 395</a><a href="index.html">О программе</a></nav>
+    <a class="btn" href="https://github.com/LegalHelper/legalhelper.github.io/releases/latest/download/LegalHelper-Setup.exe">Скачать</a>
+  </div>
+</header>
 
 <section class="top"><div class="wrap">
-  <h1>Калькуляторы юриста</h1>
-  <p>Процессуальные сроки с учётом выходных и праздников, госпошлина по новой шкале и проценты по ст. 395 ГК РФ по ключевой ставке. Бесплатно и без регистрации — считается прямо в браузере, ничего никуда не отправляется. Те же расчёты, что в программе LegalHelper.</p>
-  <div class="jump"><a href="#srok">⏱ Процессуальный срок</a><a href="#duty">🏛 Госпошлина</a><a href="#p395">₽ Проценты по ст. 395 ГК</a></div>
+  <h1>Калькуляторы<br>юриста</h1>
+  <p>Процессуальные сроки с учётом выходных и праздников, госпошлина по действующей шкале, проценты по ст. 395 ГК РФ по ключевой ставке. Считается в браузере, без регистрации, данные никуда не отправляются. Расчёты те же, что в программе LegalHelper.</p>
+  <div class="jump"><a href="#srok"><span>01</span>Процессуальный срок</a><a href="#duty"><span>02</span>Госпошлина</a><a href="#p395"><span>03</span>Проценты по ст. 395 ГК</a></div>
 </div></section>
 
 <section class="calc" id="srok"><div class="wrap">
@@ -153,22 +169,28 @@ footer a { text-decoration: none; } footer a:hover { color: var(--blue); }
       <div class="lbl" id="pDays"></div>
       <div class="tblwrap"><table class="tbl" id="pTbl"></table></div>
       <ul id="pNotes"></ul>
-      <button class="btn line" id="pCopy" type="button" style="margin-top:14px">📋 Скопировать расчёт</button>
+      <button class="btn line" id="pCopy" type="button" style="margin-top:14px">Скопировать расчёт</button>
     </div>
   </div>
 </div></section>
 
 <section class="promo"><div class="wrap">
-  <div><h2 style="margin:0">Всё это — и намного больше — в программе</h2>
+  <div><h2 style="margin:0">В программе — больше</h2>
   <p>В LegalHelper расчёты сохраняются в деле, выгружаются в Word и PDF для иска, сроки сами попадают в календарь дела и напоминают о себе заранее. Неустойка (% в день, 1/300 ставки), увеличение долга, ограничение суммой долга — тоже там.</p></div>
-  <a class="btn" href="https://github.com/LegalHelper/legalhelper.github.io/releases/latest/download/LegalHelper-Setup.exe">Скачать бесплатно</a>
+  <a class="btn arrow" href="https://github.com/LegalHelper/legalhelper.github.io/releases/latest/download/LegalHelper-Setup.exe">Скачать бесплатно</a>
 </div></section>
 <div class="wrap"><p class="warn">Расчёты справочные: перед подачей проверьте по тексту закона и обстоятельствам дела. Производственный календарь — по постановлениям Правительства РФ; на годы, календарь которых ещё не утверждён, учитываются только праздники по ст. 112 ТК РФ.</p></div>
 
-<footer><div class="wrap">
-  <a href="index.html">← LegalHelper — программа для юристов</a>
-  <span><a href="mailto:axis.juris@bk.ru">axis.juris@bk.ru</a> · <a href="https://t.me/axis_juris">Telegram @axis_juris</a> · © 2026 LegalHelper</span>
-</div></footer>
+<footer>
+  <div class="wrap">
+    <a class="logo" href="index.html"><img src="img/logo.svg" alt="" style="width:22px;height:22px">LEGALHELPER</a>
+    <a href="mailto:axis.juris@bk.ru">axis.juris@bk.ru</a>
+    <a href="https://t.me/axis_juris">Telegram @axis_juris</a>
+    <a href="index.html">О программе</a>
+    <a href="license.html">Условия использования</a>
+    <span style="margin-left:auto">© 2026 LegalHelper</span>
+  </div>
+</footer>
 
 <script>
 var DATA = {"KEY_RATES": [["2013-09-13", 5.5], ["2014-03-03", 7.0], ["2014-04-28", 7.5], ["2014-07-28", 8.0], ["2014-11-05", 9.5], ["2014-12-12", 10.5], ["2014-12-16", 17.0], ["2015-02-02", 15.0], ["2015-03-16", 14.0], ["2015-05-05", 12.5], ["2015-06-16", 11.5], ["2015-08-03", 11.0], ["2016-06-14", 10.5], ["2016-09-19", 10.0], ["2017-03-27", 9.75], ["2017-05-02", 9.25], ["2017-06-19", 9.0], ["2017-09-18", 8.5], ["2017-10-30", 8.25], ["2017-12-18", 7.75], ["2018-02-12", 7.5], ["2018-03-26", 7.25], ["2018-09-17", 7.5], ["2018-12-17", 7.75], ["2019-06-17", 7.5], ["2019-07-29", 7.25], ["2019-09-09", 7.0], ["2019-10-28", 6.5], ["2019-12-16", 6.25], ["2020-02-10", 6.0], ["2020-04-27", 5.5], ["2020-06-22", 4.5], ["2020-07-27", 4.25], ["2021-03-22", 4.5], ["2021-04-26", 5.0], ["2021-06-15", 5.5], ["2021-07-26", 6.5], ["2021-09-13", 6.75], ["2021-10-25", 7.5], ["2021-12-20", 8.5], ["2022-02-14", 9.5], ["2022-02-28", 20.0], ["2022-04-11", 17.0], ["2022-05-04", 14.0], ["2022-05-27", 11.0], ["2022-06-14", 9.5], ["2022-07-25", 8.0], ["2022-09-19", 7.5], ["2023-07-24", 8.5], ["2023-08-15", 12.0], ["2023-09-18", 13.0], ["2023-10-30", 15.0], ["2023-12-18", 16.0], ["2024-07-29", 18.0], ["2024-09-16", 19.0], ["2024-10-28", 21.0], ["2025-06-09", 20.0], ["2025-07-28", 18.0], ["2025-09-15", 17.0], ["2025-10-27", 16.5], ["2025-12-22", 16.0], ["2026-02-16", 15.5], ["2026-03-23", 15.0], ["2026-04-27", 14.5], ["2026-06-22", 14.25], ["2026-07-27", 14.0]], "MORATORIUM": ["2022-04-01", "2022-10-01"], "RATE_395_FROM": "2016-08-01", "HOLIDAYS": {"2024": ["01-01", "01-02", "01-03", "01-04", "01-05", "01-08", "02-23", "03-08", "04-29", "04-30", "05-01", "05-09", "05-10", "06-12", "11-04", "12-30", "12-31"], "2025": ["01-01", "01-02", "01-03", "01-06", "01-07", "01-08", "05-01", "05-02", "05-08", "05-09", "06-12", "06-13", "11-03", "11-04", "12-31"], "2026": ["01-01", "01-02", "01-05", "01-06", "01-07", "01-08", "01-09", "02-23", "03-09", "05-01", "05-11", "06-12", "11-04", "12-31"], "2027": ["01-01", "01-04", "01-05", "01-06", "01-07", "01-08", "02-22", "02-23", "03-08", "05-03", "05-10", "06-14", "11-04", "11-05", "12-31"]}, "WORK": {"2024": ["04-27", "11-02", "12-28"], "2025": ["11-01"], "2026": [], "2027": ["02-20"]}, "FIXED": ["01-01", "01-02", "01-03", "01-04", "01-05", "01-06", "01-07", "01-08", "02-23", "03-08", "05-01", "05-09", "06-12", "11-04"], "PRESETS": [["Свой срок", 10, "wd", ""], ["АПК: апелляционная жалоба (ст. 259) — 1 месяц", 1, "m", "Со дня принятия решения в полном объёме"], ["АПК: кассационная жалоба (ст. 276) — 2 месяца", 2, "m", "Со дня вступления обжалуемого акта в силу"], ["АПК: жалоба в ВС РФ (ст. 291.2) — 2 месяца", 2, "m", "Со дня вступления в силу последнего акта"], ["АПК: жалоба на определение (ст. 188, 272) — 1 месяц", 1, "m", "Если иной срок не установлен АПК"], ["АПК: жалоба на определение — 10 дней", 10, "wd", "Напр., по обеспечительным мерам (ст. 93) и др."], ["АПК: упрощённое производство, апелляция (ст. 229) — 15 дней", 15, "wd", "Со дня принятия резолютивной части / мотивированного решения"], ["АПК: заявление о составлении мотивированного решения — 5 дней", 5, "wd", "Со дня размещения резолютивной части (ст. 229)"], ["АПК: оспаривание решений органов (ст. 198) — 3 месяца", 3, "m", "Со дня, когда узнали о нарушении"], ["ГПК: апелляционная жалоба (ст. 321) — 1 месяц", 1, "m", "Со дня принятия решения в окончательной форме"], ["ГПК: частная жалоба (ст. 332) — 15 дней", 15, "wd", "Со дня вынесения определения"], ["ГПК: кассация в КСОЮ (ст. 376.1) — 3 месяца", 3, "m", "Со дня вступления в силу последнего акта"], ["ГПК: кассация в ВС РФ (ст. 390.3) — 3 месяца", 3, "m", "Со дня вынесения определения кассационного суда"], ["ГПК: возражения на судебный приказ (ст. 128) — 10 дней", 10, "wd", "Со дня получения копии приказа"], ["ГПК: заявление об отмене заочного решения (ст. 237) — 7 дней", 7, "wd", "Со дня вручения копии решения"], ["ГПК: судебные расходы (ст. 103.1) — 3 месяца", 3, "m", "Со дня вступления в силу последнего акта"], ["КАС: апелляционная жалоба (ст. 298) — 1 месяц", 1, "m", "Со дня принятия решения в окончательной форме"], ["КАС: оспаривание решений органов (ст. 219) — 3 месяца", 3, "m", "Со дня, когда узнали о нарушении"], ["УПК: апелляция (ст. 389.4) — 15 суток", 15, "cd", "Со дня постановления приговора (сутки — календарные)"], ["Исковая давность (ст. 196 ГК) — 3 года", 3, "y", "Со дня, когда лицо узнало о нарушении"], ["Претензионный порядок (ч. 5 ст. 4 АПК) — 30 дней", 30, "cd", "Со дня направления претензии (календарные)"]], "SOJ": [[100000, 4000, 0, 0], [300000, 4000, 3, 100000], [500000, 10000, 2.5, 300000], [1000000, 15000, 2, 500000], [3000000, 25000, 1, 1000000], [8000000, 45000, 0.7, 3000000], [24000000, 80000, 0.35, 8000000], [50000000, 136000, 0.3, 24000000], [100000000, 214000, 0.2, 50000000], [null, 314000, 0.15, 100000000]], "SOJ_MAX": 900000, "ARB": [[100000, 10000, 0, 0], [1000000, 10000, 5, 100000], [10000000, 55000, 3, 1000000], [50000000, 325000, 1, 10000000], [null, 725000, 0.5, 50000000]], "ARB_MAX": 10000000, "SOJ_FIXED": [["Неимущественный иск / имущественный, не подлежащий оценке (пп. 3)", [3000, 20000]], ["Споры о заключении/изменении/расторжении договора, недействительность без последствий (пп. 4)", [3000, 20000]], ["Расторжение брака (пп. 5)", [5000, 5000]], ["Оспаривание ненормативного акта, действий органов (пп. 7)", [3000, 15000]], ["Особое производство (пп. 8)", [3000, 3000]], ["Обеспечение иска (пп. 15)", [10000, 10000]], ["Пересмотр по новым / вновь открывшимся обстоятельствам (пп. 14)", [10000, 10000]], ["Апелляционная, частная жалоба; кассация на судебный приказ (пп. 19)", [3000, 15000]], ["Кассационная жалоба (пп. 20)", [5000, 20000]], ["Кассационная / надзорная жалоба в ВС РФ (пп. 21)", [7000, 25000]]], "ARB_FIXED": [["Неимущественный иск / имущественный, не подлежащий оценке (пп. 4)", [15000, 50000]], ["Споры о заключении/изменении/расторжении договора, недействительность без последствий (пп. 2)", [15000, 50000]], ["Оспаривание ненормативного акта, действий органов (пп. 7)", [10000, 50000]], ["Установление фактов, имеющих юридическое значение (пп. 10)", [30000, 30000]], ["Обеспечение иска (пп. 17)", [30000, 30000]], ["Пересмотр по новым / вновь открывшимся обстоятельствам (пп. 16)", [30000, 30000]], ["Процессуальное правопреемство (пп. 12)", [5000, 25000]], ["Банкротство — заявление кредитора (пп. 8)", [10000, 100000]], ["Апелляционная жалоба; кассация на судебный приказ (пп. 19)", [10000, 30000]], ["Кассационная жалоба (пп. 20)", [20000, 50000]], ["Кассационная / надзорная жалоба в ВС РФ (пп. 21)", [30000, 80000]]], "DATA_DATE": "25.09.2026"};
@@ -348,7 +370,7 @@ var DATA = {"KEY_RATES": [["2013-09-13", 5.5], ["2014-03-03", 7.0], ["2014-04-28
     var b = this, txt = lines.join("\n");
     (navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.reject()).then(function () { b.textContent = "✓ Скопировано — вставьте в Word или Excel"; },
       function () { b.textContent = "Не удалось скопировать — выделите таблицу мышью"; });
-    setTimeout(function () { b.textContent = "📋 Скопировать расчёт"; }, 2600);
+    setTimeout(function () { b.textContent = "Скопировать расчёт"; }, 2600);
   });
   ["pSum", "pFrom", "pTo"].forEach(function (id) { document.getElementById(id).addEventListener("input", p395); });
   document.getElementById("pMor").addEventListener("change", p395);
