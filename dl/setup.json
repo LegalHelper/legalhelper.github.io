@@ -1,0 +1,18 @@
+{
+  "version": "3.29",
+  "file": "LegalHelper-Setup.exe",
+  "size": 182321439,
+  "sha256": "4f8ff64c5ca7a61b608dbbe2039d3bad980e579d219f2b0fbde44afb240eb721",
+  "parts": [
+    {
+      "name": "3.29/LegalHelper-Setup.part1",
+      "size": 94371840,
+      "sha256": "f0a748dfe6394de4e3c2023e11baafddf5f40a32b56dd70e115011873491fbbe"
+    },
+    {
+      "name": "3.29/LegalHelper-Setup.part2",
+      "size": 87949599,
+      "sha256": "c78daa11cea0eeb212cb62fcb1f3bbb7d522bd6bf7707b68cee848c150ae107d"
+    }
+  ]
+}
