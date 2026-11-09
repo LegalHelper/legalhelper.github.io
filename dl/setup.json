@@ -1,18 +1,28 @@
 {
-  "version": "3.29",
+  "version": "3.31",
   "file": "LegalHelper-Setup.exe",
-  "size": 182321439,
-  "sha256": "4f8ff64c5ca7a61b608dbbe2039d3bad980e579d219f2b0fbde44afb240eb721",
+  "size": 182293355,
+  "sha256": "990942082f8508be34e4ed72c3b2c47b9136da321e581888edebeb4c99be9d57",
   "parts": [
     {
-      "name": "3.29/LegalHelper-Setup.part1",
-      "size": 94371840,
-      "sha256": "f0a748dfe6394de4e3c2023e11baafddf5f40a32b56dd70e115011873491fbbe"
+      "name": "3.31/LegalHelper-Setup.part1",
+      "size": 47185920,
+      "sha256": "0c3840779dfe4cdeb7f34c44ad41098d5104a5a117b2170945a79690f45c0a48"
     },
     {
-      "name": "3.29/LegalHelper-Setup.part2",
-      "size": 87949599,
-      "sha256": "c78daa11cea0eeb212cb62fcb1f3bbb7d522bd6bf7707b68cee848c150ae107d"
+      "name": "3.31/LegalHelper-Setup.part2",
+      "size": 47185920,
+      "sha256": "a60d3b026980529ed8e3acfb670b42c2341032d8ce908f8e280de36923cd3e90"
+    },
+    {
+      "name": "3.31/LegalHelper-Setup.part3",
+      "size": 47185920,
+      "sha256": "6af0dcbf03a1c3f1b09b6314515ff98fadc5c37cba2f6d9ed20335890dacc5fa"
+    },
+    {
+      "name": "3.31/LegalHelper-Setup.part4",
+      "size": 40735595,
+      "sha256": "690298fc32ab4c78ad9b686746916a9bd77e804f83b3ff3b759e5e8e78d6a042"
     }
   ]
 }
